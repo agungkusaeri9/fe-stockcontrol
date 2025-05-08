@@ -5,20 +5,17 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
-  BoxCubeIcon,
+  BalanceIcon,
   BoxIcon,
-  CalenderIcon,
   ChevronDownIcon,
+  DatabaseIcon,
   GridIcon,
+  HistoryIcon,
   HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon,
+  PurchaseOrderIcon,
+  PurchaseRequestIcon,
+  ReminderIcon
 } from "../icons/index";
-import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
@@ -37,13 +34,25 @@ const navItems: NavItem[] = [
     roles: ['admin', 'guest']
   },
   {
-    icon: <GridIcon />,
+    icon: <BalanceIcon />,
     name: "Balance",
     path: "/balance",
     roles: ['admin', 'guest']
   },
   {
-    icon: <BoxIcon />,
+    icon: <PurchaseOrderIcon />,
+    name: "Purchase Order",
+    path: "/purchase-orders",
+    roles: ['admin', 'guest']
+  },
+  {
+    icon: <PurchaseRequestIcon />,
+    name: "Purchase Request",
+    path: "/purchase-requests",
+    roles: ['admin', 'guest']
+  },
+  {
+    icon: <HistoryIcon />,
     name: "Stock",
     subItems: [
       { name: "In", path: "/stock-in", pro: false },
@@ -51,17 +60,18 @@ const navItems: NavItem[] = [
     ],
     roles: ['admin', 'guest']
   },
+
+  // {
+  //   icon: <BoxIcon />,
+  //   name: "Transactions",
+  //   subItems: [
+  //     { name: "Purchase Order", path: "/purchase-orders", pro: false },
+  //     { name: "Purchase Request", path: "/purchase-requests", pro: false }
+  //   ],
+  //   roles: ['admin', 'guest']
+  // },
   {
-    icon: <BoxIcon />,
-    name: "Transactions",
-    subItems: [
-      { name: "Purchase Order", path: "/purchase-orders", pro: false },
-      { name: "Purchase Request", path: "/purchase-requests", pro: false }
-    ],
-    roles: ['admin', 'guest']
-  },
-  {
-    icon: <BoxIcon />,
+    icon: <DatabaseIcon />,
     name: "Master Data",
     subItems: [
       { name: "Operator", path: "/operators", pro: false },
@@ -76,7 +86,7 @@ const navItems: NavItem[] = [
     roles: ['admin']
   },
   {
-    icon: <GridIcon />,
+    icon: <ReminderIcon />,
     name: "Reminder",
     path: "/reminder",
     count: 10,
@@ -301,7 +311,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 bg-white 
         ${isExpanded || isMobileOpen
           ? "w-[290px]"
           : isHovered
@@ -314,30 +324,33 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex  ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
           }`}
       >
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <>
+            <div className="flex flex-col align-center items-center" >
               <Image
                 className="dark:hidden"
-                src="/images/logo-toho.png"
+                src="/images/logo/cmwi-logo.png"
                 alt="Logo"
                 width={150}
                 height={40}
               />
               <Image
                 className="hidden dark:block"
-                src="/images/logo-toho.png"
+                src="/images/logo/cmwi-logo.png"
                 alt="Logo"
                 width={150}
                 height={40}
               />
-            </>
+              <h2 className="text-gray-700 uppercase font-semibold text-sm ml-2">
+                Stock Control System
+              </h2>
+            </div>
           ) : (
             <Image
-              src="/images/logo-toho.png"
+              src="/images/logo/cmwi-logo.png"
               alt="Logo"
               width={32}
               height={32}
@@ -345,7 +358,7 @@ const AppSidebar: React.FC = () => {
           )}
         </Link>
       </div>
-      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar ">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>

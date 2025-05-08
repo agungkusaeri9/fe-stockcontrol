@@ -1,12 +1,22 @@
 import ComponentCard from '@/components/common/ComponentCard'
+import SelectLabel from '@/components/form/FormSelect'
 import Input from '@/components/form/input/InputField'
-import Select from '@/components/form/Select'
 import Button from '@/components/ui/button/Button'
+import { useFetchData } from '@/hooks/useFetchData'
 import SparePartService from '@/services/SparePartService'
-import { useQuery } from '@tanstack/react-query'
+import { Sparepart } from '@/utils/sparepart'
+import { updateKanbanValidator } from '@/validators/kanbanValidator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 
 const FilterStockIn = () => {
+
+    const { register, formState: { errors } } = useForm({
+        resolver: zodResolver(updateKanbanValidator),
+    })
+
+    const { data: spareparts } = useFetchData(SparePartService.getWithoutPagination, "spareparts", false);
 
     return (
         <>
@@ -22,13 +32,17 @@ const FilterStockIn = () => {
                             <Input placeholder='' type='date' className='w-full' />
                         </div>
                         <div>
-                            <label htmlFor="end_date" className='text-xs mb-5'>Part Number</label>
-                            <Select onChange={() => { }} options={[
-                                { value: "0", label: "Select Option" },
-                                { value: "1", label: "Part 1" },
-                                { value: "2", label: "Part 2" },
-                                { value: "3", label: "Part 3" },
-                            ]} placeholder="Select Option" />
+                            <SelectLabel
+                                label="Sparepart"
+                                name="spare_part_id"
+                                required
+                                register={register("spare_part_id", { valueAsNumber: true })}
+                                error={errors.spare_part_id}
+                                options={spareparts.map((d: Sparepart) => ({
+                                    label: d.part_number + " - " + d.name,
+                                    value: d.id,
+                                }))}
+                            />
                         </div>
                         <div className='flex flex-wrap gap-2'>
                             <Button className='mt-6 px-6' size='sm' variant='primary'>Excel</Button>

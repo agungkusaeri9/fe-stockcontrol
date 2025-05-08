@@ -1,5 +1,6 @@
 import { ApiResponse } from "@/types/api";
-import { User } from "@/types/user";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
+import { PurchaseRequest } from "@/types/purchaseRequest";
 import api from "@/utils/api";
 
 export interface PaginationMeta {
@@ -9,17 +10,18 @@ export interface PaginationMeta {
   lastPage: number;
 }
 
-const getAllPurchaseRequest = async (
-  page?: number,
-  limit?: number,
-  search?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("purchase-requests", {
-    params: { limit, search, page, paginate: true }
+const get: FetchFunctionWithPagination<PurchaseRequest> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<PurchaseRequest>> => {
+  const response = await api.get<PaginatedResponse<PurchaseRequest>>("purchase-requests", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
 
 
-export default { getAllPurchaseRequest };
+
+const purchaseRequestService = { get };
+export default purchaseRequestService;

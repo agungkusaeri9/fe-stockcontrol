@@ -9,6 +9,7 @@ export type Sparepart = {
   description: string;
   specification?: string;
   minimum_quantity: number;
+  maximum_quantity?: number;
   balance: number;
   department: Department;
   machine_area: MachineArea;

@@ -10,7 +10,7 @@ export const useFetchById = <T>(
     queryFn: async () => {
       if (!id) return null;
       const response = await fetchFunction(id);
-      return response.data as any;
+      return response.data as T;
     },
     enabled: !!id,
   });

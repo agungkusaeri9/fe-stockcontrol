@@ -7,7 +7,7 @@ import { useCreateData } from '@/hooks/useCreateData';
 import RackService from '@/services/RackService';
 import { createRackValidator } from '@/validators/rackValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form';
 
 const CreateOperator = () => {

@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
 import { useForm } from 'react-hook-form';
 
-const createPage = () => {
+const Page = () => {
     type formData = {
         name: string;
     }
@@ -53,4 +53,4 @@ const createPage = () => {
     )
 }
 
-export default createPage
+export default Page

@@ -9,8 +9,10 @@ interface SelectLabelProps {
     required?: boolean;
     placeholder?: string;
     error?: FieldError;
-    register: UseFormRegisterReturn;
+    register?: UseFormRegisterReturn;
+    onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     disabled?: boolean;
+    value?: string | number;
 }
 
 const SelectLabel: React.FC<SelectLabelProps> = ({
@@ -22,6 +24,8 @@ const SelectLabel: React.FC<SelectLabelProps> = ({
     error,
     register,
     disabled = false,
+    onChange,
+    value
 }) => {
     let selectClasses = `h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90`;
 
@@ -43,6 +47,9 @@ const SelectLabel: React.FC<SelectLabelProps> = ({
                 {...register}
                 disabled={disabled}
                 className={selectClasses}
+                onChange={onChange}
+                value={value}
+                name={name}
             >
                 <option value="">{placeholder}</option>
                 {options.map((option) => (

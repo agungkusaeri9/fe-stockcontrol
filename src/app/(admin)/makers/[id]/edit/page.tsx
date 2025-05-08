@@ -10,28 +10,25 @@ import { Maker } from '@/types/maker';
 import { makerValidator } from '@/validators/makerValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 
 const EditPage = () => {
     const params = useParams();
     const id = params.id;
 
-    const { data: maker } = useFetchById(MakerService.getById, Number(id), "maker");
-
+    const { data: maker } = useFetchById<Maker>(MakerService.getById, Number(id), "maker");
+    const { mutate: updateMutation, isPending } = useUpdateData(MakerService.update, Number(id), "makers", "/makers");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: zodResolver(makerValidator)
+    })
     useEffect(() => {
         if (maker) {
             reset({
                 name: maker.name
             });
         }
-    }, [maker]);
-
-    const { mutate: updateMutation, isPending } = useUpdateData(MakerService.update, Number(id), "makers", "/makers");
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: zodResolver(makerValidator)
-    })
-
+    }, [maker, reset]);
     const onSubmit = (data: Maker) => {
         updateMutation(data);
     };

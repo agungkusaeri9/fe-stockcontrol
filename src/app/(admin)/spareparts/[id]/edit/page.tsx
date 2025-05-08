@@ -11,28 +11,30 @@ import DepartmentService from '@/services/DepartmentService';
 import MachineAreaService from '@/services/MachineAreaService';
 import RackService from '@/services/RackService';
 import SparePartService from '@/services/SparePartService';
+import { Department } from '@/types/department';
+import { MachineArea } from '@/types/machineArea';
+import { Rack } from '@/types/rack';
+import { Sparepart } from '@/utils/sparepart';
 import { updateSparepartValidator } from '@/validators/sparepartValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 
 const CreateOperator = () => {
     const params = useParams();
     const id = params.id
-    const { data: sparepart } = useFetchById(SparePartService.getById, Number(id), "sparepart");
-    useEffect(() => {
-        reset({
-            name: sparepart?.name,
-            specification: sparepart?.specification,
-            part_number: sparepart?.part_number,
-            minimum_quantity: sparepart?.minimum_quantity,
-            balance: sparepart?.balance,
-            machine_area_id: sparepart?.machine_area?.id,
-            department_id: sparepart?.department?.id,
-            rack_id: sparepart?.rack?.id
-        })
-    }, [sparepart])
+    type formData = {
+        name: string;
+        part_number: string;
+        specification: string;
+        minimum_quantity: number;
+        balance: number;
+        department_id: number;
+        machine_area_id: number;
+        rack_id: number;
+    }
+    const { data: sparepart } = useFetchById<Sparepart>(SparePartService.getById, Number(id), "sparepart");
     const { data: departments } = useFetchData(DepartmentService.getWithoutPagination, "departments", false);
     const { data: machineAreas } = useFetchData(MachineAreaService.getWithoutPagination, "machineAreas", false);
     const { data: racks } = useFetchData(RackService.getWithoutPagination, "racks", false);
@@ -45,7 +47,19 @@ const CreateOperator = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(updateSparepartValidator),
     });
-    const onSubmit = (data: any) => {
+    useEffect(() => {
+        reset({
+            name: sparepart?.name,
+            specification: sparepart?.specification,
+            part_number: sparepart?.part_number,
+            minimum_quantity: sparepart?.minimum_quantity,
+            balance: sparepart?.balance,
+            machine_area_id: sparepart?.machine_area?.id,
+            department_id: sparepart?.department?.id,
+            rack_id: sparepart?.rack?.id
+        })
+    }, [sparepart, reset])
+    const onSubmit = (data: formData) => {
         UpdateMutation(data);
     };
 
@@ -107,7 +121,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("department_id", { valueAsNumber: true })}
                                 error={errors.department_id}
-                                options={departments.map((d: any) => ({
+                                options={departments.map((d: Department) => ({
                                     label: d.name,
                                     value: d.id,
                                 }))}
@@ -120,7 +134,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("machine_area_id", { valueAsNumber: true })}
                                 error={errors.machine_area_id}
-                                options={machineAreas.map((area: any) => ({
+                                options={machineAreas.map((area: MachineArea) => ({
                                     label: area.name,
                                     value: area.id,
                                 }))}
@@ -133,14 +147,14 @@ const CreateOperator = () => {
                                 required
                                 register={register("rack_id", { valueAsNumber: true })}
                                 error={errors.rack_id}
-                                options={racks.map((rack: any) => ({
+                                options={racks.map((rack: Rack) => ({
                                     label: rack.name,
                                     value: rack.id,
                                 }))}
                             />
                         )}
-                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending}>
-                            Create
+                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending} loading={isPending}>
+                            Update
                         </Button>
                     </form>
                 </ComponentCard>

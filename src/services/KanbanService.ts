@@ -1,36 +1,33 @@
 import { ApiResponse } from "@/types/api";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import { Kanban } from "@/types/kanban";
-import { User } from "@/types/user";
 import api from "@/utils/api";
 interface FromData {
   js_code:string;
-  quantity: string;
-  lead_time: string;
+  quantity: number;
+  lead_time: number;
   spare_part_id: number;
   supplier_id: number;
   maker_id: number;
   rack_id: number; 
 }
 
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<Kanban[]>> => {
-  const response = await api.get<ApiResponse<Kanban[]>>("kanbans", {
-    params: { limit, keyword, page, paginate:true },
+const get: FetchFunctionWithPagination<Kanban> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Kanban>> => {
+  const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
 
 const getWithoutPagination = async (
-  page?: number,
-  limit?: number,
   keyword?: string,
 ): Promise<ApiResponse<Kanban[]>> => {
   const response = await api.get<ApiResponse<Kanban[]>>("kanbans", {
-    params: { limit:50, keyword, page : 1 },
+    params: { keyword},
   });
   return response.data;
   
@@ -74,4 +71,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get, getWithoutPagination, create, getById, update, remove };
+const KanbanService =  { get, getWithoutPagination, create, getById, update, remove };
+export default KanbanService;

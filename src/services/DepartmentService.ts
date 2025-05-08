@@ -1,37 +1,36 @@
 import { ApiResponse } from "@/types/api";
+import { Department } from "@/types/department";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import api from "@/utils/api";
 
-type Department = {
+type formData = {
   name: string;
   code: string;
   number: string;
 }
 
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<Department[]>> => {
-  const response = await api.get<ApiResponse<Department[]>>("departments", {
-    params: { limit, keyword, page, paginate:true },
+const get: FetchFunctionWithPagination<Department> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Department>> => {
+  const response = await api.get<PaginatedResponse<Department>>("departments", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
 
 const getWithoutPagination = async (
-  page?: number,
-  limit?: number,
   keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("departments", {
-    params: { limit:50, keyword, page : 1 },
+): Promise<ApiResponse<Department[]>> => {
+  const response = await api.get<ApiResponse<Department[]>>("departments", {
+    params: { keyword },
   });
   return response.data;
   
 };
 
-const create = async (data: Department) => {
+const create = async (data: formData) => {
   try {
     const response = await api.post("departments", data);
     return response.data;
@@ -49,7 +48,7 @@ const getById = async (id: number) => {
   }
 };
 
-const update = async (id: number, data: Department) => {
+const update = async (id: number, data: formData) => {
   try {
     const response = await api.put(`departments/${id}`, data);
     return response.data;
@@ -69,4 +68,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get,getWithoutPagination, create, getById, update, remove };
+const DepartmentService = { get,getWithoutPagination, create, getById, update, remove };
+export default DepartmentService;

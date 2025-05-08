@@ -1,17 +1,84 @@
 "use client"
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
-import OperatorEdit from '@/components/pages/operator/OperatorEdit';
-import dynamic from 'next/dynamic';
-import React from 'react'
+import InputLabel from '@/components/form/FormInput';
+import Button from '@/components/ui/button/Button';
+import { useFetchById } from '@/hooks/useFetchDetailData';
+import { useUpdateData } from '@/hooks/useUpdateData';
+import OperatorService from '@/services/OperatorService';
+import { Operator } from '@/types/operator';
+import { operatorUpdateValidation } from '@/validators/operator/operatorUpdate';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams } from 'next/navigation';
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form';
 
 const EditOperator = () => {
+
+    const params = useParams();
+    const id = params.id;
+    type formData = {
+        name: string;
+        nik: string;
+    }
+    const { data: operator } = useFetchById<Operator>(OperatorService.getOperatorById, Number(id), "operator");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: zodResolver(operatorUpdateValidation),
+    });
+
+    useEffect(() => {
+        if (operator) {
+            reset({
+                name: operator.name,
+                nik: operator.nik,
+            });
+        }
+    }, [operator, reset]);
+
+    const { mutate: updateMutation, isPending } = useUpdateData(
+        OperatorService.updateOperator,
+        Number(id),
+        "operators",
+        "/operators"
+    );
+
+    const onSubmit = (data: formData) => {
+        updateMutation(data);
+    };
     return (
         <div>
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Operators', href: '/operators' }, { label: 'Edit' }]} />
             <div className="space-y-6">
                 <ComponentCard title="Edit Operator">
-                    <OperatorEdit />
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <InputLabel
+                            label="Name"
+                            name="name"
+                            type="text"
+                            required
+                            placeholder="Enter Name"
+                            register={register("name")}
+                            error={errors.name}
+                        />
+                        <InputLabel
+                            label="NIK"
+                            name="nik"
+                            type="text"
+                            required
+                            placeholder="Enter NIK"
+                            register={register("nik")}
+                            error={errors.nik}
+                        />
+                        <Button
+                            size="sm"
+                            variant="primary"
+                            className="w-full mt-4"
+                            disabled={isPending}
+                            loading={isPending}
+                        >
+                            Update
+                        </Button>
+                    </form>
                 </ComponentCard>
             </div>
         </div>

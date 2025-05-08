@@ -1,17 +1,22 @@
 import { ApiResponse } from "@/types/api";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import { Maker } from "@/types/maker";
-import { User } from "@/types/user";
 import api from "@/utils/api";
 
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<Maker[]>> => {
-  const response = await api.get<ApiResponse<Maker[]>>("makers");
+type formData = {
+  name:string;
+}
+const get: FetchFunctionWithPagination<Maker> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Maker>> => {
+  const response = await api.get<PaginatedResponse<Maker>>("makers", {
+    params: { limit, keyword, page, paginate: true },
+  });
   return response.data;
-  
 };
+
 
 const getWithoutPagination = async (
 
@@ -21,7 +26,7 @@ const getWithoutPagination = async (
   
 };
 
-const create = async (data: Maker) => {
+const create = async (data: formData) => {
   try {
     const response = await api.post("makers", data);
     return response.data;
@@ -39,7 +44,7 @@ const getById = async (id: number) => {
   }
 };
 
-const update = async (id: number, data: Maker) => {
+const update = async (id: number, data: formData) => {
   try {
     const response = await api.put(`makers/${id}`, data);
     return response.data;
@@ -59,4 +64,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get, getWithoutPagination, create, getById, update, remove };
+const MakerService =  { get, getWithoutPagination, create, getById, update, remove };
+export default MakerService;

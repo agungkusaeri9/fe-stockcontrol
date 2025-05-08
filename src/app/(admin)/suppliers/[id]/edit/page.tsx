@@ -18,21 +18,18 @@ const EditPage = () => {
     }
     const params = useParams();
     const id = params.id;
-
     const { data: supplier } = useFetchById(SupplierService.getById, Number(id), "supplier");
-
+    const { mutate: updateMutation, isPending } = useUpdateData(SupplierService.update, Number(id), "suppliers", "/suppliers");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: zodResolver(updateSupplierValidator)
+    })
     useEffect(() => {
         if (supplier) {
             reset({
                 name: supplier.name
             });
         }
-    }, [supplier]);
-
-    const { mutate: updateMutation, isPending } = useUpdateData(SupplierService.update, Number(id), "suppliers", "/suppliers");
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: zodResolver(updateSupplierValidator)
-    })
+    }, [supplier, reset]);
 
     const onSubmit = (data: FormData) => {
         updateMutation(data);

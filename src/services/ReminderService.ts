@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/api";
-import { User } from "@/types/user";
+import { Reminder } from "@/types/reminder";
 import api from "@/utils/api";
 
 export interface PaginationMeta {
@@ -13,8 +13,8 @@ const getAllReminder = async (
   page?: number,
   limit?: number,
   search?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("reminders", {
+): Promise<ApiResponse<Reminder[]>> => {
+  const response = await api.get<ApiResponse<Reminder[]>>("reminders", {
     params: { limit, search, page, paginate: true }
   });
   return response.data;
@@ -22,4 +22,5 @@ const getAllReminder = async (
 };
 
 
-export default { getAllReminder };
+const ReminderService = { getAllReminder };
+export default ReminderService;

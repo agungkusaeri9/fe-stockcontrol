@@ -11,17 +11,18 @@ import {
 } from 'cookies-next/client';
 import toast from "react-hot-toast";
 import { handleError } from "@/utils/handleErrors";
-import FormErrors from "@/types/formErrors";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginValidation } from "@/validators/auth/login";
-import { h } from "@fullcalendar/core/preact.js";
 import InputLabel from "../form/FormInput";
 export default function SignInForm() {
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
-
+  type formData = {
+    username: string;
+    password: string;
+  };
   const { mutate: loginMutation, isPending: loading } = useMutation({
     mutationFn: async function (data: { username: string, password: string }) {
       const response = await AuthService.login(data);
@@ -53,7 +54,7 @@ export default function SignInForm() {
     resolver: zodResolver(loginValidation),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: formData) => {
     loginMutation(data);
   };
 

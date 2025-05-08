@@ -16,8 +16,15 @@ import { useForm } from 'react-hook-form';
 const EditDepartment = () => {
     const params = useParams();
     const id = params.id;
+    type formData = {
+        name: string;
+        code: string;
+        number: string;
+    }
 
-    const { data: department } = useFetchById(DepartmentService.getById, Number(id), "department");
+
+    const { data: department } = useFetchById<Department>(DepartmentService.getById, Number(id), "department");
+
 
     const { mutate: updateMutation, isPending } = useUpdateData(DepartmentService.update, Number(id), "departments", "/departments");
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
@@ -26,18 +33,14 @@ const EditDepartment = () => {
     useEffect(() => {
         if (department) {
             reset({
-                name: department.name,
-                code: department.code,
-                number: department.number,
+                name: department?.name,
+                code: department?.code,
+                number: department?.number,
             });
         }
-    }, [department]);
+    }, [department, reset]);
 
-    const onSubmit = (data: {
-        name: string;
-        code: string;
-        number: string;
-    }) => {
+    const onSubmit = (data: formData) => {
         updateMutation(data);
     };
 

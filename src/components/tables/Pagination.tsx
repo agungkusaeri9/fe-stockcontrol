@@ -1,3 +1,5 @@
+import React from 'react';
+
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
@@ -9,10 +11,20 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
-  const pagesAroundCurrent = Array.from(
-    { length: Math.min(3, totalPages) },
-    (_, i) => i + Math.max(currentPage - 1, 1)
-  );
+  const getPageNumbers = () => {
+    const pages: number[] = [];
+
+    const start = Math.max(currentPage - 1, 1);
+    const end = Math.min(start + 2, totalPages);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
+  const pagesAroundCurrent = getPageNumbers();
 
   return (
     <div className="flex items-center justify-end">
@@ -30,8 +42,8 @@ const Pagination: React.FC<PaginationProps> = ({
             key={page}
             onClick={() => onPageChange(page)}
             className={`px-4 py-2 rounded ${currentPage === page
-              ? "bg-brand-500 text-white"
-              : "text-gray-700 dark:text-gray-400"
+              ? 'bg-brand-500 text-white'
+              : 'text-gray-700 dark:text-gray-400'
               } flex w-10 items-center justify-center h-10 rounded-lg text-sm font-medium hover:bg-blue-500/[0.08] hover:text-brand-500 dark:hover:text-brand-500`}
           >
             {page}

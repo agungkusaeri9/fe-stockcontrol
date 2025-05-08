@@ -1,33 +1,30 @@
 import { ApiResponse } from "@/types/api";
-import { User } from "@/types/user";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
+import { Rack } from "@/types/rack";
 import api from "@/utils/api";
 interface IForm {
   code:string;
   name: string;
 }
 
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("racks", {
-    params: { limit, keyword, page, paginate:true },
+const get: FetchFunctionWithPagination<Rack> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Rack>> => {
+  const response = await api.get<PaginatedResponse<Rack>>("racks", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
 
 const getWithoutPagination = async (
-  page?: number,
-  limit?: number,
   keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("racks", {
-    params: { limit:100, keyword, page : 1 },
+): Promise<ApiResponse<Rack[]>> => {
+  const response = await api.get<ApiResponse<Rack[]>>("racks", {
+    params: { keyword, paginate: false },
   });
   return response.data;
-  
 };
 
 
@@ -69,4 +66,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get,getWithoutPagination, create, getById, update, remove };
+const RackService = { get,getWithoutPagination, create, getById, update, remove };
+export default RackService;

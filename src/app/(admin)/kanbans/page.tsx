@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import OperatorTable from "@/components/pages/operator/OperatorTable";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import KanbanService from "@/services/KanbanService";
@@ -13,6 +12,7 @@ import TableToolbar from "@/components/tables/TableToolbar";
 import Button from "@/components/ui/button/Button";
 import TableFooter from "@/components/tables/TableFooter";
 import { Kanban } from "@/types/kanban";
+import FilterKanban from "@/components/pages/kanban/Filter";
 
 export default function KanbanList() {
     const {
@@ -25,8 +25,7 @@ export default function KanbanList() {
         keyword,
         pagination
     } = useFetchData(KanbanService.get, "kanbans");
-    console.log(kanbans)
-    const { mutate: remove } = useDeleteData(KanbanService.remove, "kanbans");
+    const { mutate: remove } = useDeleteData(KanbanService.remove, ["kanbans"]);
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
@@ -42,6 +41,7 @@ export default function KanbanList() {
         <div>
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Kanbans', href: '/kanbans' }]} />
             <div className="space-y-6">
+                {/* <FilterKanban /> */}
                 <ComponentCard title="Kanban List">
                     <ButtonLink size='xs' href="/kanbans/create">Create Kanban</ButtonLink>
                     <TableToolbar limit={limit}
@@ -54,7 +54,7 @@ export default function KanbanList() {
                                 <Table>
                                     {/* Table Header */}
                                     <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-                                        <TableRow>
+                                        <TableRow isHeader={true}>
                                             <TableCell
                                                 isHeader
                                                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -150,6 +150,13 @@ export default function KanbanList() {
                                                 </TableCell>
                                             </TableRow>
                                         ))}
+                                        {isLoading && (
+                                            <TableRow>
+                                                <TableCell colSpan={8} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
+                                                    Loading...
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
                                         {kanbans?.length === 0 && (
                                             <TableRow>
                                                 <TableCell colSpan={8} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">

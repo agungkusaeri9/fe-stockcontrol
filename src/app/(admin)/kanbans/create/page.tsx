@@ -9,12 +9,14 @@ import { useFetchData } from '@/hooks/useFetchData';
 import KanbanService from '@/services/KanbanService';
 import MakerService from '@/services/MakerService';
 import RackService from '@/services/RackService';
+// import RackService from '@/services/RackService';
 import SparePartService from '@/services/SparePartService';
 import SupplierService from '@/services/SupplierService';
-import { MachineArea } from '@/types/machineArea';
+import { Maker } from '@/types/maker';
+import { Rack } from '@/types/rack';
+import { Supplier } from '@/types/supplier';
 import { Sparepart } from '@/utils/sparepart';
 import { createKanbanValidator } from '@/validators/kanbanValidator';
-import { machineAreaValidator } from '@/validators/machineAreaValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
 import { useForm } from 'react-hook-form';
@@ -29,10 +31,16 @@ const CreateOperator = () => {
         maker_id: number;
         rack_id: number;
     }
+
+
+
     const { data: spareparts } = useFetchData(SparePartService.getWithoutPagination, "spareparts", false);
     const { data: suppliers } = useFetchData(SupplierService.getWithoutPagination, "suppliers", false);
     const { data: makers } = useFetchData(MakerService.getWithoutPagination, "makers", false);
+    // const { data: racks } = useFetchData(MakerService.getWithoutPagination, "racks", false);
     const { data: racks } = useFetchData(RackService.getWithoutPagination, "racks", false);
+
+
     const { mutate: createMutation, isPending } = useCreateData(
         KanbanService.create,
         ["kanbans"],
@@ -42,7 +50,7 @@ const CreateOperator = () => {
         resolver: zodResolver(createKanbanValidator),
     })
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: formData) => {
         createMutation(data);
     };
 
@@ -86,7 +94,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("spare_part_id", { valueAsNumber: true })}
                                 error={errors.spare_part_id}
-                                options={spareparts.map((d: any) => ({
+                                options={spareparts.map((d: Sparepart) => ({
                                     label: d.part_number + " - " + d.name,
                                     value: d.id,
                                 }))}
@@ -99,7 +107,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("supplier_id", { valueAsNumber: true })}
                                 error={errors.supplier_id}
-                                options={suppliers.map((d: any) => ({
+                                options={suppliers.map((d: Supplier) => ({
                                     label: d.name,
                                     value: d.id,
                                 }))}
@@ -112,9 +120,9 @@ const CreateOperator = () => {
                                 required
                                 register={register("maker_id", { valueAsNumber: true })}
                                 error={errors.maker_id}
-                                options={makers.map((d: any) => ({
+                                options={makers.map((d: Maker) => ({
                                     label: d.name,
-                                    value: d.id,
+                                    value: d.id!,
                                 }))}
                             />
                         )}
@@ -125,7 +133,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("rack_id", { valueAsNumber: true })}
                                 error={errors.rack_id}
-                                options={racks.map((d: any) => ({
+                                options={racks.map((d: Rack) => ({
                                     label: d.name,
                                     value: d.id,
                                 }))}

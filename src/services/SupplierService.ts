@@ -63,4 +63,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get, getWithoutPagination, create, getById, update, remove };
+const SupplierService = { get, getWithoutPagination, create, getById, update, remove };
+export default SupplierService;

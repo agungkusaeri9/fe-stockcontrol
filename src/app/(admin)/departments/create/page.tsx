@@ -2,16 +2,20 @@
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput';
-import OperatorCreate from '@/components/pages/operator/OperatorCreate';
 import Button from '@/components/ui/button/Button';
 import { useCreateData } from '@/hooks/useCreateData';
 import DepartmentService from '@/services/DepartmentService';
 import { departmentCreateValidation } from '@/validators/machineArea/departmentCreate';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form';
 
 const CreateOperator = () => {
+    type formData = {
+        code: string;
+        number: string;
+        name: string;
+    }
     const { mutate: createMutation, isPending } = useCreateData(
         DepartmentService.create,
         ["departments"],
@@ -22,7 +26,7 @@ const CreateOperator = () => {
         resolver: zodResolver(departmentCreateValidation),
     })
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: formData) => {
         createMutation(data);
     };
 

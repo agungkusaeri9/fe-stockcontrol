@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/api";
-import { User } from "@/types/user";
+import { StockIn } from "@/types/stockIn";
 import api from "@/utils/api";
 
 export interface PaginationMeta {
@@ -13,8 +13,8 @@ const getAllStockIn = async (
   page?: number,
   limit?: number,
   search?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("stock-ins", {
+): Promise<ApiResponse<StockIn[]>> => {
+  const response = await api.get<ApiResponse<StockIn[]>>("stock-ins", {
     params: { limit, search, page, paginate: true }
   });
   return response.data;
@@ -22,4 +22,5 @@ const getAllStockIn = async (
 };
 
 
-export default { getAllStockIn };
+const StockInService = { getAllStockIn };
+export default StockInService;

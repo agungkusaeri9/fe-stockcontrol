@@ -3,7 +3,6 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput';
 import SelectLabel from '@/components/form/FormSelect';
-// import SelectLabel from '@/components/form/Select';
 import Button from '@/components/ui/button/Button';
 import { useCreateData } from '@/hooks/useCreateData';
 import { useFetchData } from '@/hooks/useFetchData';
@@ -11,13 +10,25 @@ import DepartmentService from '@/services/DepartmentService';
 import MachineAreaService from '@/services/MachineAreaService';
 import RackService from '@/services/RackService';
 import SparePartService from '@/services/SparePartService';
+import { Department } from '@/types/department';
+import { MachineArea } from '@/types/machineArea';
+import { Rack } from '@/types/rack';
 import { createSparepartValidator } from '@/validators/sparepartValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form';
-import Select from 'react-select'
+import React from 'react'
+import { useForm } from 'react-hook-form';
 
 const CreateOperator = () => {
+    type formData = {
+        name: string;
+        part_number: string;
+        specification: string;
+        minimum_quantity: number;
+        balance: number;
+        department_id: number;
+        machine_area_id: number;
+        rack_id: number;
+    }
     const { data: departments } = useFetchData(DepartmentService.getWithoutPagination, "departments", false);
     const { data: machineAreas } = useFetchData(MachineAreaService.getWithoutPagination, "machineAreas", false);
     const { data: racks } = useFetchData(RackService.getWithoutPagination, "racks", false);
@@ -27,10 +38,10 @@ const CreateOperator = () => {
         ["spareparts"],
         "/spareparts"
     );
-    const { register, handleSubmit, formState: { errors }, control } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(createSparepartValidator),
     })
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: formData) => {
         createMutation(data);
     };
 
@@ -92,7 +103,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("department_id", { valueAsNumber: true })}
                                 error={errors.department_id}
-                                options={departments.map((d: any) => ({
+                                options={departments.map((d: Department) => ({
                                     label: d.name,
                                     value: d.id,
                                 }))}
@@ -105,7 +116,7 @@ const CreateOperator = () => {
                                 required
                                 register={register("machine_area_id", { valueAsNumber: true })}
                                 error={errors.machine_area_id}
-                                options={machineAreas.map((area: any) => ({
+                                options={machineAreas.map((area: MachineArea) => ({
                                     label: area.name,
                                     value: area.id,
                                 }))}
@@ -118,13 +129,13 @@ const CreateOperator = () => {
                                 required
                                 register={register("rack_id", { valueAsNumber: true })}
                                 error={errors.rack_id}
-                                options={racks.map((rack: any) => ({
+                                options={racks.map((rack: Rack) => ({
                                     label: rack.name,
                                     value: rack.id,
                                 }))}
                             />
                         )}
-                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending}>
+                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending} loading={isPending}>
                             Create
                         </Button>
                     </form>

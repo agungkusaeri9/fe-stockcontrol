@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import OperatorTable from "@/components/pages/operator/OperatorTable";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import RackService from "@/services/RackService";
@@ -12,6 +11,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components
 import TableToolbar from "@/components/tables/TableToolbar";
 import Button from "@/components/ui/button/Button";
 import TableFooter from "@/components/tables/TableFooter";
+import { Rack } from "@/types/rack";
 
 export default function UserListPage() {
     const {
@@ -24,7 +24,7 @@ export default function UserListPage() {
         keyword,
         pagination
     } = useFetchData(RackService.get, "racks");
-    const { mutate: remove } = useDeleteData(RackService.remove, "racks");
+    const { mutate: remove } = useDeleteData(RackService.remove, ["racks"]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -53,7 +53,7 @@ export default function UserListPage() {
                                 <Table>
                                     {/* Table Header */}
                                     <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-                                        <TableRow>
+                                        <TableRow isHeader={true}>
                                             <TableCell
                                                 isHeader
                                                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -83,27 +83,34 @@ export default function UserListPage() {
 
                                     {/* Table Body */}
                                     <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                                        {racks?.map((machineArea: any, index: number) => (
-                                            <TableRow key={machineArea.id}>
+                                        {racks?.map((rack: Rack, index: number) => (
+                                            <TableRow key={rack.id}>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {index + 1}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {machineArea.code}
+                                                    {rack.code}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {machineArea.name}
+                                                    {rack.name}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-theme-sm dark:text-gray-400 flex gap-1">
-                                                    <ButtonLink href={`/racks/${machineArea.id}/edit`} variant='info' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                                                    <ButtonLink href={`/racks/${rack.id}/edit`} variant='info' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                                         Edit
                                                     </ButtonLink>
-                                                    <Button onClick={() => handleDelete(machineArea.id)} variant='danger' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                                                    <Button onClick={() => handleDelete(rack.id)} variant='danger' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                                         Delete
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
+                                        {isLoading && (
+                                            <TableRow>
+                                                <TableCell colSpan={4} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
+                                                    Loading...
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
                                         {racks?.length === 0 && (
                                             <TableRow>
                                                 <TableCell colSpan={4} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">

@@ -597,3 +597,12 @@ layer(base);
   opacity: 0.8;
   cursor: grabbing; /* Changes the cursor to indicate dragging */
 }
+
+.flatpickr-wrapper {
+  width: 100% !important;
+  display: block;
+}
+
+.flatpickr-input {
+  width: 100% !important;
+}

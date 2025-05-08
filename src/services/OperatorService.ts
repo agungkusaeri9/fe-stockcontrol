@@ -1,4 +1,5 @@
-import { ApiResponse } from "@/types/api";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
+import { Operator } from "@/types/operator";
 import api from "@/utils/api";
 
 export interface PaginationMeta {
@@ -13,16 +14,15 @@ interface CreateOperator {
   nik: string;
 }
 
-const getAllOperator = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("operators", {
-    params: { limit, keyword, page, paginate:true },
+const getAllOperator: FetchFunctionWithPagination<Operator> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Operator>> => {
+  const response = await api.get<PaginatedResponse<Operator>>("operators", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
 
 const createOperator = async (data: CreateOperator) => {
@@ -61,4 +61,5 @@ const deleteOperator = async (id: number) => {
   }
 };
 
-export default { getAllOperator, createOperator, getOperatorById, updateOperator, deleteOperator };
+const OperatorService = { getAllOperator, createOperator, getOperatorById, updateOperator, deleteOperator };
+export default OperatorService;

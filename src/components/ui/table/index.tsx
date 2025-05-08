@@ -22,6 +22,7 @@ interface TableBodyProps {
 interface TableRowProps {
   children: ReactNode; // Cells (th or td)
   className?: string; // Optional className for styling
+  isHeader?: boolean; // If true, renders as <th>, otherwise <td>
 }
 
 // Props for TableCell
@@ -48,8 +49,8 @@ const TableBody: React.FC<TableBodyProps> = ({ children, className }) => {
 };
 
 // TableRow Component
-const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
-  return <tr className={className}>{children}</tr>;
+const TableRow: React.FC<TableRowProps> = ({ children, className, isHeader = false }) => {
+  return <tr className={`${className}${isHeader ? '' : ' hover:bg-[#D6EAF8]'}`}>{children}</tr>;
 };
 
 // TableCell Component

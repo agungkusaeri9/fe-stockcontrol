@@ -51,8 +51,18 @@ import HorizontaLDots from "./horizontal-dots.svg";
 import ChatIcon from "./chat.svg";
 import MoreDotIcon from "./more-dot.svg";
 import BellIcon from "./bell.svg";
+import PurchaseOrderIcon from "./purchase-order.svg";
+import PurchaseRequestIcon from "./purchase-request.svg";
+import HistoryIcon from "./history.svg";
+import DatabaseIcon from "./database.svg";
+import ReminderIcon from "./reminder.svg";
+import BalanceIcon from "./balance.svg";
 
 export {
+  BalanceIcon,
+  ReminderIcon,
+  DatabaseIcon,
+  HistoryIcon,
   DownloadIcon,
   BellIcon,
   MoreDotIcon,
@@ -106,4 +116,6 @@ export {
   HorizontaLDots,
   ChevronUpIcon,
   ChatIcon,
+  PurchaseOrderIcon,
+  PurchaseRequestIcon
 };

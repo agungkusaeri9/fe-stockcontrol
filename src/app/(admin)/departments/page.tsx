@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import OperatorTable from "@/components/pages/operator/OperatorTable";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import DepartmentService from "@/services/DepartmentService";
@@ -12,6 +11,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components
 import TableToolbar from "@/components/tables/TableToolbar";
 import Button from "@/components/ui/button/Button";
 import TableFooter from "@/components/tables/TableFooter";
+import { Department } from "@/types/department";
 
 export default function UserListPage() {
     const {
@@ -24,7 +24,7 @@ export default function UserListPage() {
         keyword,
         pagination
     } = useFetchData(DepartmentService.get, "departments");
-    const { mutate: remove } = useDeleteData(DepartmentService.remove, "departments");
+    const { mutate: remove } = useDeleteData(DepartmentService.remove, ["departments"]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -87,7 +87,7 @@ export default function UserListPage() {
 
                                     {/* Table Body */}
                                     <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                                        {departments?.map((department: any, index: number) => (
+                                        {departments?.map((department: Department, index: number) => (
                                             <TableRow key={department.id}>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {index + 1}
@@ -105,12 +105,19 @@ export default function UserListPage() {
                                                     <ButtonLink href={`/departments/${department.id}/edit`} variant='info' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                                         Edit
                                                     </ButtonLink>
-                                                    <Button onClick={() => handleDelete(department.id)} variant='danger' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                                                    <Button onClick={() => handleDelete(Number(department.id))} variant='danger' size='xs' className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                                         Delete
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
+                                        {isLoading && (
+                                            <TableRow>
+                                                <TableCell colSpan={5} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
+                                                    Loading...
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
                                         {departments?.length === 0 && (
                                             <TableRow>
                                                 <TableCell colSpan={5} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">

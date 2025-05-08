@@ -10,15 +10,18 @@ import { MachineArea } from '@/types/machineArea';
 import { machineAreaValidator } from '@/validators/machineAreaValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 
 const EditPage = () => {
     const params = useParams();
     const id = params.id;
 
-    const { data: machineArea } = useFetchById(MachineAreaService.getById, Number(id), "machineArea");
-
+    const { data: machineArea } = useFetchById<MachineArea>(MachineAreaService.getById, Number(id), "machineArea");
+    const { mutate: updateMutation, isPending } = useUpdateData(MachineAreaService.update, Number(id), "machine-areas", "/machine-areas");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: zodResolver(machineAreaValidator)
+    })
     useEffect(() => {
         if (machineArea) {
             reset({
@@ -26,12 +29,7 @@ const EditPage = () => {
                 code: machineArea.code
             });
         }
-    }, [machineArea]);
-
-    const { mutate: updateMutation, isPending } = useUpdateData(MachineAreaService.update, Number(id), "machine-areas", "/machine-areas");
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: zodResolver(machineAreaValidator)
-    })
+    }, [machineArea, reset]);
 
     const onSubmit = (data: MachineArea) => {
         updateMutation(data);

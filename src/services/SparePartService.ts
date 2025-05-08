@@ -1,33 +1,36 @@
 import { ApiResponse } from "@/types/api";
-import { User } from "@/types/user";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import api from "@/utils/api";
+import { Sparepart } from "@/utils/sparepart";
 interface IForm {
   name: string;
   specification: string;
   part_number:string;
-  minimun_quantity:number;
+  minimum_quantity:number;
   balance:number;
   machine_area_id:number;
   department_id:number;
   rack_id:number;
 }
 
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("spare-parts", {
-    params: { limit, keyword, page, paginate:true },
+const get: FetchFunctionWithPagination<Sparepart> = async (
+  page = 1,
+  limit = 10,
+  keyword = "",
+  machine_area_id?: number,
+  department_id?: number,
+  rack_id?: number
+): Promise<PaginatedResponse<Sparepart>> => {
+  const response = await api.get<PaginatedResponse<Sparepart>>("spare-parts", {
+    params: { limit, keyword, page, paginate: true, machine_area_id:machine_area_id ?? null, department_id, rack_id },
   });
   return response.data;
-  
 };
 
 const getWithoutPagination = async (
 
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("spare-parts");
+): Promise<ApiResponse<Sparepart[]>> => {
+  const response = await api.get<ApiResponse<Sparepart[]>>("spare-parts");
   return response.data;
   
 };
@@ -50,7 +53,7 @@ const getById = async (id: number) => {
   }
 };
 
-const update = async (id: number, data: any) => {
+const update = async (id: number, data: Sparepart) => {
   try {
     const response = await api.put(`spare-parts/${id}`, data);
     return response.data;
@@ -70,4 +73,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get, getWithoutPagination, create, getById, update, remove };
+const SparePartService = { get, getWithoutPagination, create, getById, update, remove };
+export default SparePartService;

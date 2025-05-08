@@ -6,10 +6,11 @@ import Button from '@/components/ui/button/Button';
 import { useFetchById } from '@/hooks/useFetchDetailData';
 import { useUpdateData } from '@/hooks/useUpdateData';
 import RackService from '@/services/RackService';
+import { Rack } from '@/types/rack';
 import { updateRackValidator } from '@/validators/rackValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 
 const EditRack = () => {
@@ -19,7 +20,11 @@ const EditRack = () => {
         code: string;
         name: string;
     }
-    const { data: rack } = useFetchById(RackService.getById, Number(id), "rack");
+    const { data: rack } = useFetchById<Rack>(RackService.getById, Number(id), "rack");
+    const { mutate: updateMutation, isPending } = useUpdateData(RackService.update, Number(id), "racks", "/racks");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: zodResolver(updateRackValidator)
+    })
     useEffect(() => {
         if (rack) {
             reset({
@@ -27,13 +32,7 @@ const EditRack = () => {
                 code: rack.code
             });
         }
-    }, [rack]);
-
-    const { mutate: updateMutation, isPending } = useUpdateData(RackService.update, Number(id), "racks", "/racks");
-
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: zodResolver(updateRackValidator)
-    })
+    }, [rack, reset]);
 
     const onSubmit = (data: formData) => {
         updateMutation(data);

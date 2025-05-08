@@ -1,17 +1,17 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import OperatorTable from "@/components/pages/operator/OperatorTable";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import SparePartService from "@/services/SparePartService";
 import { useFetchData } from "@/hooks/useFetchData";
-import { useDeleteData } from "@/hooks/useDeleteData";
-import { confirmDelete } from "@/utils/confirm";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import TableToolbar from "@/components/tables/TableToolbar";
-import Button from "@/components/ui/button/Button";
 import TableFooter from "@/components/tables/TableFooter";
+import { Sparepart } from "@/utils/sparepart";
+import { useFetchDataSparepart } from "@/hooks/useFetchDataSparepart";
+import FilterSparepart from "@/components/pages/spareparts/Filter";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
     const {
@@ -20,20 +20,26 @@ export default function Page() {
         setKeyword,
         setCurrentPage,
         setLimit,
+        setFilters,
+        filters,
         limit,
         keyword,
-        pagination
-    } = useFetchData(SparePartService.get, "spareparts");
-    const { mutate: remove } = useDeleteData(SparePartService.remove, "spareparts");
+        pagination,
+    } = useFetchDataSparepart(SparePartService.get, "spareparts");
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
 
+    useEffect(() => {
+        console.log({ filters });
+    }, [filters]);
+
     return (
         <div>
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Spareparts', href: '/spareparts' }]} />
             <div className="space-y-6">
+                <FilterSparepart filters={filters} setFilters={setFilters} />
                 <ComponentCard title="Sparepart List">
                     <ButtonLink size='xs' href="/spareparts/create">Create Sparepart</ButtonLink>
                     <TableToolbar limit={limit}
@@ -46,7 +52,7 @@ export default function Page() {
                                 <Table>
                                     {/* Table Header */}
                                     <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-                                        <TableRow>
+                                        <TableRow isHeader={true}>
                                             <TableCell
                                                 isHeader
                                                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -75,6 +81,12 @@ export default function Page() {
                                                 isHeader
                                                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                             >
+                                                Maximum Qty
+                                            </TableCell>
+                                            <TableCell
+                                                isHeader
+                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                            >
                                                 Area
                                             </TableCell>
                                             <TableCell
@@ -87,7 +99,7 @@ export default function Page() {
                                                 isHeader
                                                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                             >
-                                                Area
+                                                Rack
                                             </TableCell>
                                             <TableCell
                                                 isHeader
@@ -100,7 +112,7 @@ export default function Page() {
 
                                     {/* Table Body */}
                                     <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                                        {spareparts?.map((sparepart: any, index: number) => (
+                                        {spareparts?.map((sparepart: Sparepart, index: number) => (
                                             <TableRow key={sparepart.id}>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {index + 1}
@@ -115,10 +127,13 @@ export default function Page() {
                                                     {sparepart.minimum_quantity}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.department?.name}
+                                                    {sparepart.maximum_quantity}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {sparepart.machine_area?.name}
+                                                </TableCell>
+                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                                    {sparepart.department?.name}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {sparepart.rack?.name}
@@ -130,6 +145,13 @@ export default function Page() {
                                                 </TableCell>
                                             </TableRow>
                                         ))}
+                                        {isLoading && (
+                                            <TableRow>
+                                                <TableCell colSpan={8} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
+                                                    No results.
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
                                         {spareparts?.length === 0 && (
                                             <TableRow>
                                                 <TableCell colSpan={8} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">

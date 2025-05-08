@@ -1,30 +1,29 @@
 import { ApiResponse } from "@/types/api";
-import { User } from "@/types/user";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
+import { MachineArea } from "@/types/machineArea";
 import api from "@/utils/api";
 interface IForm {
   code:string;
   name: string;
 }
 
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("machine-areas", {
-    params: { limit, keyword, page, paginate:true },
+const get: FetchFunctionWithPagination<MachineArea> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<MachineArea>> => {
+  const response = await api.get<PaginatedResponse<MachineArea>>("machine-areas", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
 
+
 const getWithoutPagination = async (
-  page?: number,
-  limit?: number,
   keyword?: string,
-): Promise<ApiResponse<any[]>> => {
-  const response = await api.get<ApiResponse<any[]>>("machine-areas", {
-    params: { limit:50, keyword, page : 1 },
+): Promise<ApiResponse<MachineArea[]>> => {
+  const response = await api.get<ApiResponse<MachineArea[]>>("machine-areas", {
+    params: { keyword },
   });
   return response.data;
   
@@ -68,4 +67,5 @@ const remove = async (id: number) => {
 };
 
 
-export default { get, getWithoutPagination, create, getById, update, remove };
+const MachineAreaService = { get, getWithoutPagination, create, getById, update, remove };
+export default MachineAreaService;

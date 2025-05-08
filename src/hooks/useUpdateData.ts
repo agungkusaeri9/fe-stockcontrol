@@ -3,27 +3,32 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { handleError } from "@/utils/handleErrors";
 
-export const useUpdateData = <T>(
-  updateFunction: (id: number, formData: T) => Promise<any>,
+type ServerResponse = {
+  message: string;
+  [key: string]: unknown;
+};
+
+export const useUpdateData = <T, R extends ServerResponse>(
+  updateFunction: (id: number, formData: T) => Promise<R>,
   id: number | undefined,
   queryKey: string,
   redirectUrl: string,
-): UseMutationResult<any, unknown, T, unknown> => {
+): UseMutationResult<R, unknown, T, unknown> => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<R, unknown, T>({
     mutationFn: async (formData: T) => {
-      if (!id) throw new Error("ID diperlukan");
+      if (id === undefined) throw new Error("ID diperlukan");
       return await updateFunction(id, formData);
     },
     onSuccess: (response) => {
-      toast.success(response.message);
+      toast.success(response.message || "Data berhasil diperbarui.");
       queryClient.invalidateQueries([queryKey, id]);
       queryClient.invalidateQueries([queryKey]);
       router.push(redirectUrl);
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleError(error);
     },
   });

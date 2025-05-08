@@ -2,9 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebounce } from "./useDebounce";
+import { FetchFunctionWithoutPagination, FetchFunctionWithPagination } from "@/types/fetch";
+type PaginatedResponse<T> = {
+    data: T[];
+    pagination: {
+        curr_page: number;
+        total_page: number;
+        limit: number;
+        total: number;
+    };
+};
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const useFetchData = (
-    fetchFunction: Function,
+    fetchFunction: FetchFunctionWithPagination<T> | FetchFunctionWithoutPagination<T>,
     queryKey: string,
     usePagination: boolean = true,
 ) => {
@@ -12,20 +23,15 @@ export const useFetchData = (
     const router = useRouter();
 
     const [currentPage, setCurrentPage] = useState(
-        usePagination ? Number(searchParams.get("page")) || 1 : 1,
+        usePagination ? Number(searchParams.get("page")) || 1 : 1
     );
     const [limit, setLimit] = useState(
-        usePagination ? Number(searchParams.get("limit")) || 10 : 50,
+        usePagination ? Number(searchParams.get("limit")) || 10 : 50
     );
 
     const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
     const debouncedSearch = useDebounce(keyword, 500);
-    const [pagination, setPagination] = useState<{
-        curr_page: number;
-        total_page: number;
-        limit: number;
-        total: number;
-    } | null>(null);
+    const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
 
     useEffect(() => {
         if (!usePagination) return;
@@ -35,25 +41,20 @@ export const useFetchData = (
         newParams.set("page", currentPage.toString());
         if (keyword) newParams.set("keyword", keyword);
         router.push(`?${newParams.toString()}`, { scroll: false });
-    }, [
-        keyword,
-        currentPage,
-        limit,
-        router,
-        searchParams,
-        usePagination,
-    ]);
+    }, [keyword, currentPage, limit, router, searchParams, usePagination]);
 
-    const fetchData = async () => {
-        const response = usePagination
-            ? await fetchFunction(currentPage, limit, debouncedSearch)
-            : await fetchFunction(debouncedSearch);
-
-        if (usePagination) setPagination(response.pagination);
-        return response.data;
+    const fetchData = async (): Promise<T[]> => {
+        if (usePagination) {
+            const res = await (fetchFunction as FetchFunctionWithPagination<T>)(currentPage, limit, debouncedSearch);
+            setPagination(res.pagination);
+            return res.data;
+        } else {
+            const res = await (fetchFunction as FetchFunctionWithoutPagination<T>)(debouncedSearch);
+            return res.data;
+        }
     };
 
-    const { data, isLoading, refetch } = useQuery({
+    const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
             ? [queryKey, currentPage, limit, debouncedSearch]
             : [queryKey],
@@ -71,6 +72,6 @@ export const useFetchData = (
         setCurrentPage,
         setLimit,
         refetch,
-        fetchData
+        fetchData,
     };
 };

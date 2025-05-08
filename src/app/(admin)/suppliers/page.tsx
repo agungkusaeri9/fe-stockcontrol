@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import OperatorTable from "@/components/pages/operator/OperatorTable";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import SupplierService from "@/services/SupplierService";
@@ -12,6 +11,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components
 import TableToolbar from "@/components/tables/TableToolbar";
 import Button from "@/components/ui/button/Button";
 import TableFooter from "@/components/tables/TableFooter";
+import { Supplier } from "@/types/supplier";
 
 export default function UserListPage() {
     const {
@@ -53,7 +53,7 @@ export default function UserListPage() {
                                 <Table>
                                     {/* Table Header */}
                                     <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-                                        <TableRow>
+                                        <TableRow isHeader={true}>
                                             <TableCell
                                                 isHeader
                                                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -77,7 +77,7 @@ export default function UserListPage() {
 
                                     {/* Table Body */}
                                     <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                                        {suppliers?.map((supplier: any, index: number) => (
+                                        {suppliers?.map((supplier: Supplier, index: number) => (
                                             <TableRow key={supplier.id}>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {index + 1}
@@ -95,6 +95,13 @@ export default function UserListPage() {
                                                 </TableCell>
                                             </TableRow>
                                         ))}
+                                        {isLoading && (
+                                            <TableRow>
+                                                <TableCell colSpan={3} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
+                                                    Loading...
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
                                         {suppliers?.length === 0 && (
                                             <TableRow>
                                                 <TableCell colSpan={3} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">

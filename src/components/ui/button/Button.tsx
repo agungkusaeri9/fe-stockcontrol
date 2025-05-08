@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 interface ButtonProps {
   children: ReactNode; // Button text or content
   size?: "sm" | "md" | "xs"; // Button size
-  variant?: "primary" | "outline" | "info" | "danger"; // Button variant
+  variant?: "primary" | "outline" | "info" | "danger" | "secondary";
   startIcon?: ReactNode; // Icon before the text
   endIcon?: ReactNode; // Icon after the text
   onClick?: () => void; // Click handler
@@ -34,6 +34,8 @@ const Button: React.FC<ButtonProps> = ({
   const variantClasses = {
     info:
       "bg-sky-500 text-white hover:bg-sky-600 hover:text-white shadow-theme-xs disabled:bg-sky-300",
+    secondary:
+      "bg-gray-500 text-white hover:bg-gray-600 hover:text-white shadow-theme-xs disabled:bg-gray-300",
     danger:
       "bg-rose-500 text-white hover:bg-rose-600 hover:text-white shadow-theme-xs disabled:bg-rose-300",
     primary:
@@ -44,7 +46,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={`inline-flex items-center justify-center font-medium gap-2 rounded-lg transition ${className} ${sizeClasses[size]
+      className={`inline-flex dark:text-white items-center justify-center font-medium gap-2 rounded-lg transition ${className} ${sizeClasses[size]
         } ${variantClasses[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""
         }`}
       onClick={onClick}
