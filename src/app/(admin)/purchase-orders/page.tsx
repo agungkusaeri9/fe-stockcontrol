@@ -12,14 +12,14 @@ import FilterPurchaseOrder from "@/components/pages/purchase-orders/Filter";
 import PurchaseOrderService from "@/services/PurchaseOrderService";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import { useFetchDataPurchaseOrder } from "@/hooks/useFetchDataPO";
+import { dateFormat } from "@/utils/dateFormat";
 
 export default function Page() {
-
     const [filter, setFilter] = useState({
         start_date: '',
-        end_date: ''
+        end_date: '',
+        po_number: ''
     });
-
     const {
         data: purchaseOrders,
         isLoading,
@@ -36,8 +36,7 @@ export default function Page() {
     };
 
     useEffect(() => {
-        // console.log({ filter });
-        console.log('Filter Berubah ', filter);
+        console.log("Filter:", filter);
     }, [filter])
 
     return (
@@ -94,7 +93,7 @@ export default function Page() {
                                                     {index + 1}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {formatDate(po.po_date)}
+                                                    {dateFormat(po.po_date)}
                                                 </TableCell>
                                                 <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                     {po.po_number}

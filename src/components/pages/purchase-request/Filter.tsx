@@ -4,7 +4,7 @@ import InputLabel from '@/components/form/FormInput'
 import Button from '@/components/ui/button/Button'
 import React, { useState } from 'react'
 
-const FilterPurchaseOrder = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
+const FilterPurchaseRequest = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [poNumber, setPoNumber] = useState("");
@@ -21,16 +21,16 @@ const FilterPurchaseOrder = ({ filter, setFilter }: { filter: any, setFilter: an
 
     const handleFilter = (e: React.FormEvent) => {
         e.preventDefault();
-        setFilter({ ...filter, start_date: startDate, end_date: endDate, po_number: poNumber });
+        setFilter({ ...filter, start_date: startDate, end_date: endDate, pr_number: poNumber });
     };
 
     const handleReset = () => {
         setStartDate("");
         setEndDate("");
-        setFilter({ ...filter, start_date: "", end_date: "", po_number: "" });
+        setFilter({ ...filter, start_date: "", end_date: "", pr_number: "" });
     };
 
-    const handlePoNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePrNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPoNumber(value);
     };
@@ -43,10 +43,10 @@ const FilterPurchaseOrder = ({ filter, setFilter }: { filter: any, setFilter: an
                         <DatePicker placeholder='Start Date' label='Start Date' id='start_date' onChange={handleDateChange} mode='single' defaultDate={startDate} />
                         <DatePicker placeholder='End Date' label='End Date' id='end_date' onChange={handleDateChange} mode='single' defaultDate={endDate} />
                         <InputLabel
-                            placeholder="PO. Number"
-                            label="PO. Number"
+                            placeholder="PR. Number"
+                            label="PR. Number"
                             name="keyword"
-                            onChange={handlePoNumber}
+                            onChange={handlePrNumber}
                         />
                         <div className="flex flex-wrap gap-2 mt-1">
                             <Button
@@ -74,4 +74,4 @@ const FilterPurchaseOrder = ({ filter, setFilter }: { filter: any, setFilter: an
     )
 }
 
-export default FilterPurchaseOrder
+export default FilterPurchaseRequest

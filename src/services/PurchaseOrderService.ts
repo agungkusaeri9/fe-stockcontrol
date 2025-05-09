@@ -12,13 +12,24 @@ export interface PaginationMeta {
 const get: FetchFunctionWithPagination<PurchaseOrder> = async (
   page = 1,
   limit = 10,
-  keyword = ""
+  start_date?: string,
+  end_date?: string,
+  po_number?: string
 ): Promise<PaginatedResponse<PurchaseOrder>> => {
-  const response = await api.get<PaginatedResponse<PurchaseOrder>>("purchase-orders", {
-    params: { limit, keyword, page, paginate: true },
-  });
+  const params: any = {
+    page,
+    limit,
+    paginate: true,
+  };
+  
+  if (start_date)  params.start_date = start_date;
+  if (end_date) params.end_date = end_date;
+  if (po_number) params.keyword = po_number;
+
+  const response = await api.get<PaginatedResponse<PurchaseOrder>>("purchase-orders", { params });
   return response.data;
 };
+
 
 const getById = async (
   id:number

@@ -15,7 +15,7 @@ type PaginatedResponse<T> = {
 type Filter = {
     start_date: string;
     end_date: string;
-    po_number: string;
+    pr_number: string;
 }
 
 export type FetchFunctionWithPagination<T> = (
@@ -24,11 +24,11 @@ export type FetchFunctionWithPagination<T> = (
   keyword?: string,
   start_date?: string,
   end_date?: string,
-  po_number?: string
+  pr_number?: string
 ) => Promise<PaginatedResponse<T>>;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const useFetchDataPurchaseOrder = (
+export const useFetchDataPurchaseRequest = (
     fetchFunction: FetchFunctionWithPagination<T>,
     queryKey: string,
     usePagination: boolean = true,
@@ -58,20 +58,20 @@ export const useFetchDataPurchaseOrder = (
         if (keyword) {  newParams.set("keyword", keyword); } else { newParams.delete("keyword")}
         filter.start_date ? newParams.set("start_date", filter.start_date) : newParams.delete("start_date");
         filter.end_date ? newParams.set("end_date", filter.end_date) : newParams.delete("end_date");
-        filter.po_number ? newParams.set("po_number", filter.po_number) : newParams.delete("po_number");
+        filter.pr_number ? newParams.set("pr_number", filter.pr_number) : newParams.delete("pr_number");
 
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
     const fetchData = async (): Promise<T[]> => {
-         const res = await (fetchFunction as FetchFunctionWithPagination<T>)(currentPage, limit, filter.start_date, filter.end_date,filter.po_number);
+         const res = await (fetchFunction as FetchFunctionWithPagination<T>)(currentPage, limit, filter.start_date, filter.end_date,filter.pr_number);
             setPagination(res.pagination);
             return res.data;
     };
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit,  filter.start_date, filter.end_date,filter.po_number]
+            ? [queryKey, currentPage, limit,  filter.start_date, filter.end_date,filter.pr_number]
             : [queryKey],
         queryFn: fetchData,
     });

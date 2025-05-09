@@ -9,10 +9,11 @@ interface InputLabelProps {
     required?: boolean;
     placeholder?: string;
     error?: FieldError;
-    register: UseFormRegisterReturn;
+    register?: UseFormRegisterReturn;
     disabled?: boolean;
     success?: boolean;
     hint?: string; // Optional hint text
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputLabel: React.FC<InputLabelProps> = ({
@@ -26,6 +27,7 @@ const InputLabel: React.FC<InputLabelProps> = ({
     disabled = false,
     success = false,
     hint,
+    onChange
 }) => {
     // Class untuk input berdasarkan kondisi (disabled, success, error)
     let inputClasses = `h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800`;
@@ -46,6 +48,7 @@ const InputLabel: React.FC<InputLabelProps> = ({
                 {label} {required && <span className="text-error-500">*</span>}
             </Label>
             <input
+                onChange={onChange}
                 id={name}
                 type={type}
                 placeholder={placeholder}

@@ -70,21 +70,21 @@ const navItems: NavItem[] = [
   //   ],
   //   roles: ['admin', 'guest']
   // },
-  {
-    icon: <DatabaseIcon />,
-    name: "Master Data",
-    subItems: [
-      { name: "Operator", path: "/operators", pro: false },
-      { name: "Spareparts", path: "/spareparts", pro: false },
-      { name: "Machine Area", path: "/machine-areas", pro: false },
-      { name: "Department", path: "/departments", pro: false },
-      { name: "Rack", path: "/racks", pro: false },
-      { name: "Maker", path: "/makers", pro: false },
-      { name: "Suppliers", path: "/suppliers", pro: false },
-      { name: "Kanban", path: "/kanbans", pro: false },
-    ],
-    roles: ['admin']
-  },
+  // {
+  //   icon: <DatabaseIcon />,
+  //   name: "Master Data",
+  //   subItems: [
+  //     { name: "Operator", path: "/operators", pro: false },
+  //     { name: "Spareparts", path: "/spareparts", pro: false },
+  //     { name: "Machine Area", path: "/machine-areas", pro: false },
+  //     { name: "Department", path: "/departments", pro: false },
+  //     { name: "Rack", path: "/racks", pro: false },
+  //     { name: "Maker", path: "/makers", pro: false },
+  //     { name: "Suppliers", path: "/suppliers", pro: false },
+  //     { name: "Kanban", path: "/kanbans", pro: false },
+  //   ],
+  //   roles: ['admin']
+  // },
   {
     icon: <ReminderIcon />,
     name: "Reminder",

@@ -1,9 +1,9 @@
 export type PurchaseRequest = {
     id: number;
-    date: string; // ISO 8601 date string
+    date: string;
     pr_number: string;
-    department: string | null;
-    budget_number: string;
+    department?: string | null;
+    budget_number?: string;
     fixed_asset_number: string | null;
     type: string | null;
     transportation: string | null;
@@ -19,7 +19,7 @@ export type PurchaseRequest = {
     est_unit_price: number;
     est_amount: number;
     currency: string;
-    req_delivery: string; // ISO 8601 date string
+    req_delivery: string;
     supplier: string;
     status: string;
     remark: string | null;
@@ -27,6 +27,6 @@ export type PurchaseRequest = {
     requested: string;
     gen_manager: string;
     supervisor: string | null;
-    createdAt: string; // ISO 8601 date string
-    updatedAt: string; // ISO 8601 date string
+    createdAt: string;
+    updatedAt: string; 
 }
