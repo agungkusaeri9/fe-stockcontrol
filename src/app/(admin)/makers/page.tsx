@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components
 import TableToolbar from "@/components/tables/TableToolbar";
 import Button from "@/components/ui/button/Button";
 import TableFooter from "@/components/tables/TableFooter";
-import { MachineArea } from "@/types/machineArea";
+import { MachineArea } from "@/types/area";
 
 export default function UserListPage() {
     const {

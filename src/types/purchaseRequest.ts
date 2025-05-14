@@ -27,6 +27,22 @@ export type PurchaseRequest = {
     requested: string;
     gen_manager: string;
     supervisor: string | null;
+    purchase_request_details: PurchaseRequestDetail[];
     createdAt: string;
     updatedAt: string; 
 }
+
+export type PurchaseRequestDetail = {
+    id: number;
+    purchase_request_id: number;
+    item_code: string;
+    item_name: string;
+    quantity: number;
+    unit: string;
+    est_unit_price: number;
+    est_amount: number;
+    description_of_good: string;
+    createdAt: string;
+    updatedAt: string;
+}
+

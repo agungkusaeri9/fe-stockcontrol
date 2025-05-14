@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
   BalanceIcon,
-  BoxIcon,
   ChevronDownIcon,
   DatabaseIcon,
   GridIcon,
@@ -55,36 +54,27 @@ const navItems: NavItem[] = [
     icon: <HistoryIcon />,
     name: "Stock",
     subItems: [
-      { name: "In", path: "/stock-in", pro: false },
-      { name: "Out", path: "/stock-out", pro: false }
+      { name: "In", path: "/stock-ins", pro: false },
+      { name: "Out", path: "/stock-outs", pro: false }
     ],
     roles: ['admin', 'guest']
   },
-
-  // {
-  //   icon: <BoxIcon />,
-  //   name: "Transactions",
-  //   subItems: [
-  //     { name: "Purchase Order", path: "/purchase-orders", pro: false },
-  //     { name: "Purchase Request", path: "/purchase-requests", pro: false }
-  //   ],
-  //   roles: ['admin', 'guest']
-  // },
-  // {
-  //   icon: <DatabaseIcon />,
-  //   name: "Master Data",
-  //   subItems: [
-  //     { name: "Operator", path: "/operators", pro: false },
-  //     { name: "Spareparts", path: "/spareparts", pro: false },
-  //     { name: "Machine Area", path: "/machine-areas", pro: false },
-  //     { name: "Department", path: "/departments", pro: false },
-  //     { name: "Rack", path: "/racks", pro: false },
-  //     { name: "Maker", path: "/makers", pro: false },
-  //     { name: "Suppliers", path: "/suppliers", pro: false },
-  //     { name: "Kanban", path: "/kanbans", pro: false },
-  //   ],
-  //   roles: ['admin']
-  // },
+  {
+    icon: <DatabaseIcon />,
+    name: "Master Data",
+    subItems: [
+      // { name: "Operator", path: "/operators", pro: false },
+      // { name: "Part", path: "/parts", pro: false },
+      { name: "Area", path: "/areas", pro: false },
+      { name: "Machine", path: "/machines", pro: false },
+      // { name: "Department", path: "/departments", pro: false },
+      { name: "Rack", path: "/racks", pro: false },
+      // { name: "Maker", path: "/makers", pro: false },
+      // { name: "Suppliers", path: "/suppliers", pro: false },
+      { name: "Kanban", path: "/kanbans", pro: false },
+    ],
+    roles: ['admin']
+  },
   {
     icon: <ReminderIcon />,
     name: "Reminder",

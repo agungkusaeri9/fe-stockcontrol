@@ -3,23 +3,42 @@ import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import { Kanban } from "@/types/kanban";
 import api from "@/utils/api";
 interface FromData {
-  js_code:string;
-  quantity: number;
-  lead_time: number;
-  spare_part_id: number;
-  supplier_id: number;
-  maker_id: number;
-  rack_id: number; 
+    code: string;
+    balance: number;
+    description: string;
+    specification: string;
+    lead_time: number;
+    machine_id?: number;
+    machine_area_id?: number;
+    max_quantity: number;
+    min_quantity: number;
+    rack_id?: number;
+    uom: string;
 }
 
 const get: FetchFunctionWithPagination<Kanban> = async (
   page = 1,
   limit = 10,
-  keyword = ""
+  keyword = "",
+  machine_id = null,
+  machine_area_id = null,
+  rack_id = null
 ): Promise<PaginatedResponse<Kanban>> => {
-  const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {
-    params: { limit, keyword, page, paginate: true },
-  });
+
+  console.log("keyword", keyword);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const params: any = {
+    page,
+    limit,
+    paginate: true,
+  };
+
+  if(machine_id) params.machine_id = machine_id;
+  if(machine_area_id) params.machine_area_id = machine_area_id;
+  if(rack_id) params.rack_id = rack_id;
+  if(keyword) params.keyword = keyword;
+
+  const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {params});
   return response.data;
 };
 

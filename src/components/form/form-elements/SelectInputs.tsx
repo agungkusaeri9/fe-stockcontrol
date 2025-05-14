@@ -2,21 +2,20 @@
 import React, { useState } from "react";
 import ComponentCard from "../../common/ComponentCard";
 import Label from "../Label";
-import Select from "../Select";
 import MultiSelect from "../MultiSelect";
 import { ChevronDownIcon } from "@/icons";
 
 export default function SelectInputs() {
   const options = [
-    { value: "marketing", label: "Marketing" },
-    { value: "template", label: "Template" },
-    { value: "development", label: "Development" },
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
   ];
 
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const handleSelectChange = (value: string) => {
-    console.log("Selected value:", value);
+  const handleChange = (value: string) => {
+    // Handle select change logic here
   };
 
   const multiOptions = [
@@ -33,12 +32,12 @@ export default function SelectInputs() {
         <div>
           <Label>Select Input</Label>
          <div className="relative">
-           <Select
+           {/* <Select
             options={options}
             placeholder="Select Option"
-            onChange={handleSelectChange}
+            onChange={handleChange}
             className="dark:bg-dark-900"
-          />
+          /> */}
           <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
               <ChevronDownIcon/>
             </span>

@@ -9,59 +9,81 @@ import { createRackValidator } from '@/validators/rackValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-const CreateOperator = () => {
-    type formData = {
-        code: string;
-        name: string;
-    }
+type CreateRackFormData = z.infer<typeof createRackValidator>;
+
+export default function CreateRack() {
     const { mutate: createMutation, isPending } = useCreateData(
         RackService.create,
         ["racks"],
         "/racks"
     );
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { 
+        register, 
+        handleSubmit, 
+        formState: { errors },
+        reset
+    } = useForm<CreateRackFormData>({
         resolver: zodResolver(createRackValidator),
-    })
+        mode: "onChange",
+    });
 
-    const onSubmit = (data: formData) => {
-        createMutation(data);
-    }
+    const onSubmit = (data: CreateRackFormData) => {
+        createMutation(data, {
+            onSuccess: () => {
+                reset(); // Reset form after successful creation
+            }
+        });
+    };
 
     return (
         <div>
-            <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'racks', href: '/racks' }, { label: 'Create' }]} />
+            <Breadcrumb 
+                items={[
+                    { label: 'Dashboard', href: '/dashboard' }, 
+                    { label: 'Racks', href: '/racks' }, 
+                    { label: 'Create' }
+                ]} 
+            />
             <div className="space-y-6">
                 <ComponentCard title="Create Rack">
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <InputLabel
                             label="Code"
                             name="code"
                             type="text"
                             required
-                            placeholder="Enter Code"
+                            placeholder="Enter rack code"
                             register={register("code")}
                             error={errors.code}
                         />
-                        <InputLabel
-                            label="Name"
-                            name="name"
-                            type="text"
-                            required
-                            placeholder="Enter Name"
-                            register={register("name")}
-                            error={errors.name}
-                        />
 
-                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending} loading={isPending}>
-                            Create
-                        </Button>
+                        <div className="flex justify-end gap-2 mt-6">
+                            <Button 
+                                type="button"
+                                size="sm" 
+                                variant="secondary" 
+                                className="px-4"
+                                onClick={() => reset()}
+                            >
+                                Reset
+                            </Button>
+                            <Button 
+                                type="submit"
+                                size="sm" 
+                                variant="primary" 
+                                className="px-4" 
+                                disabled={isPending} 
+                                loading={isPending}
+                            >
+                                Create Rack
+                            </Button>
+                        </div>
                     </form>
                 </ComponentCard>
             </div>
         </div>
-    )
+    );
 }
-
-export default CreateOperator

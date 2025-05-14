@@ -1,8 +1,8 @@
 import { Department } from "@/types/department";
-import { MachineArea } from "@/types/machineArea";
+import { Area } from "@/types/area";
 import { Rack } from "@/types/rack";
 
-export type Sparepart = {
+export type Part = {
   id: number;
   part_number: string;
   name: string;
@@ -12,7 +12,7 @@ export type Sparepart = {
   maximum_quantity?: number;
   balance: number;
   department: Department;
-  machine_area: MachineArea;
+  machine_area: Area;
   rack: Rack;
   created_at: string;
   updated_at: string;

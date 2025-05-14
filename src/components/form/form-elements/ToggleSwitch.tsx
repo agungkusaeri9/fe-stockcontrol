@@ -4,8 +4,9 @@ import ComponentCard from "../../common/ComponentCard";
 import Switch from "../switch/Switch";
 
 export default function ToggleSwitch() {
-  const handleSwitchChange = (checked: boolean) => {
-    console.log("Switch is now:", checked ? "ON" : "OFF");
+  const handleChange = (checked: boolean) => {
+    // Handle change logic here
+    console.log(checked);
   };
   return (
     <ComponentCard title="Toggle switch input">
@@ -13,12 +14,12 @@ export default function ToggleSwitch() {
         <Switch
           label="Default"
           defaultChecked={true}
-          onChange={handleSwitchChange}
+          onChange={handleChange}
         />
         <Switch
           label="Checked"
           defaultChecked={true}
-          onChange={handleSwitchChange}
+          onChange={handleChange}
         />
         <Switch label="Disabled" disabled={true} />
       </div>{" "}
@@ -26,13 +27,13 @@ export default function ToggleSwitch() {
         <Switch
           label="Default"
           defaultChecked={true}
-          onChange={handleSwitchChange}
+          onChange={handleChange}
           color="gray"
         />
         <Switch
           label="Checked"
           defaultChecked={true}
-          onChange={handleSwitchChange}
+          onChange={handleChange}
           color="gray"
         />
         <Switch label="Disabled" disabled={true} color="gray" />

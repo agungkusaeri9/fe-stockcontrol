@@ -52,12 +52,10 @@ const update = async (id: number, data: Form) => {
   }
 };
 
-const remove = async (id: number) => {
+const remove = async (id: number): Promise<void> => {
   try {
-    const response = await api.delete(`suppliers/${id}`);
-    return response.data;
+    await api.delete(`suppliers/${id}`);
   } catch (error) {
-    console.log(`Successfully deleted operator with ID: ${id}`);
     throw error;
   }
 };

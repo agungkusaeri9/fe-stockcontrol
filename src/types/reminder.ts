@@ -1,10 +1,10 @@
-import { Sparepart } from "@/utils/sparepart";
 
-export type Reminder = {
+export interface Reminder {
     id: number;
-    sparepart: Sparepart;
-    po_status: boolean;
-    pr_status: boolean;
-    po_date: string;
-    pr_date: string;
+    title: string;
+    description: string;
+    due_date: string;
+    priority: 'low' | 'medium' | 'high';
+    created_at: string;
+    updated_at: string;
 }

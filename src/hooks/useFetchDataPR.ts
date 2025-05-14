@@ -2,15 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebounce } from "./useDebounce";
-type PaginatedResponse<T> = {
-    data: T[];
-    pagination: {
-        curr_page: number;
-        total_page: number;
-        limit: number;
-        total: number;
-    };
-};
+import { PaginatedResponse } from "@/types/fetch";
 
 type Filter = {
     start_date: string;
@@ -19,16 +11,15 @@ type Filter = {
 }
 
 export type FetchFunctionWithPagination<T> = (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-  start_date?: string,
-  end_date?: string,
-  pr_number?: string
+    page?: number,
+    limit?: number,
+    keyword?: string,
+    start_date?: string,
+    end_date?: string,
+    pr_number?: string
 ) => Promise<PaginatedResponse<T>>;
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const useFetchDataPurchaseRequest = (
+export const useFetchDataPR = <T>(
     fetchFunction: FetchFunctionWithPagination<T>,
     queryKey: string,
     usePagination: boolean = true,
@@ -47,6 +38,15 @@ export const useFetchDataPurchaseRequest = (
     const debouncedSearch = useDebounce(keyword, 500);
     const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        // Scroll to top of the table
+        const tableElement = document.querySelector('.overflow-x-auto');
+        if (tableElement) {
+            tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     useEffect(() => {
         if (!usePagination) return;
 
@@ -55,23 +55,49 @@ export const useFetchDataPurchaseRequest = (
         newParams.set("limit", limit.toString());
         newParams.set("page", currentPage.toString());
 
-        if (keyword) {  newParams.set("keyword", keyword); } else { newParams.delete("keyword")}
-        filter.start_date ? newParams.set("start_date", filter.start_date) : newParams.delete("start_date");
-        filter.end_date ? newParams.set("end_date", filter.end_date) : newParams.delete("end_date");
-        filter.pr_number ? newParams.set("pr_number", filter.pr_number) : newParams.delete("pr_number");
+        if (keyword) {
+            newParams.set("keyword", keyword);
+        } else {
+            newParams.delete("keyword");
+        }
+
+        if (filter.start_date) {
+            newParams.set("start_date", filter.start_date);
+        } else {
+            newParams.delete("start_date");
+        }
+
+        if (filter.end_date) {
+            newParams.set("end_date", filter.end_date);
+        } else {
+            newParams.delete("end_date");
+        }
+
+        if (filter.pr_number) {
+            newParams.set("pr_number", filter.pr_number);
+        } else {
+            newParams.delete("pr_number");
+        }
 
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
     const fetchData = async (): Promise<T[]> => {
-         const res = await (fetchFunction as FetchFunctionWithPagination<T>)(currentPage, limit, filter.start_date, filter.end_date,filter.pr_number);
-            setPagination(res.pagination);
-            return res.data;
+        const res = await fetchFunction(
+            currentPage,
+            limit,
+            debouncedSearch,
+            filter.start_date,
+            filter.end_date,
+            filter.pr_number
+        );
+        setPagination(res.pagination);
+        return res.data;
     };
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit,  filter.start_date, filter.end_date,filter.pr_number]
+            ? [queryKey, currentPage, limit, debouncedSearch, filter.start_date, filter.end_date, filter.pr_number]
             : [queryKey],
         queryFn: fetchData,
     });
@@ -84,7 +110,7 @@ export const useFetchDataPurchaseRequest = (
         limit,
         keyword,
         setKeyword,
-        setCurrentPage,
+        setCurrentPage: handlePageChange,
         setLimit,
         refetch,
         fetchData,

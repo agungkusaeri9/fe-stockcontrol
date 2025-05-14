@@ -4,14 +4,14 @@ import InputLabel from '@/components/form/FormInput'
 import Button from '@/components/ui/button/Button'
 import React, { useState } from 'react'
 
-const FilterPurchaseOrder = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
+const FilterPurchaseOrder = ({ filter, setFilter }: { filter: { start_date: string, end_date: string, po_number: string }, setFilter: (filter: { start_date: string, end_date: string, po_number: string }) => void }) => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [poNumber, setPoNumber] = useState("");
 
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
-
+        console.log(selectedDates);
         if (inputId === 'start_date') {
             setStartDate(dateStr);
         } else if (inputId === 'end_date') {

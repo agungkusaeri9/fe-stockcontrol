@@ -1,17 +1,29 @@
 "use client";
-import React from "react";
-import ComponentCard from "@/components/common/ComponentCard";
+import React, { useState } from "react";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchData } from "@/hooks/useFetchData";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
-import TableToolbar from "@/components/tables/TableToolbar";
-import TableFooter from "@/components/tables/TableFooter";
-import SparePartService from "@/services/SparePartService";
-import { Sparepart } from "@/utils/sparepart";
+import KanbanService from "@/services/KanbanService";
+import { useDeleteData } from "@/hooks/useDeleteData";
+import { confirmDelete } from "@/utils/confirm";
+import ButtonLink from "@/components/ui/button/ButtonLink";
+import { Kanban } from "@/types/kanban";
+import Button from "@/components/ui/button/Button";
+import DataTable from "@/components/common/DataTable";
+import AreaService from "@/services/AreaService";
+import RackService from "@/services/RackService";
+import MachineService from "@/services/MachineService";
+import FilterKanban from "@/components/pages/kanban/Filter";
+import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 
 export default function Page() {
-    const {
-        data: balances,
+      const [filter, setFilter] = useState({
+        machine_id: null as number | null,
+        machine_area_id: null as number | null,
+        rack_id: null as number | null,
+        keyword:""
+    });
+ const {
+        data: kanbans,
         isLoading,
         setKeyword,
         setCurrentPage,
@@ -19,124 +31,76 @@ export default function Page() {
         limit,
         keyword,
         pagination
-    } = useFetchData(SparePartService.get, "balances");
+    } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
-
+     const columns = [
+        {
+            header: "#",
+            accessorKey: "id",
+            cell: (item: Kanban) => {
+                const index = kanbans?.findIndex((kanban: Kanban) => kanban.id === item.id) ?? 0;
+                return index + 1;
+            },
+        },
+        {
+            header: "Code",
+            accessorKey: "code",
+        },
+          {
+            header: "Description",
+            accessorKey: "description",
+        },
+          {
+            header: "Specification",
+            accessorKey: "specification",
+        },
+          {
+            header: "Machine",
+            accessorKey: "machine",
+            cell: (item: Kanban) => item.machine?.code || '-'
+        },
+          {
+            header: "Machine Area",
+            accessorKey: "machine_area",
+            cell: (item: Kanban) => item.machine_area?.name || '-'
+        },
+          {
+            header: "Rack",
+            accessorKey: "rack",
+            cell: (item: Kanban) => item.rack?.code || '-'
+        },
+          {
+            header: "Balance",
+            accessorKey: "balance",
+        }
+    ];
+    
     return (
         <div>
-            <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Balance', href: '/balance' }]} />
-            <div className="space-y-6">
-                <ComponentCard title="Balance">
-                    <TableToolbar limit={limit}
-                        setLimit={setLimit}
-                        keyword={keyword}
-                        setKeyword={setKeyword} />
-                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
-                        <div className="max-w-full overflow-x-auto">
-                            <div className="min-w-[1102px]">
-                                <Table>
-                                    {/* Table Header */}
-                                    <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-                                        <TableRow isHeader={true}>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                #
-                                            </TableCell>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                Part Number
-                                            </TableCell>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                Product Name
-                                            </TableCell>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                Minimum Qty
-                                            </TableCell>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                Area
-                                            </TableCell>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                Department
-                                            </TableCell>
-                                            <TableCell
-                                                isHeader
-                                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                            >
-                                                Balance
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHeader>
+            <Breadcrumb items={[
+                { label: 'Dashboard', href: '/dashboard' }, 
+                { label: 'Balance', href: '/balance' }
+            ]} />
+           <div className="space-y-6">
+                <FilterKanban
+                    filter={filter}
+                    setFilter={setFilter}
+                />
+                <DataTable
+                    title="Balance"
+                    columns={columns}
+                    data={kanbans || []}
+                    isLoading={isLoading}
+                    pagination={{
+                        currentPage: pagination?.curr_page || 1,
+                        totalPages: pagination?.total_page || 1,
+                        totalItems: pagination?.total || 0,
+                        itemsPerPage: limit,
+                        onPageChange: setCurrentPage,
+                        onLimitChange: setLimit,
+                    }}
 
-                                    {/* Table Body */}
-                                    <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                                        {balances?.map((sparepart: Sparepart, index: number) => (
-                                            <TableRow key={sparepart.id}>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {index + 1}
-                                                </TableCell>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.part_number}
-                                                </TableCell>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.name}
-                                                </TableCell>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.minimum_quantity}
-                                                </TableCell>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.department?.name}
-                                                </TableCell>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.machine_area?.name}
-                                                </TableCell>
-                                                <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                    {sparepart.balance}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                        {isLoading && (
-                                            <TableRow>
-                                                <TableCell colSpan={7} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
-                                                    Loading...
-                                                </TableCell>
-                                            </TableRow>
-                                        )}
-                                        {balances?.length === 0 && (
-                                            <TableRow>
-                                                <TableCell colSpan={7} className="text-gray-500 dark:text-gray-400 p-5 text-xs text-center">
-                                                    No results.
-                                                </TableCell>
-                                            </TableRow>
-                                        )}
-                                    </TableBody>
-                                </Table>
-                                {pagination && (
-                                    <TableFooter pagination={pagination} onPageChange={handlePageChange} />
-                                )}
-
-                            </div>
-                        </div>
-                    </div>
-                </ComponentCard>
+                />
             </div>
         </div>
     );

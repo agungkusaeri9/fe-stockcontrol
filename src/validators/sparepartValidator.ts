@@ -1,22 +1,19 @@
 import { z } from "zod";
 
-export const createSparepartValidator = z.object({
-  name: z.string().min(1, "Name is required"),
-  part_number: z.string().min(1, "Part Number is required"),
-  minimum_quantity: z.number().min(1, "Minimum Quantity is required"),
-  balance: z.number().min(1, "Balance is required"),
-  machine_area_id: z.number().min(1, "Machine Area is required"),
-  department_id: z.number().min(1, "Department is required"),
-  rack_id: z.number().min(1, "Rack is required"),
-  specification: z.string().min(1, "Specification is required"),
+export const createPartValidator = z.object({
+  code: z.string().min(1, "Code is required"),
+  balance: z.string().min(1, "Balance is required"),
+  description: z.string().min(1, "Description Quantity is required"),
+  max_quantity: z.number().min(1, "Max Qty is required"),
+  min_quantity: z.number().min(1, "Min Qty is required"),
+  specification: z.string().min(1, "Specification is required")
 });
-export const updateSparepartValidator = z.object({
-  name: z.string().min(1, "Name is required"),
-  part_number: z.string().min(1, "Part Number is required"),
-  minimum_quantity: z.number().min(1, "Minimum Quantity is required"),
-  balance: z.number().min(1, "Balance is required"),
-  machine_area_id: z.number().min(1, "Machine Area is required"),
-  department_id: z.number().min(1, "Department is required"),
-  rack_id: z.number().min(1, "Rack is required"),
-  specification: z.string().min(1, "Specification is required"),
+
+export const updatePartValidator = z.object({
+    code: z.string().min(1, "Code is required"),
+  balance: z.string().min(1, "Balance is required"),
+  description: z.string().min(1, "Description Quantity is required"),
+  max_quantity: z.number().min(1, "Max Qty is required"),
+  min_quantity: z.number().min(1, "Min Qty is required"),
+  specification: z.string().min(1, "Specification is required")
 });

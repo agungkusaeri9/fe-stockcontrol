@@ -7,51 +7,47 @@ import Button from '@/components/ui/button/Button';
 import { useCreateData } from '@/hooks/useCreateData';
 import { useFetchData } from '@/hooks/useFetchData';
 import KanbanService from '@/services/KanbanService';
-import MakerService from '@/services/MakerService';
 import RackService from '@/services/RackService';
-// import RackService from '@/services/RackService';
-import SparePartService from '@/services/SparePartService';
-import SupplierService from '@/services/SupplierService';
-import { Maker } from '@/types/maker';
 import { Rack } from '@/types/rack';
-import { Supplier } from '@/types/supplier';
-import { Sparepart } from '@/utils/sparepart';
 import { createKanbanValidator } from '@/validators/kanbanValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
 import { useForm } from 'react-hook-form';
-
+import TextAreaLabel from '@/components/form/FormTextArea';
+import { Machine } from '@/types/machine';
+import MachineService from '@/services/MachineService';
+import AreaService from '@/services/AreaService';
+import { Area } from '@/types/area';
+import { z } from 'zod';
+type CreateKanbanFormData = z.infer<typeof createKanbanValidator>;
 const CreateOperator = () => {
-    type formData = {
-        js_code: string;
-        quantity: number;
-        lead_time: number;
-        spare_part_id: number;
-        supplier_id: number;
-        maker_id: number;
-        rack_id: number;
-    }
-
-
-
-    const { data: spareparts } = useFetchData(SparePartService.getWithoutPagination, "spareparts", false);
-    const { data: suppliers } = useFetchData(SupplierService.getWithoutPagination, "suppliers", false);
-    const { data: makers } = useFetchData(MakerService.getWithoutPagination, "makers", false);
-    // const { data: racks } = useFetchData(MakerService.getWithoutPagination, "racks", false);
+    const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
     const { data: racks } = useFetchData(RackService.getWithoutPagination, "racks", false);
+    const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
 
 
-    const { mutate: createMutation, isPending } = useCreateData(
+   const { mutate: createMutation, isPending } = useCreateData(
         KanbanService.create,
         ["kanbans"],
         "/kanbans"
     );
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: zodResolver(createKanbanValidator),
-    })
 
-    const onSubmit = (data: formData) => {
-        createMutation(data);
+    const { 
+        register, 
+        handleSubmit, 
+        formState: { errors },
+        reset
+    } = useForm<CreateKanbanFormData>({
+        resolver: zodResolver(createKanbanValidator),
+        mode: "onChange",
+    });
+
+    const onSubmit = (data: CreateKanbanFormData) => {
+        createMutation(data, {
+            onSuccess: () => {
+                reset(); 
+            }
+        });
     };
 
     return (
@@ -61,25 +57,43 @@ const CreateOperator = () => {
                 <ComponentCard title="Create Kanban">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <InputLabel
-                            label="JS Code"
-                            name="js_code"
+                            label="Code"
+                            name="code"
                             type="text"
                             required
                             placeholder="Enter Code"
-                            register={register("js_code")}
-                            error={errors.js_code}
+                            register={register("code")}
+                            error={errors.code}
                         />
                         <InputLabel
-                            label="Quantity"
-                            name="quantity"
+                            label="Balance"
+                            name="balance"
                             type="number"
                             required
-                            placeholder="Enter Quantity"
-                            register={register("quantity", { valueAsNumber: true })}
-                            error={errors.quantity}
+                            placeholder="Enter balance"
+                            register={register("balance", { valueAsNumber: true })}
+                            error={errors.balance}
+                        />
+                        <TextAreaLabel
+                            label="Description"
+                            name="description"
+                            required
+                            placeholder="Enter Description"
+                            register={register("description")}
+                            error={errors.description}
+                            rows={3}
+                        />
+                          <TextAreaLabel
+                            label="Specification"
+                            name="specification"
+                            required
+                            placeholder="Enter specification"
+                            register={register("specification")}
+                            error={errors.specification}
+                            rows={3}
                         />
                         <InputLabel
-                            label="Lead TIme"
+                            label="Lead Time"
                             name="lead_time"
                             type="number"
                             required
@@ -87,42 +101,29 @@ const CreateOperator = () => {
                             register={register("lead_time", { valueAsNumber: true })}
                             error={errors.lead_time}
                         />
-                        {spareparts && (
+                        {machines && (
                             <SelectLabel
-                                label="Sparepart"
-                                name="spare_part_id"
+                                label="Machine"
+                                name="machine_id"
                                 required
-                                register={register("spare_part_id", { valueAsNumber: true })}
-                                error={errors.spare_part_id}
-                                options={spareparts.map((d: Sparepart) => ({
-                                    label: d.part_number + " - " + d.name,
-                                    value: d.id,
+                                register={register("machine_id", { valueAsNumber: true })}
+                                error={errors.machine_id}
+                                options={machines.map((d: Machine) => ({
+                                    label: d.code,
+                                    value: Number(d.id),
                                 }))}
                             />
                         )}
-                        {suppliers && (
+                          {machineAreas && (
                             <SelectLabel
-                                label="Supplier"
-                                name="supplier_id"
+                                label="Machine Area"
+                                name="machine_area_id"
                                 required
-                                register={register("supplier_id", { valueAsNumber: true })}
-                                error={errors.supplier_id}
-                                options={suppliers.map((d: Supplier) => ({
+                                register={register("machine_area_id", { valueAsNumber: true })}
+                                error={errors.machine_area_id}
+                                options={machineAreas.map((d: Area) => ({
                                     label: d.name,
-                                    value: d.id,
-                                }))}
-                            />
-                        )}
-                        {makers && (
-                            <SelectLabel
-                                label="Maker"
-                                name="maker_id"
-                                required
-                                register={register("maker_id", { valueAsNumber: true })}
-                                error={errors.maker_id}
-                                options={makers.map((d: Maker) => ({
-                                    label: d.name,
-                                    value: d.id!,
+                                    value: Number(d.id),
                                 }))}
                             />
                         )}
@@ -134,14 +135,59 @@ const CreateOperator = () => {
                                 register={register("rack_id", { valueAsNumber: true })}
                                 error={errors.rack_id}
                                 options={racks.map((d: Rack) => ({
-                                    label: d.name,
-                                    value: d.id,
+                                    label: d.code,
+                                    value: Number(d.id),
                                 }))}
                             />
                         )}
-                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending} loading={isPending}>
-                            Create
-                        </Button>
+                         <InputLabel
+                            label="Max Quantity"
+                            name="max_quantity"
+                            type="number"
+                            required
+                            placeholder="Enter max quantity"
+                            register={register("max_quantity", { valueAsNumber: true })}
+                            error={errors.max_quantity}
+                        />
+                        <InputLabel
+                            label="Min Quantity"
+                            name="min_quantity"
+                            type="number"
+                            required
+                            placeholder="Enter min quantity"
+                            register={register("min_quantity", { valueAsNumber: true })}
+                            error={errors.min_quantity}
+                        />
+                        <InputLabel
+                            label="Uom"
+                            name="uom"
+                            type="text"
+                            required
+                            placeholder="Enter uom"
+                            register={register("uom")}
+                            error={errors.uom}
+                        />
+                       <div className="flex justify-end gap-2 mt-6">
+                            <Button 
+                                type="button"
+                                size="sm" 
+                                variant="secondary" 
+                                className="px-4"
+                                onClick={() => reset()}
+                            >
+                                Reset
+                            </Button>
+                            <Button 
+                                type="submit"
+                                size="sm" 
+                                variant="primary" 
+                                className="px-4" 
+                                disabled={isPending} 
+                                loading={isPending}
+                            >
+                                Create Kanban
+                            </Button>
+                        </div>
                     </form>
                 </ComponentCard>
             </div>

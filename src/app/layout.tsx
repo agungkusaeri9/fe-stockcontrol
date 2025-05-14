@@ -10,6 +10,7 @@ const outfit = Outfit({
   variable: "--font-outfit-sans",
   subsets: ["latin"],
 });
+
 import NextTopLoader from 'nextjs-toploader';
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className={`${outfit.variable} dark:bg-gray-900`}>
         <Toaster
-          position="top-center"
+          position="bottom-right"
           toastOptions={{
             style: {
               zIndex: 9999,
@@ -45,6 +46,7 @@ export default function RootLayout({
           <SidebarProvider>
             <ReactQueryProvider>
               {children}
+              {/* <ReminderModal /> */}
             </ReactQueryProvider>
           </SidebarProvider>
         </ThemeProvider>

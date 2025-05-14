@@ -1,57 +1,75 @@
 import ComponentCard from '@/components/common/ComponentCard'
-import SelectLabel from '@/components/form/FormSelect'
-import Input from '@/components/form/input/InputField'
+import DatePicker from '@/components/form/datePicker'
+import InputLabel from '@/components/form/FormInput'
 import Button from '@/components/ui/button/Button'
-import { useFetchData } from '@/hooks/useFetchData'
-import SparePartService from '@/services/SparePartService'
-import { Sparepart } from '@/utils/sparepart'
-import { updateKanbanValidator } from '@/validators/kanbanValidator'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 
-const FilterStockIn = () => {
+const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [keyword, setKeyword] = useState("");
 
-    const { register, formState: { errors } } = useForm({
-        resolver: zodResolver(updateKanbanValidator),
-    })
+    const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
+        const inputId = instance.element.id;
 
-    const { data: spareparts } = useFetchData(SparePartService.getWithoutPagination, "spareparts", false);
+        if (inputId === 'start_date') {
+            setStartDate(dateStr);
+        } else if (inputId === 'end_date') {
+            setEndDate(dateStr);
+        }
+    };
+
+    const handleFilter = (e: React.FormEvent) => {
+        e.preventDefault();
+        setFilter({ ...filter, start_date: startDate, end_date: endDate, keyword: keyword });
+    };
+
+    const handleReset = () => {
+        setStartDate("");
+        setEndDate("");
+        setFilter({ ...filter, start_date: "", end_date: "", keyword: "" });
+    };
+
+    const handleKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setKeyword(value);
+    };
 
     return (
         <>
             <ComponentCard title="Filter" className="mb-4">
-                <form action="">
+                <form onSubmit={handleFilter}>
                     <div className="grid grid-cols-4 gap-4">
-                        <div>
-                            <label htmlFor="start_date" className='text-xs mb-5'>Start Date</label>
-                            <Input placeholder='' type='date' className='w-full' />
-                        </div>
-                        <div>
-                            <label htmlFor="end_date" className='text-xs mb-5'>End Date</label>
-                            <Input placeholder='' type='date' className='w-full' />
-                        </div>
-                        <div>
-                            <SelectLabel
-                                label="Sparepart"
-                                name="spare_part_id"
-                                required
-                                register={register("spare_part_id", { valueAsNumber: true })}
-                                error={errors.spare_part_id}
-                                options={spareparts.map((d: Sparepart) => ({
-                                    label: d.part_number + " - " + d.name,
-                                    value: d.id,
-                                }))}
-                            />
-                        </div>
-                        <div className='flex flex-wrap gap-2'>
-                            <Button className='mt-6 px-6' size='sm' variant='primary'>Excel</Button>
-                            <Button className='mt-6 px-6' size='sm' variant='danger'>PDF</Button>
+                        <DatePicker placeholder='Start Date' label='Start Date' id='start_date' onChange={handleDateChange} mode='single' defaultDate={startDate} />
+                        <DatePicker placeholder='End Date' label='End Date' id='end_date' onChange={handleDateChange} mode='single' defaultDate={endDate} />
+                        <InputLabel
+                            placeholder="Keyword"
+                            label="Keyword"
+                            name="keyword"
+                            onChange={handleKeyword}
+                        />
+                        <div className="flex flex-wrap gap-2 mt-1">
+                            <Button
+                                type="reset"
+                                onClick={() => handleReset()}
+                                className="mt-5 mb-4 px-6"
+                                size="xs"
+                                variant="outline"
+                            >
+                                Reset
+                            </Button>
+                            <Button
+                                type="submit"
+                                className="mt-5 mb-4 px-6"
+                                size="xs"
+                                variant="primary"
+                            >
+                                Filter
+                            </Button>
                         </div>
                     </div>
                 </form>
             </ComponentCard>
-
         </>
     )
 }

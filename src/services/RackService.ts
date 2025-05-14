@@ -4,7 +4,6 @@ import { Rack } from "@/types/rack";
 import api from "@/utils/api";
 interface IForm {
   code:string;
-  name: string;
 }
 
 const get: FetchFunctionWithPagination<Rack> = async (
@@ -55,12 +54,10 @@ const update = async (id: number, data: IForm) => {
   }
 };
 
-const remove = async (id: number) => {
+const remove = async (id: number): Promise<void> => {
   try {
-    const response = await api.delete(`racks/${id}`);
-    return response.data;
+    await api.delete(`racks/${id}`);
   } catch (error) {
-    console.log(`Successfully deleted operator with ID: ${id}`);
     throw error;
   }
 };

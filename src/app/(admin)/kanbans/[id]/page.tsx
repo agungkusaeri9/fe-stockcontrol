@@ -1,0 +1,150 @@
+"use client"
+import React from "react";
+import ComponentCard from "@/components/common/ComponentCard";
+import PurchaseOrderService from "@/services/PurchaseOrderService";
+import { useParams } from "next/navigation";
+import { useFetchById } from "@/hooks/useFetchDetailData";
+import Breadcrumb from "@/components/common/Breadcrumb";
+import { dateFormat } from "@/utils/dateFormat";
+import DataTable from "@/components/common/DataTable";
+import { PurchaseOrder } from "@/types/purchaseOrder";
+import { Kanban } from "@/types/kanban";
+import KanbanService from "@/services/KanbanService";
+
+export default function Page() {
+    const params = useParams();
+    const id = params.id;
+    const { data: kanban } = useFetchById<Kanban>(KanbanService.getById, Number(id), "kanban");
+
+    if (!kanban) return (
+        <div className="flex items-center justify-center min-h-[400px]">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
+    );
+
+    return (
+        <div className="space-y-6">
+            <Breadcrumb 
+                items={[
+                    { label: 'Dashboard', href: '/dashboard' }, 
+                    { label: 'Kanban', href: '/kanbans' }, 
+                    { label: 'Detail' }
+                ]} 
+            />
+
+            <div className="grid gap-6">
+                <ComponentCard title="Kanban Detail" className="w-full">
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Code
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.code}
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Balance
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.balance}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Description
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.description}
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Specification
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.specification}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Min Quantity
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.min_quantity}
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Uom
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.uom}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Machine
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.machine?.code}
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Machine Area    
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.machine_area?.name}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Rack
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.rack?.code}
+                                    </div>
+                                </div>
+                                 <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Max Quantity
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.max_quantity}
+                                    </div>
+                                </div>
+                            </div>
+                             <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Lead Time
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.lead_time}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ComponentCard>
+            </div>
+        </div>
+    );
+}

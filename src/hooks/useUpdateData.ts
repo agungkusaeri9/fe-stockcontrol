@@ -24,8 +24,8 @@ export const useUpdateData = <T, R extends ServerResponse>(
     },
     onSuccess: (response) => {
       toast.success(response.message || "Data berhasil diperbarui.");
-      queryClient.invalidateQueries([queryKey, id]);
-      queryClient.invalidateQueries([queryKey]);
+      queryClient.invalidateQueries({ queryKey: [queryKey, id] });
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
       router.push(redirectUrl);
     },
     onError: (error: unknown) => {

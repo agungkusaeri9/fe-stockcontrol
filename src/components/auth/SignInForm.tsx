@@ -4,11 +4,9 @@ import Button from "@/components/ui/button/Button";
 import { ChevronLeftIcon } from "@/icons";
 import AuthService from "@/services/AuthService";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import {
-  setCookie,
-} from 'cookies-next/client';
+import { setCookie } from 'cookies-next/client';
 import toast from "react-hot-toast";
 import { handleError } from "@/utils/handleErrors";
 import { useMutation } from "@tanstack/react-query";
@@ -16,62 +14,67 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginValidation } from "@/validators/auth/login";
 import InputLabel from "../form/FormInput";
+import { z } from "zod";
+
+type LoginFormData = z.infer<typeof loginValidation>;
+
 export default function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isChecked, setIsChecked] = useState(false);
-  type formData = {
-    username: string;
-    password: string;
-  };
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
   const { mutate: loginMutation, isPending: loading } = useMutation({
-    mutationFn: async function (data: { username: string, password: string }) {
+    mutationFn: async (data: LoginFormData) => {
       const response = await AuthService.login(data);
       return response;
     },
-    onSuccess: function (response) {
+    onSuccess: (response) => {
+      // Set user data cookie
       setCookie('user', response.data.data, {
-        // maxAge: response.data.data.expires_in,
         path: '/',
         secure: true,
         sameSite: 'strict',
       });
+
+      // Set auth token cookie
       setCookie('token', response.data.data.token, {
-        // maxAge: response.data.data.expires_in,
         path: '/',
         secure: true,
         sameSite: 'strict',
       });
+
       toast.success(response.data.message);
-      router.push("/dashboard");
+      router.push(callbackUrl);
     },
-    onError: function (error) {
-      console.log('Error ', error);
+    onError: (error) => {
+      console.error('Login error:', error);
       handleError(error);
     }
-  })
-
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(loginValidation),
   });
 
-  const onSubmit = (data: formData) => {
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: zodResolver(loginValidation),
+    mode: "onChange",
+  });
+
+  const onSubmit = (data: LoginFormData) => {
     loginMutation(data);
   };
-
 
   const handleWithoutLogin = () => {
     localStorage.setItem('role', 'guest');
     router.push("/dashboard");
-  }
+  };
 
   return (
-    <div className="flex flex-col flex-1 lg:w-1/2 w-full max-w-md mx-auto px-4 sm:px-0 mt-25 ">
+    <div className="flex flex-col flex-1 lg:w-1/2 w-full max-w-md mx-auto px-4 sm:px-0 mt-25">
       <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
         <Link
           href="#"
           onClick={(e) => {
-            e.preventDefault(); // Menghindari link default behavior
-            handleWithoutLogin(); // Menjalankan fungsi handleWithoutLogin
+            e.preventDefault();
+            handleWithoutLogin();
           }}
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
@@ -86,7 +89,7 @@ export default function SignInForm() {
               Sign In
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign in!
+              Enter your username and password to sign in!
             </p>
           </div>
           <div>
@@ -120,24 +123,18 @@ export default function SignInForm() {
                   </div>
                 </div>
                 <div>
-                  <Button loading={loading} disabled={loading} className="w-full" size="sm">
+                  <Button 
+                    loading={loading} 
+                    disabled={loading} 
+                    className="w-full" 
+                    size="sm"
+                    type="submit"
+                  >
                     Sign in
                   </Button>
                 </div>
               </div>
             </form>
-
-            {/* <div className="mt-5">
-              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Don&apos;t have an account? {""}
-                <Link
-                  href="/auth/signup"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                >
-                  Sign Up
-                </Link>
-              </p>
-            </div> */}
           </div>
         </div>
       </div>

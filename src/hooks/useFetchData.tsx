@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebounce } from "./useDebounce";
-import { FetchFunctionWithoutPagination, FetchFunctionWithPagination } from "@/types/fetch";
+import { FetchFunctionWithoutPagination, FetchFunctionWithPagination } from "../types/fetch";
+
 type PaginatedResponse<T> = {
     data: T[];
     pagination: {
@@ -13,8 +14,7 @@ type PaginatedResponse<T> = {
     };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const useFetchData = (
+export const useFetchData = <T,>(
     fetchFunction: FetchFunctionWithPagination<T> | FetchFunctionWithoutPagination<T>,
     queryKey: string,
     usePagination: boolean = true,
@@ -74,4 +74,4 @@ export const useFetchData = (
         refetch,
         fetchData,
     };
-};
+}; 

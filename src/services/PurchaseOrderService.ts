@@ -9,6 +9,12 @@ export interface PaginationMeta {
   lastPage: number;
 }
 
+interface Form {
+  // Add your form fields here
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
+
 const get: FetchFunctionWithPagination<PurchaseOrder> = async (
   page = 1,
   limit = 10,
@@ -16,6 +22,7 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
   end_date?: string,
   po_number?: string
 ): Promise<PaginatedResponse<PurchaseOrder>> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
     page,
     limit,
@@ -31,6 +38,7 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
 };
 
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getById = async (
   id:number
 ): Promise<any> => {
@@ -38,7 +46,25 @@ const getById = async (
   return response.data;
 };
 
+const create = async (data: Form) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await api.post<any>("purchase-orders", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
+const update = async (id: number, data: Form) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await api.put<any>(`purchase-orders/${id}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
-const PurchaseOrderService = { get,getById };
+const PurchaseOrderService = { get,getById, create, update };
 export default PurchaseOrderService;
