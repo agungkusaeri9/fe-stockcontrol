@@ -32,14 +32,14 @@ export default function AreaListPage() {
     };
 
     const columns = [
-        {
-            header: "#",
-            accessorKey: "id",
-            cell: (item: Machine) => {
-                const index = machines?.findIndex((machine: Machine) => machine.id === item.id) ?? 0;
-                return index + 1;
-            },
-        },
+        // {
+        //     header: "#",
+        //     accessorKey: "id",
+        //     cell: (item: Machine) => {
+        //         const index = machines?.findIndex((machine: Machine) => machine.id === item.id) ?? 0;
+        //         return index + 1;
+        //     },
+        // },
         {
             header: "Code",
             accessorKey: "code",

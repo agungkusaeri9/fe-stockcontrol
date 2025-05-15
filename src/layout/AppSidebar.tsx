@@ -15,6 +15,10 @@ import {
   PurchaseRequestIcon,
   ReminderIcon
 } from "../icons/index";
+import { getCookie } from "cookies-next";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/utils/api";
+import ReminderService from "@/services/ReminderService";
 
 type NavItem = {
   name: string;
@@ -23,66 +27,10 @@ type NavItem = {
   count?: number;
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
   roles?: string[];
+  requiresAuth?: boolean;
 };
 
-const navItems: NavItem[] = [
-  {
-    icon: <GridIcon />,
-    name: "Dashboard",
-    path: "/dashboard",
-    roles: ['admin', 'guest']
-  },
-  {
-    icon: <BalanceIcon />,
-    name: "Balance",
-    path: "/balance",
-    roles: ['admin', 'guest']
-  },
-  {
-    icon: <PurchaseOrderIcon />,
-    name: "Purchase Order",
-    path: "/purchase-orders",
-    roles: ['admin', 'guest']
-  },
-  {
-    icon: <PurchaseRequestIcon />,
-    name: "Purchase Request",
-    path: "/purchase-requests",
-    roles: ['admin', 'guest']
-  },
-  {
-    icon: <HistoryIcon />,
-    name: "Stock",
-    subItems: [
-      { name: "In", path: "/stock-ins", pro: false },
-      { name: "Out", path: "/stock-outs", pro: false }
-    ],
-    roles: ['admin', 'guest']
-  },
-  {
-    icon: <DatabaseIcon />,
-    name: "Master Data",
-    subItems: [
-      // { name: "Operator", path: "/operators", pro: false },
-      // { name: "Part", path: "/parts", pro: false },
-      { name: "Area", path: "/areas", pro: false },
-      { name: "Machine", path: "/machines", pro: false },
-      // { name: "Department", path: "/departments", pro: false },
-      { name: "Rack", path: "/racks", pro: false },
-      // { name: "Maker", path: "/makers", pro: false },
-      // { name: "Suppliers", path: "/suppliers", pro: false },
-      { name: "Kanban", path: "/kanbans", pro: false },
-    ],
-    roles: ['admin']
-  },
-  {
-    icon: <ReminderIcon />,
-    name: "Reminder",
-    path: "/reminder",
-    count: 10,
-    roles: ['admin', 'guest']
-  },
-];
+
 
 const othersItems: NavItem[] = [
   // {
@@ -98,22 +46,88 @@ const othersItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { data: remindersCount } = useQuery({
+    queryKey: ["reminders-count"],
+    queryFn: ReminderService.getCount,
+    staleTime: 240000,
+    gcTime: 360000,
+    refetchInterval: 300000,
+  });
 
-  // const accessibleMenuItems = navItems.filter(item => {
-  //   const userRole = role || "guest";
-  //   return item.roles?.includes(userRole);
-  // });
+  useEffect(() => {
+    const token = getCookie('token');
+    setIsAuthenticated(!!token);
+  }, []);
 
+  const navItems: NavItem[] = [
+    {
+      icon: <GridIcon />,
+      name: "Dashboard",
+      path: "/dashboard",
+      requiresAuth: false
+    },
+    {
+      icon: <BalanceIcon />,
+      name: "Balance",
+      path: "/balance",
+      requiresAuth: false
+    },
+    {
+      icon: <PurchaseOrderIcon />,
+      name: "Purchase Order",
+      path: "/purchase-orders",
+      requiresAuth: false
+    },
+    {
+      icon: <PurchaseRequestIcon />,
+      name: "Purchase Request",
+      path: "/purchase-requests",
+      requiresAuth: false
+    },
+    {
+      icon: <HistoryIcon />,
+      name: "Stock",
+      subItems: [
+        { name: "In", path: "/stock-ins", pro: false },
+        { name: "Out", path: "/stock-outs", pro: false }
+      ],
+      requiresAuth: false
+    },
+    {
+      icon: <DatabaseIcon />,
+      name: "Master Data",
+      subItems: [
+        { name: "Operator", path: "/operators", pro: false },
+        { name: "Area", path: "/areas", pro: false },
+        { name: "Machine", path: "/machines", pro: false },
+        { name: "Rack", path: "/racks", pro: false },
+        { name: "Kanban", path: "/kanbans", pro: false },
+      ],
+      requiresAuth: true
+    },
+    {
+      icon: <ReminderIcon />,
+      name: "Reminder",
+      path: "/reminder",
+      count: remindersCount,
+      requiresAuth: false
+    },
+  ];
 
   const renderMenuItems = (
     navItems: NavItem[],
     menuType: "main" | "others"
   ) => (
     <ul className="flex flex-col gap-4">
-      {navItems.map((nav, index) => (
-        <li key={nav.name} >
-          {
-            nav.subItems ? (
+      {navItems.map((nav, index) => {
+        if (nav.requiresAuth && !isAuthenticated) {
+          return null;
+        }
+
+        return (
+          <li key={nav.name}>
+            {nav.subItems ? (
               <button
                 onClick={() => handleSubmenuToggle(index, menuType)}
                 className={`menu-item group  ${openSubmenu?.type === menuType && openSubmenu?.index === index
@@ -164,19 +178,20 @@ const AppSidebar: React.FC = () => {
                   {(isExpanded || isHovered || isMobileOpen) && (
                     <>
                       <span className={`menu-item-text`}>{nav.name}</span>
-                      {nav.count && (
-                        <div className="bg-red-500 px-2 relative rounded-full h-5 w-5 flex items-center justify-center">
-                          <span className={`menu-item-text text-[10px]  p-0  text-white`}>{nav.count}</span>
+                      {nav.count && nav.count > 0 && (
+                        <div className="bg-red-500 px-2 relative rounded-sm h-5 flex items-center justify-center animate-blink">
+                          <span className="menu-item-text text-[11px] text-white">
+                            {nav.count}
+                          </span>
                         </div>
                       )}
+
                     </>
                   )}
                 </Link>
               )
-            )
-          }
-          {
-            nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
+            )}
+            {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
               <div
                 ref={(el) => {
                   subMenuRefs.current[`${menuType}-${index}`] = el;
@@ -227,12 +242,11 @@ const AppSidebar: React.FC = () => {
                   ))}
                 </ul>
               </div>
-            )
-          }
-        </li>
-      ))
-      }
-    </ul >
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 
   const [openSubmenu, setOpenSubmenu] = useState<{
@@ -359,7 +373,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  ""
                 ) : (
                   <HorizontaLDots />
                 )}

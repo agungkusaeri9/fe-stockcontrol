@@ -34,14 +34,14 @@ export default function Page() {
     } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
      const columns = [
-        {
-            header: "#",
-            accessorKey: "id",
-            cell: (item: Kanban) => {
-                const index = kanbans?.findIndex((kanban: Kanban) => kanban.id === item.id) ?? 0;
-                return index + 1;
-            },
-        },
+        // {
+        //     header: "#",
+        //     accessorKey: "id",
+        //     cell: (item: Kanban) => {
+        //         const index = kanbans?.findIndex((kanban: Kanban) => kanban.id === item.id) ?? 0;
+        //         return index + 1;
+        //     },
+        // },
         {
             header: "Code",
             accessorKey: "code",

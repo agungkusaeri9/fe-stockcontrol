@@ -14,7 +14,7 @@ interface CreateOperator {
   nik: string;
 }
 
-const getAllOperator: FetchFunctionWithPagination<Operator> = async (
+const get: FetchFunctionWithPagination<Operator> = async (
   page = 1,
   limit = 10,
   keyword = ""
@@ -25,7 +25,7 @@ const getAllOperator: FetchFunctionWithPagination<Operator> = async (
   return response.data;
 };
 
-const createOperator = async (data: CreateOperator) => {
+const create = async (data: CreateOperator) => {
   try {
     const response = await api.post("operators", data);
     return response.data;
@@ -34,7 +34,7 @@ const createOperator = async (data: CreateOperator) => {
   }
 };
 
-const getOperatorById = async (id: number) => {
+const getById = async (id: number) => {
   try {
     const response = await api.get(`operators/${id}`);
     return response.data;
@@ -43,7 +43,7 @@ const getOperatorById = async (id: number) => {
   }
 };
 
-const updateOperator = async (id: number, data: CreateOperator) => {
+const update = async (id: number, data: CreateOperator) => {
   try {
     const response = await api.put(`operators/${id}`, data);
     return response.data;
@@ -51,7 +51,7 @@ const updateOperator = async (id: number, data: CreateOperator) => {
     throw error;
   }
 };
-const deleteOperator = async (id: number) => {
+const remove = async (id: number) => {
   try {
     const response = await api.delete(`operators/${id}`);
     return response.data;
@@ -61,5 +61,5 @@ const deleteOperator = async (id: number) => {
   }
 };
 
-const OperatorService = { getAllOperator, createOperator, getOperatorById, updateOperator, deleteOperator };
+const OperatorService = { get, create, getById, update, remove };
 export default OperatorService;

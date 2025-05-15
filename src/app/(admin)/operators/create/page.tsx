@@ -18,11 +18,11 @@ const CreateOperator = () => {
     }
 
     const { mutate: createMutation, isPending } = useCreateData(
-        OperatorService.createOperator,
+        OperatorService.create,
         ["operators"],
         "/operators"
     );
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(operatorCreateValidator),
     });
     const onSubmit = (data: formData) => {
@@ -52,9 +52,27 @@ const CreateOperator = () => {
                             register={register("nik")}
                             error={errors.nik}
                         />
-                        <Button size="sm" variant="primary" className="w-full mt-4" disabled={isPending} loading={isPending}>
-                            Create
-                        </Button>
+                        <div className="flex justify-end gap-2 mt-6">
+                            <Button 
+                                type="button"
+                                size="sm" 
+                                variant="secondary" 
+                                className="px-4"
+                                onClick={() => reset()}
+                            >
+                                Reset
+                            </Button>
+                            <Button 
+                                type="submit"
+                                size="sm" 
+                                variant="primary" 
+                                className="px-4" 
+                                disabled={isPending} 
+                                loading={isPending}
+                            >
+                                Create Operator
+                            </Button>
+                        </div>
                     </form>
                 </ComponentCard>
             </div>

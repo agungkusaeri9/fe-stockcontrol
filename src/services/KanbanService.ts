@@ -24,8 +24,6 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   machine_area_id = null,
   rack_id = null
 ): Promise<PaginatedResponse<Kanban>> => {
-
-  console.log("keyword", keyword);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
     page,

@@ -31,14 +31,14 @@ export default function AreaListPage() {
     };
 
     const columns = [
-        {
-            header: "#",
-            accessorKey: "id",
-            cell: (item: Area) => {
-                const index = areas?.findIndex((area: Area) => area.id === item.id) ?? 0;
-                return index + 1;
-            },
-        },
+        // {
+        //     header: "#",
+        //     accessorKey: "id",
+        //     cell: (item: Area) => {
+        //         const index = areas?.findIndex((area: Area) => area.id === item.id) ?? 0;
+        //         return index + 1;
+        //     },
+        // },
         {
             header: "Name",
             accessorKey: "name",

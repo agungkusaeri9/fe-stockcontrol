@@ -69,9 +69,9 @@ export default function Page() {
         {
             header: 'Action',
             accessorKey: 'id',
-            cell: (item: PurchaseOrder) => (
+            cell: (item: StockOut) => (
                 <ButtonLink 
-                    href={`/purchase-orders/${item.id}`} 
+                    href={`/stock-outs/${item.id}`} 
                     variant='outline' 
                     size='xs' 
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"

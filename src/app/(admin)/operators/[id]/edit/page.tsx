@@ -21,7 +21,7 @@ const EditOperator = () => {
         name: string;
         nik: string;
     }
-    const { data: operator } = useFetchById<Operator>(OperatorService.getOperatorById, Number(id), "operator");
+    const { data: operator } = useFetchById<Operator>(OperatorService.getById, Number(id), "operator");
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(operatorUpdateValidation),
     });
@@ -36,7 +36,7 @@ const EditOperator = () => {
     }, [operator, reset]);
 
     const { mutate: updateMutation, isPending } = useUpdateData(
-        OperatorService.updateOperator,
+        OperatorService.update,
         Number(id),
         "operators",
         "/operators"
@@ -69,15 +69,27 @@ const EditOperator = () => {
                             register={register("nik")}
                             error={errors.nik}
                         />
-                        <Button
-                            size="sm"
-                            variant="primary"
-                            className="w-full mt-4"
-                            disabled={isPending}
-                            loading={isPending}
-                        >
-                            Update
-                        </Button>
+                        <div className="flex justify-end gap-2 mt-6">
+                            <Button 
+                                type="button"
+                                size="sm" 
+                                variant="secondary" 
+                                className="px-4"
+                                onClick={() => reset()}
+                            >
+                                Reset
+                            </Button>
+                            <Button 
+                                type="submit"
+                                size="sm" 
+                                variant="primary" 
+                                className="px-4" 
+                                disabled={isPending} 
+                                loading={isPending}
+                            >
+                                Update
+                            </Button>
+                        </div>
                     </form>
                 </ComponentCard>
             </div>

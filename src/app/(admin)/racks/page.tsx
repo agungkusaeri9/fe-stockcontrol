@@ -31,14 +31,14 @@ export default function RackListPage() {
     };
 
     const columns = [
-        {
-            header: "#",
-            accessorKey: "id",
-            cell: (item: Rack) => {
-                const index = racks?.findIndex((rack: Rack) => rack.id === item.id) ?? 0;
-                return index + 1;
-            },
-        },
+        // {
+        //     header: "#",
+        //     accessorKey: "id",
+        //     cell: (item: Rack) => {
+        //         const index = racks?.findIndex((rack: Rack) => rack.id === item.id) ?? 0;
+        //         return index + 1;
+        //     },
+        // },
         {
             header: "Code",
             accessorKey: "code",

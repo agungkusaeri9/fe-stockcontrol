@@ -5,16 +5,15 @@ import { useParams } from "next/navigation";
 import { useFetchById } from "@/hooks/useFetchDetailData";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { dateFormat } from "@/utils/dateFormat";
-import DataTable from "@/components/common/DataTable";
-import StockInService from "@/services/StockInService";
-import { StockIn } from "@/types/stockIn";
+import StockOutService from "@/services/StockOutService";
+import { StockOut } from "@/types/stockOut";
 
 export default function Page() {
     const params = useParams();
     const id = params.id;
-    const { data: stockIn } = useFetchById<StockIn>(StockInService.getById, Number(id), "stockIn");
+    const { data: stockOut } = useFetchById<StockOut>(StockOutService.getById, Number(id), "stockOut");
 
-    if (!stockIn) return (
+    if (!stockOut) return (
         <div className="flex items-center justify-center min-h-[400px]">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         </div>
@@ -26,13 +25,13 @@ export default function Page() {
             <Breadcrumb 
                 items={[
                     { label: 'Dashboard', href: '/dashboard' }, 
-                    { label: 'Stock In', href: '/stock-ins' }, 
+                    { label: 'Stock Out', href: '/stock-outs' }, 
                     { label: 'Detail' }
                 ]} 
             />
 
             <div className="grid gap-6">
-                <ComponentCard title="Stock In Detail" className="w-full">
+                <ComponentCard title="Stock Out Detail" className="w-full">
                     <div className="grid md:grid-cols-2 gap-8">
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
@@ -41,7 +40,7 @@ export default function Page() {
                                       Date
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {dateFormat(stockIn?.created_at)}
+                                        {dateFormat(stockOut?.created_at)}
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -49,7 +48,7 @@ export default function Page() {
                                       Kanban Number
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                      {stockIn?.kanban?.code}
+                                      {stockOut?.kanban?.code}
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +59,7 @@ export default function Page() {
                                        Specification
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockIn.kanban?.specification}
+                                        {stockOut.kanban?.specification}
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -68,7 +67,7 @@ export default function Page() {
                                         Quantity
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockIn?.quantity}
+                                        {stockOut?.quantity}
                                     </div>
                                 </div>
                                
@@ -82,7 +81,7 @@ export default function Page() {
                                         Description
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockIn?.kanban?.description}
+                                        {stockOut?.kanban?.description}
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +90,7 @@ export default function Page() {
                                     Unit
                                 </div>
                                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {stockIn?.kanban?.uom}
+                                    {stockOut?.kanban?.uom}
                                 </div>
                             </div>
                     

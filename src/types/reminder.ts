@@ -1,10 +1,11 @@
 
 export interface Reminder {
     id: number;
-    title: string;
-    description: string;
-    due_date: string;
-    priority: 'low' | 'medium' | 'high';
+    kanban: string;
+    po_status: string;
+    po_date: string;
+    pr_status:string;
+    pr_date:string;
     created_at: string;
     updated_at: string;
 }

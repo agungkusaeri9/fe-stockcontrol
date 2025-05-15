@@ -4,41 +4,36 @@ import { NextRequest, NextResponse } from "next/server";
 const publicPaths = [
   '/',
   '/auth/signin',
-  '/auth/signup',
-  '/auth/forgot-password',
-  '/auth/reset-password',
+  '/dashboard',
+  '/stock-ins',
+  '/stock-outs',
+  '/purchase-requests',
+  '/purchase-orders',
+  '/reminders',
 ];
 
 // Define admin paths that require authentication
 const adminPaths = [
-  '/dashboard',
-  '/users',
-  '/purchase-requests',
-  '/purchase-orders',
-  '/spareparts',
+  '/areas',
   '/machines',
-  '/departments',
   '/racks',
+  '/kanbans',
+  '/operators',
 ];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token");
 
-  // Allow access to public paths
+  // Allow access to public paths without redirection
   if (publicPaths.includes(pathname)) {
-    // If user is already authenticated, redirect to dashboard
-    if (token) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
     return NextResponse.next();
   }
 
   // Check authentication for admin paths
   if (adminPaths.some(path => pathname.startsWith(path))) {
     if (!token) {
-      // Redirect to login if no token
-      const url = new URL("/auth/signin", req.url);
+      const url = new URL("/", req.url);
       url.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(url);
     }

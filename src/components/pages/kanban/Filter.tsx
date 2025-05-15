@@ -11,12 +11,13 @@ import { Machine } from '@/types/machine'
 import { Area } from '@/types/area'
 import { Rack } from '@/types/rack'
 import { useForm } from 'react-hook-form'
+import FormSelect2 from '@/components/form/FormSelect2'
 
 interface FilterFormData {
     keyword: string;
-    machine_id: number | null;
-    machine_area_id: number | null;
-    rack_id: number | null;
+    machine_id: { value: number; label: string } | null;
+    machine_area_id: { value: number; label: string } | null;
+    rack_id: { value: number; label: string } | null;
 }
 
 const FilterKanban = ({ 
@@ -36,7 +37,7 @@ const FilterKanban = ({
         keyword: string 
     }) => void 
 }) => {
-    const { register, handleSubmit, reset } = useForm<FilterFormData>({
+    const { register, handleSubmit, reset, control } = useForm<FilterFormData>({
         defaultValues: {
             keyword: "",
             machine_id: null,
@@ -51,9 +52,9 @@ const FilterKanban = ({
 
     const onSubmit = (data: FilterFormData) => {
         setFilter({ 
-            machine_id: data.machine_id, 
-            machine_area_id: data.machine_area_id, 
-            rack_id: data.rack_id,
+            machine_id: data.machine_id?.value || null, 
+            machine_area_id: data.machine_area_id?.value || null,  
+            rack_id: data.rack_id?.value || null,
             keyword: data.keyword 
         });
     };
@@ -81,36 +82,39 @@ const FilterKanban = ({
                             register={register("keyword")}
                         />
                         {machines && (
-                            <SelectLabel
+                             <FormSelect2
                                 label="Machine"
                                 name="machine_id"
-                                register={register("machine_id", { valueAsNumber: true })}
+                                control={control}
                                 options={machines.map((d: Machine) => ({
                                     label: d.code,
                                     value: Number(d.id),
                                 }))}
+                                placeholder="Select Machine"
                             />
                         )}
                         {machineAreas && (
-                            <SelectLabel
-                                label="Machine Area"
+                             <FormSelect2
+                                label="Area"
                                 name="machine_area_id"
-                                register={register("machine_area_id", { valueAsNumber: true })}
+                                control={control}
                                 options={machineAreas.map((d: Area) => ({
                                     label: d.name,
                                     value: Number(d.id),
                                 }))}
+                                placeholder="Select Area"
                             />
                         )}
                         {racks && (
-                            <SelectLabel
+                            <FormSelect2
                                 label="Rack"
                                 name="rack_id"
-                                register={register("rack_id", { valueAsNumber: true })}
+                                control={control}
                                 options={racks.map((d: Rack) => ({
                                     label: d.code,
                                     value: Number(d.id),
                                 }))}
+                                placeholder="Select Rack"
                             />
                         )}
                         <div className="flex flex-wrap gap-2 mt-1">

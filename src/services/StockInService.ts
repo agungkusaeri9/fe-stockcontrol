@@ -33,5 +33,12 @@ const get: FetchFunctionWithPagination<StockIn> = async (
 };
 
 
-const StockInService = { get };
+const getById = async (
+  id:number
+): Promise<any> => {
+  const response = await api.get<PaginatedResponse<StockIn>>(`stock-ins/${id}`);
+  return response.data;
+};
+
+const StockInService = { get, getById };
 export default StockInService;

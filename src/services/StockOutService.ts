@@ -31,7 +31,12 @@ const get: FetchFunctionWithPagination<StockOut> = async (
   return response.data;
 };
 
+const getById = async (
+  id:number
+): Promise<any> => {
+  const response = await api.get<PaginatedResponse<StockOut>>(`stock-outs/${id}`);
+  return response.data;
+};
 
-
-const StockOutService = { get };
+const StockOutService = { get, getById } ;
 export default StockOutService;
