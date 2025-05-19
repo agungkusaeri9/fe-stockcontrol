@@ -79,6 +79,8 @@ export const useFetchDataPurchaseOrder = <T>(
             newParams.delete("po_number");
         }
 
+        console.log({filter});
+
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 

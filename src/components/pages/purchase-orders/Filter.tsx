@@ -11,7 +11,6 @@ const FilterPurchaseOrder = ({ filter, setFilter }: { filter: { start_date: stri
 
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
-        console.log(selectedDates);
         if (inputId === 'start_date') {
             setStartDate(dateStr);
         } else if (inputId === 'end_date') {

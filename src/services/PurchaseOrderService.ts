@@ -18,6 +18,7 @@ interface Form {
 const get: FetchFunctionWithPagination<PurchaseOrder> = async (
   page = 1,
   limit = 10,
+  keyword?: string,
   start_date?: string,
   end_date?: string,
   po_number?: string
@@ -29,9 +30,12 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
     paginate: true,
   };
   
+
   if (start_date)  params.start_date = start_date;
   if (end_date) params.end_date = end_date;
   if (po_number) params.keyword = po_number;
+
+  console.log({params});
 
   const response = await api.get<PaginatedResponse<PurchaseOrder>>("purchase-orders", { params });
   return response.data;
