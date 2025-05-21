@@ -12,6 +12,8 @@ const outfit = Outfit({
 });
 
 import NextTopLoader from 'nextjs-toploader';
+import { Suspense } from "react";
+import Loading from "@/components/common/Loading";
 
 export default function RootLayout({
   children,
@@ -45,7 +47,9 @@ export default function RootLayout({
         <ThemeProvider>
           <SidebarProvider>
             <ReactQueryProvider>
+              <Suspense fallback={<Loading/>}>
               {children}
+              </Suspense>
               {/* <ReminderModal /> */}
             </ReactQueryProvider>
           </SidebarProvider>

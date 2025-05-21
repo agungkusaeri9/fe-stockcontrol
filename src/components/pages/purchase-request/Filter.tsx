@@ -4,11 +4,13 @@ import InputLabel from '@/components/form/FormInput'
 import Button from '@/components/ui/button/Button'
 import React, { useState } from 'react'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FilterPurchaseRequest = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [poNumber, setPoNumber] = useState("");
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
 

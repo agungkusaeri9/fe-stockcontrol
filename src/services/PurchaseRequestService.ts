@@ -1,4 +1,3 @@
-import { ApiResponse } from "@/types/api";
 import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import { PurchaseRequest } from "@/types/purchaseRequest";
 import api from "@/utils/api";
@@ -49,6 +48,7 @@ const get: FetchFunctionWithPagination<PurchaseRequest> = async (
   if (start_date)  params.start_date = start_date;
   if (end_date) params.end_date = end_date;
   if (po_number) params.keyword = po_number;
+  if (keyword) params.keyword = keyword;
 
   console.log({params});
 
@@ -66,7 +66,6 @@ const getById = async (id: number) => {
 };
 
 interface Form {
-  // Add your form fields here
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }

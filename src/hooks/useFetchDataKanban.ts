@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useDebounce } from "./useDebounce";
 import { PaginatedResponse } from "@/types/fetch";
 
 type Filter = {
@@ -38,7 +37,6 @@ export const useFetchDataKanban = <T>(
         usePagination ? Number(searchParams.get("limit")) || 10 : 50
     );
     const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-    const debouncedSearch = useDebounce(keyword, 500);
     const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
 
     const handlePageChange = (page: number) => {

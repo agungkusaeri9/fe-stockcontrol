@@ -1,5 +1,4 @@
 import { Area } from "./area";
-import { Kanban } from "./kanban";
 import { Machine } from "./machine";
 
 export type StockOut = {

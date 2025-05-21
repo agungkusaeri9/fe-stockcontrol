@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import KanbanService from "@/services/KanbanService";
 import ButtonLink from "@/components/ui/button/ButtonLink";
@@ -7,8 +7,9 @@ import { Kanban } from "@/types/kanban";
 import DataTable from "@/components/common/DataTable";
 import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
+import Loading from "@/components/common/Loading";
 
-export default function KanbanList() {
+function KanbanList() {
       const [filter, setFilter] = useState({
         machine_id: null as number | null,
         machine_area_id: null as number | null,
@@ -19,11 +20,9 @@ export default function KanbanList() {
  const {
         data: kanbans,
         isLoading,
-        setKeyword,
         setCurrentPage,
         setLimit,
         limit,
-        keyword,
         pagination
     } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
@@ -127,5 +126,12 @@ export default function KanbanList() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <KanbanList />
+        </Suspense>
     );
 }

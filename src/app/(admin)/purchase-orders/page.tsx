@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PurchaseOrderService from "@/services/PurchaseOrderService";
 import ButtonLink from "@/components/ui/button/ButtonLink";
@@ -8,8 +8,9 @@ import FilterPurchaseOrder from "@/components/pages/purchase-orders/Filter";
 import { dateFormat } from "@/utils/dateFormat";
 import DataTable from "@/components/common/DataTable";
 import { PurchaseOrder } from "@/types/purchaseOrder";
+import Loading from "@/components/common/Loading";
 
-export default function Page() {
+function PoList() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
@@ -84,5 +85,12 @@ export default function Page() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <PoList />
+        </Suspense>
     );
 }

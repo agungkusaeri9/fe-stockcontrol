@@ -9,6 +9,7 @@ const FilterPurchaseOrder = ({ filter, setFilter }: { filter: { start_date: stri
     const [endDate, setEndDate] = useState("");
     const [poNumber, setPoNumber] = useState("");
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
         if (inputId === 'start_date') {

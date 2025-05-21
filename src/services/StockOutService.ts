@@ -36,6 +36,7 @@ const get: FetchFunctionWithPagination<StockOut> = async (
 
 const getById = async (
   id:number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
   const response = await api.get<PaginatedResponse<StockOut>>(`stock-outs/${id}`);
   return response.data;

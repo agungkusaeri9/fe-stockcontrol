@@ -1,4 +1,5 @@
 "use client"
+import React, { Suspense } from "react";
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput';
@@ -11,7 +12,6 @@ import RackService from '@/services/RackService';
 import { Rack } from '@/types/rack';
 import { createKanbanValidator } from '@/validators/kanbanValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react'
 import { useForm } from 'react-hook-form';
 import TextAreaLabel from '@/components/form/FormTextArea';
 import { Machine } from '@/types/machine';
@@ -19,14 +19,16 @@ import MachineService from '@/services/MachineService';
 import AreaService from '@/services/AreaService';
 import { Area } from '@/types/area';
 import { z } from 'zod';
+import Loading from '@/components/common/Loading';
+
 type CreateKanbanFormData = z.infer<typeof createKanbanValidator>;
-const CreateOperator = () => {
+
+function CreateKanbanForm() {
     const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
     const { data: racks } = useFetchData(RackService.getWithoutPagination, "racks", false);
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
 
-
-   const { mutate: createMutation, isPending } = useCreateData(
+    const { mutate: createMutation, isPending } = useCreateData(
         KanbanService.create,
         ["kanbans"],
         "/kanbans"
@@ -195,4 +197,10 @@ const CreateOperator = () => {
     )
 }
 
-export default CreateOperator
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <CreateKanbanForm />
+        </Suspense>
+    );
+}

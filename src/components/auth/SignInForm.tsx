@@ -8,7 +8,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { setCookie } from 'cookies-next/client';
 import toast from "react-hot-toast";
-import { handleError } from "@/utils/handleErrors";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -50,6 +49,7 @@ export default function SignInForm() {
     },
     onError: (error) => {
       // handleError(error);
+      console.log(error);
     }
   });
 

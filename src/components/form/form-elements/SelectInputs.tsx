@@ -6,17 +6,8 @@ import MultiSelect from "../MultiSelect";
 import { ChevronDownIcon } from "@/icons";
 
 export default function SelectInputs() {
-  const options = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
-
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const handleChange = (value: string) => {
-    // Handle select change logic here
-  };
 
   const multiOptions = [
     { value: "1", text: "Option 1", selected: false },
@@ -32,12 +23,6 @@ export default function SelectInputs() {
         <div>
           <Label>Select Input</Label>
          <div className="relative">
-           {/* <Select
-            options={options}
-            placeholder="Select Option"
-            onChange={handleChange}
-            className="dark:bg-dark-900"
-          /> */}
           <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
               <ChevronDownIcon/>
             </span>

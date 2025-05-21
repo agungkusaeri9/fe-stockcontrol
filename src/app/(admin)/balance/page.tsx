@@ -1,22 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import { useFetchData } from "@/hooks/useFetchData";
 import KanbanService from "@/services/KanbanService";
-import { useDeleteData } from "@/hooks/useDeleteData";
-import { confirmDelete } from "@/utils/confirm";
-import ButtonLink from "@/components/ui/button/ButtonLink";
 import { Kanban } from "@/types/kanban";
-import Button from "@/components/ui/button/Button";
 import DataTable from "@/components/common/DataTable";
-import AreaService from "@/services/AreaService";
-import RackService from "@/services/RackService";
-import MachineService from "@/services/MachineService";
 import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
-import { Badge } from "lucide-react";
+import Loading from "@/components/common/Loading";
 
-export default function Page() {
+function BalanceList() {
       const [filter, setFilter] = useState({
         machine_id: null as number | null,
         machine_area_id: null as number | null,
@@ -27,11 +19,9 @@ export default function Page() {
  const {
         data: kanbans,
         isLoading,
-        setKeyword,
         setCurrentPage,
         setLimit,
         limit,
-        keyword,
         pagination
     } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
@@ -126,5 +116,12 @@ export default function Page() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <BalanceList />
+        </Suspense>
     );
 }

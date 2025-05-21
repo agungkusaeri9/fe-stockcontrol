@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchData } from "@/hooks/useFetchData";
@@ -9,8 +9,9 @@ import Button from "@/components/ui/button/Button";
 import {  Area } from "@/types/area";
 import DataTable from "@/components/common/DataTable";
 import AreaService from "@/services/AreaService";
+import Loading from "@/components/common/Loading";
 
-export default function AreaListPage() {
+function AreaListPage() {
     const {
         data: areas,
         isLoading,
@@ -95,5 +96,12 @@ export default function AreaListPage() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <AreaListPage />
+        </Suspense>
     );
 }

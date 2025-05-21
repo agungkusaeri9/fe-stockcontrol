@@ -1,4 +1,3 @@
-import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput'
 import SelectLabel from '@/components/form/FormSelect'
 import Button from '@/components/ui/button/Button'
@@ -52,10 +51,10 @@ const FilterKanban = ({
             status: null
         }
     });
-    const [statuses, setStatuses] = useState([
+    const statuses = ([
         { label: "Normal", value: "Normal" },
-        { label: "Over Stock", value: "Over Stock" },
-        { label: "Under Stock", value: "Under Stock" },
+        { label: "Overstock", value: "Overstock" },
+        { label: "Understock", value: "Understock" },
     ]);
 
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);

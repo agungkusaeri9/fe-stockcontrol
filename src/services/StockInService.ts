@@ -1,4 +1,3 @@
-import { ApiResponse } from "@/types/api";
 import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import { StockIn } from "@/types/stockIn";
 import api from "@/utils/api";
@@ -35,6 +34,7 @@ const get: FetchFunctionWithPagination<StockIn> = async (
 
 const getById = async (
   id:number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
   const response = await api.get<PaginatedResponse<StockIn>>(`stock-ins/${id}`);
   return response.data;

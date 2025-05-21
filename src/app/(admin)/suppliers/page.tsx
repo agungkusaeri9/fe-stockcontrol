@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchData } from "@/hooks/useFetchData";
@@ -9,8 +9,9 @@ import Button from "@/components/ui/button/Button";
 import DataTable from "@/components/common/DataTable";
 import SupplierService from "@/services/SupplierService";
 import { Supplier } from "@/types/supplier";
+import Loading from "@/components/common/Loading";
 
-export default function Page() {
+function SupplierList() {
     const {
         data: suppliers,
         isLoading,
@@ -94,5 +95,12 @@ export default function Page() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <SupplierList />
+        </Suspense>
     );
 }

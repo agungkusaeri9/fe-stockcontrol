@@ -1,6 +1,5 @@
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput'
-import SelectLabel from '@/components/form/FormSelect'
 import Button from '@/components/ui/button/Button'
 import React from 'react'
 import { useFetchData } from '@/hooks/useFetchData'

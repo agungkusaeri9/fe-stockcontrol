@@ -1,17 +1,17 @@
 "use client"
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import { dateFormat } from "@/utils/dateFormat";
 import DataTable from "@/components/common/DataTable";
 import { PurchaseOrder } from "@/types/purchaseOrder";
-import { useFetchData } from "@/hooks/useFetchData";
 import StockInService from "@/services/StockInService";
 import { StockIn } from "@/types/stockIn";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchDataStock } from "@/hooks/useFetchDataStock";
 import FilterStockIn from "@/components/pages/stock-in/FilterStockInOld";
+import Loading from "@/components/common/Loading";
 
-export default function Page() {
+function StockInList() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
@@ -82,5 +82,12 @@ export default function Page() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <StockInList />
+        </Suspense>
     );
 }

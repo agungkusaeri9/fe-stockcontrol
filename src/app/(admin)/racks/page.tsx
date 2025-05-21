@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import RackService from "@/services/RackService";
@@ -9,8 +9,9 @@ import { confirmDelete } from "@/utils/confirm";
 import Button from "@/components/ui/button/Button";
 import { Rack } from "@/types/rack";
 import DataTable from "@/components/common/DataTable";
+import Loading from "@/components/common/Loading";
 
-export default function RackListPage() {
+function RackListPage() {
     const {
         data: racks,
         isLoading,
@@ -95,5 +96,12 @@ export default function RackListPage() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <RackListPage />
+        </Suspense>
     );
 }

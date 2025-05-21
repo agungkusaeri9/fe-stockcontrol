@@ -10,7 +10,6 @@ export interface PaginationMeta {
 }
 
 interface Form {
-  // Add your form fields here
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
@@ -34,9 +33,7 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
   if (start_date)  params.start_date = start_date;
   if (end_date) params.end_date = end_date;
   if (po_number) params.keyword = po_number;
-
-  console.log({params});
-
+  if (keyword) params.keyword = keyword;
   const response = await api.get<PaginatedResponse<PurchaseOrder>>("purchase-orders", { params });
   return response.data;
 };
@@ -45,6 +42,7 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getById = async (
   id:number
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
   const response = await api.get<PaginatedResponse<PurchaseOrder>>(`purchase-orders/${id}`);
   return response.data;

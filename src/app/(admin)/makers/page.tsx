@@ -1,17 +1,17 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchData } from "@/hooks/useFetchData";
 import { useDeleteData } from "@/hooks/useDeleteData";
 import { confirmDelete } from "@/utils/confirm";
 import Button from "@/components/ui/button/Button";
-import { Rack } from "@/types/rack";
 import DataTable from "@/components/common/DataTable";
 import MakerService from "@/services/MakerService";
 import { Maker } from "@/types/maker";
+import Loading from "@/components/common/Loading";
 
-export default function Page() {
+ function MakerList() {
     const {
         data: makers,
         isLoading,
@@ -95,5 +95,12 @@ export default function Page() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <MakerList />
+        </Suspense>
     );
 }

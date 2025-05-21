@@ -17,7 +17,6 @@ import {
 } from "../icons/index";
 import { getCookie } from "cookies-next";
 import { useQuery } from "@tanstack/react-query";
-import api from "@/utils/api";
 import ReminderService from "@/services/ReminderService";
 
 type NavItem = {
@@ -55,11 +54,7 @@ const AppSidebar: React.FC = () => {
     refetchInterval: 300000,
   });
 
-  useEffect(() => {
-    const token = getCookie('token');
-    setIsAuthenticated(!!token);
-  }, []);
-
+  
   const navItems: NavItem[] = [
     {
       icon: <GridIcon />,
@@ -117,12 +112,18 @@ const AppSidebar: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    const token = getCookie('token');
+    setIsAuthenticated(!!token);
+  }, [navItems]);
+
+
   const renderMenuItems = (
     navItems: NavItem[],
     menuType: "main" | "others"
   ) => (
     <ul className="flex flex-col gap-4">
-      {navItems.map((nav, index) => {
+      {navItems?.map((nav, index) => {
         if (nav.requiresAuth && !isAuthenticated) {
           return null;
         }

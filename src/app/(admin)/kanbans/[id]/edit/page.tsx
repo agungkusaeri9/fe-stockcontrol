@@ -4,7 +4,6 @@ import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput';
 import SelectLabel from '@/components/form/FormSelect';
 import Button from '@/components/ui/button/Button';
-import { useCreateData } from '@/hooks/useCreateData';
 import { useFetchData } from '@/hooks/useFetchData';
 import KanbanService from '@/services/KanbanService';
 import RackService from '@/services/RackService';
@@ -51,7 +50,6 @@ const Page = () => {
 
     useEffect(() => {
         if (kanban) {
-            console.log(kanban);
             reset({
                 code: kanban.code,
                 balance: Number(kanban.balance),
@@ -210,7 +208,7 @@ const Page = () => {
                                 variant="primary" 
                                 className="px-4" 
                                 disabled={isPending} 
-                                loading={isPending}
+                                loading={isLoading}
                             >
                                 Update Kanban
                             </Button>

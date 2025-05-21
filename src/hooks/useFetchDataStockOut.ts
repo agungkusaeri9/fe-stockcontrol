@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useDebounce } from "./useDebounce";
 import { PaginatedResponse } from "@/types/fetch";
 
 type Filter = {
@@ -38,17 +37,10 @@ export const useFetchDataStockOut = <T>(
         usePagination ? Number(searchParams.get("limit")) || 10 : 50
     );
     const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-    const [code, setCode] = useState(searchParams.get("code") || "");
-    const [start_date, setStartDate] = useState(searchParams.get("start_date") || "");
-    const [end_date, setEndDate] = useState(searchParams.get("end_date") || "");
-    const [machine_id, setMachineId] = useState<string | null>(searchParams.get("machine_id") || null);
-    const [machine_area_id, setMachineAreaId] = useState<string | null>(searchParams.get("machine_area_id") || null);
-    // const debouncedSearch = useDebounce(keyword, 500);
     const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        // Scroll to top of the table
         const tableElement = document.querySelector('.overflow-x-auto');
         if (tableElement) {
             tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });

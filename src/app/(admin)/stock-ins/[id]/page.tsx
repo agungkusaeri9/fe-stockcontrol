@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import { useFetchById } from "@/hooks/useFetchDetailData";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { dateFormat } from "@/utils/dateFormat";
-import DataTable from "@/components/common/DataTable";
 import StockInService from "@/services/StockInService";
 import { StockIn } from "@/types/stockIn";
 

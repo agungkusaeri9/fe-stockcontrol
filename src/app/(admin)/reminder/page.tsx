@@ -1,13 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense } from "react";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import DataTable from "@/components/common/DataTable";
 import ReminderService from "@/services/ReminderService";
 import { Reminder } from "@/types/reminder";
 import { useFetchData } from "@/hooks/useFetchData";
 import { dateFormat } from "@/utils/dateFormat";
+import Loading from "@/components/common/Loading";
 
-export default function KanbanList() {
+function ReminderList() {
     const {
         data: reminders,
         isLoading,
@@ -68,5 +69,12 @@ export default function KanbanList() {
                 />
             </div>
         </div>
+    );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <ReminderList />
+        </Suspense>
     );
 }

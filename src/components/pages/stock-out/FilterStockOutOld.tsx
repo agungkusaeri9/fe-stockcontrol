@@ -1,15 +1,12 @@
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput'
-import SelectLabel from '@/components/form/FormSelect'
 import Button from '@/components/ui/button/Button'
 import React, { useState } from 'react'
 import { useFetchData } from '@/hooks/useFetchData'
 import MachineService from '@/services/MachineService'
 import AreaService from '@/services/AreaService'
-import RackService from '@/services/RackService'
 import { Machine } from '@/types/machine'
 import { Area } from '@/types/area'
-import { Rack } from '@/types/rack'
 import { useForm } from 'react-hook-form'
 import FormSelect2 from '@/components/form/FormSelect2'
 import DatePicker from '@/components/form/datePicker'
@@ -91,7 +88,8 @@ const FilterStockOutOld = ({
         setLocalFilter(emptyFilter);
         setFilter(emptyFilter);
     };
-
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
         if (inputId === 'start_date') {

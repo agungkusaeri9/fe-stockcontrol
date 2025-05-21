@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import { useParams } from "next/navigation";
 import { useFetchById } from "@/hooks/useFetchDetailData";
@@ -8,6 +8,7 @@ import DataTable from "@/components/common/DataTable";
 import { Kanban } from "@/types/kanban";
 import KanbanService from "@/services/KanbanService";
 import { Supplier } from "@/types/supplier";
+import Loading from "@/components/common/Loading";
 
 export default function Page() {
     const params = useParams();
@@ -16,22 +17,16 @@ export default function Page() {
 
 
     if (!kanban) return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
-            <div className="flex flex-col items-center gap-2">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                <div className="text-gray-500">Loading...</div>
-            </div>
-        </div>
+      <Loading/>
     );
 
-    let counter = 0;
     const columns = [
           {
             header: "No.",
             accessorKey: "id",
-            cell: (item:any) => {
+            cell: (item:Supplier) => {
                 const suppliers = Array.isArray(kanban?.supplier) ? kanban.supplier : [kanban?.supplier];
-                const index = suppliers.findIndex((area: any) => area.id === item.id) ?? 0;
+                const index = suppliers.findIndex((supplier: Supplier) => supplier.id === item.id) ?? 0;
                 return index + 1;
             },
         },

@@ -1,4 +1,3 @@
-import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput'
 import Button from '@/components/ui/button/Button'
 import React, { useState, useEffect } from 'react'
@@ -95,6 +94,7 @@ const FilterStockOut = ({
         setIsOpen(false);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
         if (inputId === 'start_date') {

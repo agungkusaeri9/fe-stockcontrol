@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchData } from "@/hooks/useFetchData";
@@ -7,11 +7,11 @@ import { useDeleteData } from "@/hooks/useDeleteData";
 import { confirmDelete } from "@/utils/confirm";
 import Button from "@/components/ui/button/Button";
 import DataTable from "@/components/common/DataTable";
-import { Machine } from "@/types/machine";
 import OperatorService from "@/services/OperatorService";
 import { Operator } from "@/types/operator";
+import Loading from "@/components/common/Loading";
 
-export default function AreaListPage() {
+function OperatorListContent() {
     const {
         data: operators,
         isLoading,
@@ -92,5 +92,13 @@ export default function AreaListPage() {
                 />
             </div>
         </div>
+    );
+}
+
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <OperatorListContent />
+        </Suspense>
     );
 }

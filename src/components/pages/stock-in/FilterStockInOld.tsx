@@ -1,4 +1,3 @@
-import ComponentCard from '@/components/common/ComponentCard'
 import DatePicker from '@/components/form/datePicker'
 import InputLabel from '@/components/form/FormInput'
 import Button from '@/components/ui/button/Button'
@@ -12,7 +11,7 @@ interface FilterFormData {
     end_date: string;
     code: string;
 }
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
@@ -53,6 +52,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
         setIsOpen(false);
     };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
         if (inputId === 'start_date') {

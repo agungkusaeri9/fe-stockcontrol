@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PurchaseRequestService from "@/services/PurchaseRequestService";
 import ButtonLink from "@/components/ui/button/ButtonLink";
@@ -8,8 +8,9 @@ import { dateFormat } from "@/utils/dateFormat";
 import DataTable from "@/components/common/DataTable";
 import { PurchaseRequest } from "@/types/purchaseRequest";
 import { useFetchDataPR } from "@/hooks/useFetchDataPR";
+import Loading from "@/components/common/Loading";
 
-export default function Page() {
+ function ListPr() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
@@ -88,5 +89,13 @@ export default function Page() {
                 />
             </div>
         </div>
+    );
+}
+
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <ListPr/>
+        </Suspense>
     );
 }
