@@ -9,6 +9,7 @@ type Filter = {
     machine_area_id: number | null;
     rack_id: number | null;
     keyword: string;
+    status: string | null;
 }
 
 export type FetchFunctionWithPagination<T> = (
@@ -17,7 +18,8 @@ export type FetchFunctionWithPagination<T> = (
     keyword?: string,
     machine_id?: number | null,
     machine_area_id?: number | null,
-    rack_id?: number | null
+    rack_id?: number | null,
+    status?: string | null
 ) => Promise<PaginatedResponse<T>>;
 
 export const useFetchDataKanban = <T>(
@@ -80,6 +82,12 @@ export const useFetchDataKanban = <T>(
             newParams.delete("rack_id");
         }
 
+        if (filter.status) {
+            newParams.set("status", filter.status);
+        } else {
+            newParams.delete("status");
+        }
+
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
@@ -90,7 +98,8 @@ export const useFetchDataKanban = <T>(
             filter.keyword,
             filter.machine_id,
             filter.machine_area_id,
-            filter.rack_id
+            filter.rack_id,
+            filter.status
         );
         setPagination(res.pagination);
         return res.data;
@@ -98,7 +107,7 @@ export const useFetchDataKanban = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id]
+            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id, filter.status]
             : [queryKey],
         queryFn: fetchData,
     });

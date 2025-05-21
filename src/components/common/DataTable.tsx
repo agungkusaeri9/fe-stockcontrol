@@ -34,6 +34,7 @@ interface DataTableProps {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         render: (item: any) => React.ReactNode;
     };
+    headerRight?: React.ReactNode;
 }
 
 export default function DataTable({
@@ -43,8 +44,10 @@ export default function DataTable({
     isLoading = false,
     pagination,
     search,
+    headerRight,
     expandable
 }: DataTableProps) {
+
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
@@ -78,7 +81,7 @@ export default function DataTable({
     }, [data, sortConfig]);
 
     return (
-        <ComponentCard title={String(title)} className="w-full">
+        <ComponentCard title={String(title)} className="w-full" headerRight={headerRight}>
             <div className="mb-3 flex items-center justify-between">
                 {pagination && (
                     <div className="flex items-center gap-2">

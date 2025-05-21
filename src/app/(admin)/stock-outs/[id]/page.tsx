@@ -45,10 +45,10 @@ export default function Page() {
                                 </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                      Kanban Number
+                                      Code
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                      {stockOut?.kanban?.code}
+                                      {stockOut?.kanban_code}
                                     </div>
                                 </div>
                             </div>
@@ -56,10 +56,10 @@ export default function Page() {
                             <div className="grid grid-cols-2 gap-4">
                                  <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                       Specification
+                                       Machine Code
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockOut.kanban?.specification}
+                                        {stockOut.machine?.code}
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -78,21 +78,21 @@ export default function Page() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        Description
+                                        Machine Area
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockOut?.kanban?.description}
+                                        {stockOut?.machine_area?.name}
                                     </div>
                                 </div>
                             </div>
-                            <div className="space-y-1">
+                            {/* <div className="space-y-1">
                                 <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                     Unit
                                 </div>
                                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
                                     {stockOut?.kanban?.uom}
                                 </div>
-                            </div>
+                            </div> */}
                     
                         </div>
                     </div>

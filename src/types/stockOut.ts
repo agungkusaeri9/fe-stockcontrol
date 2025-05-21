@@ -4,7 +4,7 @@ import { Machine } from "./machine";
 
 export type StockOut = {
     id: number;
-    kanban:Kanban;
+    kanban_code:string;
     quantity:number;
     machine_area:Area;
     machine:Machine;

@@ -1,21 +1,22 @@
 import { ApiResponse } from "@/types/api";
+import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
 import { Supplier } from "@/types/supplier";
 import api from "@/utils/api";
 
 type Form = {
   name: string;
 }
-const get = async (
-  page?: number,
-  limit?: number,
-  keyword?: string,
-): Promise<ApiResponse<Supplier[]>> => {
-  const response = await api.get<ApiResponse<Supplier[]>>("suppliers", {
-    params: { limit, keyword, page, paginate:true },
+const get: FetchFunctionWithPagination<Supplier> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Supplier>> => {
+  const response = await api.get<PaginatedResponse<Supplier>>("suppliers", {
+    params: { limit, keyword, page, paginate: true },
   });
   return response.data;
-  
 };
+
 
 const getWithoutPagination = async (
 

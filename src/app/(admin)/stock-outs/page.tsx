@@ -10,12 +10,17 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchDataStock } from "@/hooks/useFetchDataStock";
 import { StockOut } from "@/types/stockOut";
 import FilterStockOut from "@/components/pages/stock-out/FilterStockOut";
+import { useFetchDataStockOut } from "@/hooks/useFetchDataStockOut";
+import FilterStockOutOld from "@/components/pages/stock-out/FilterStockOutOld";
 
 export default function Page() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
-        keyword: '',
+        code: '',
+        machine_id: null as number | null,
+        machine_area_id: null as number | null,
+        keyword: ''
     });
     const {
         data: stockOut,
@@ -26,7 +31,7 @@ export default function Page() {
         setKeyword,
         limit,
         pagination
-    } = useFetchDataStock(StockOutService.get, "stockOut", true, filter);
+    } = useFetchDataStockOut(StockOutService.get, "stockOut", true, filter);
     const columns = [
         {
             header: 'Date',
@@ -37,35 +42,22 @@ export default function Page() {
             header: "Code",
             accessorKey: "kanban_code"
         },
+         
           {
+            header: "Machine",
+            accessorKey: "machine.code",
+            cell: (item: StockOut) => item.machine?.code 
+            
+        },
+          {
+            header: "Machine Area",
+            accessorKey: "machine_area",
+             cell: (item: StockOut) => item.machine_area?.name
+        },
+         {
             header: "Quantity",
             accessorKey: "quantity"
         },
-        // {
-        //     header: "Description",
-        //     accessorKey: "kanban.description",
-        //     cell: (item: stockOut) => item.kanban?.description || '-'
-        // },
-        //   {
-        //     header: "Specification",
-        //     accessorKey: "kanban.specification",
-        //     cell: (item: stockOut) => item.kanban?.specification || '-'
-        // },
-        //   {
-        //     header: "Machine",
-        //     accessorKey: "machine",
-        //     cell: (item: stockOut) => item.kanban.machine?.code || '-'
-        // },
-        //   {
-        //     header: "Machine Area",
-        //     accessorKey: "machine_area",
-        //     cell: (item: stockOut) => item.kanban.machine_area?.name || '-'
-        // },
-        //   {
-        //     header: "Rack",
-        //     accessorKey: "rack",
-        //     cell: (item: stockOut) => item.kanban.rack?.code || '-'
-        // },
         {
             header: 'Action',
             accessorKey: 'id',
@@ -91,9 +83,10 @@ export default function Page() {
                 ]}
             />
             <div className="space-y-6">
-                <FilterStockOut filter={filter} setFilter={setFilter} />
+                {/* <FilterStockOutOld filter={filter} setFilter={setFilter} /> */}
                 <DataTable
-                    title="Stock Out History History"
+                    title="Stock Out History"
+                    headerRight={<FilterStockOut filter={filter} setFilter={setFilter} />}
                     columns={columns}
                     data={stockOut || []}
                     isLoading={isLoading}

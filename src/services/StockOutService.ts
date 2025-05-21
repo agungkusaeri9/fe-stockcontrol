@@ -14,7 +14,9 @@ const get: FetchFunctionWithPagination<StockOut> = async (
   limit = 10,
   start_date?: string,
   end_date?: string,
-  keyword?: string
+  code?: string,
+  machine_id?: number,
+  machine_area_id?: number,
 ): Promise<PaginatedResponse<StockOut>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
@@ -25,8 +27,9 @@ const get: FetchFunctionWithPagination<StockOut> = async (
   
   if (start_date)  params.start_date = start_date;
   if (end_date) params.end_date = end_date;
-  if (keyword) params.keyword = keyword;
-
+  if (code) params.keyword = code;
+  if (machine_id) params.machine_id = machine_id;
+  if (machine_area_id) params.machine_area_id = machine_area_id;
   const response = await api.get<PaginatedResponse<StockOut>>("stock-outs", { params });
   return response.data;
 };

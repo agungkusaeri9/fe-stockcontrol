@@ -8,22 +8,20 @@ import { useFetchData } from "@/hooks/useFetchData";
 import StockInService from "@/services/StockInService";
 import { StockIn } from "@/types/stockIn";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import FilterStockIn from "@/components/pages/stock-in/FilterStockIn";
 import { useFetchDataStock } from "@/hooks/useFetchDataStock";
+import FilterStockIn from "@/components/pages/stock-in/FilterStockInOld";
 
 export default function Page() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
-        keyword: '',
+        code: '',
     });
     const {
         data: stockIn,
         isLoading,
         setCurrentPage,
         setLimit,
-        keyword,
-        setKeyword,
         limit,
         pagination
     } = useFetchDataStock(StockInService.get, "stockIn", true, filter);
@@ -66,9 +64,10 @@ export default function Page() {
                 ]}
             />
             <div className="space-y-6">
-                <FilterStockIn filter={filter} setFilter={setFilter} />
+                {/* <FilterStockIn filter={filter} setFilter={setFilter} /> */}
                 <DataTable
                     title="Stock In History"
+                    headerRight={<FilterStockIn filter={filter} setFilter={setFilter} />}
                     columns={columns}
                     data={stockIn || []}
                     isLoading={isLoading}

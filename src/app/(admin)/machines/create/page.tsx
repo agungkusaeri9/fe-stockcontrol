@@ -48,7 +48,7 @@ export default function CreateArea() {
                 ]} 
             />
             <div className="space-y-6">
-                <ComponentCard title="Create Area">
+                <ComponentCard title="Create Machine">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <InputLabel
                             label="Code"
@@ -78,7 +78,7 @@ export default function CreateArea() {
                                 disabled={isPending} 
                                 loading={isPending}
                             >
-                                Create Area
+                                Create Machine
                             </Button>
                         </div>
                     </form>

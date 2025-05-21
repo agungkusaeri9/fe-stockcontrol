@@ -8,17 +8,21 @@ type Filter = {
     start_date: string;
     end_date: string;
     code: string;
+    machine_id: number | null;
+    machine_area_id: number | null;
 }
 
 export type FetchFunctionWithPagination<T> = (
     page?: number,
     limit?: number,
-    code?: string,
     start_date?: string,
     end_date?: string,
+    code?: string,
+    machine_id?: number | null,
+    machine_area_id?: number | null,
 ) => Promise<PaginatedResponse<T>>;
 
-export const useFetchDataStock = <T>(
+export const useFetchDataStockOut = <T>(
     fetchFunction: FetchFunctionWithPagination<T>,
     queryKey: string,
     usePagination: boolean = true,
@@ -33,8 +37,13 @@ export const useFetchDataStock = <T>(
     const [limit, setLimit] = useState(
         usePagination ? Number(searchParams.get("limit")) || 10 : 50
     );
-    const [code, setcode] = useState(searchParams.get("code") || "");
-    const debouncedSearch = useDebounce(code, 500);
+    const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
+    const [code, setCode] = useState(searchParams.get("code") || "");
+    const [start_date, setStartDate] = useState(searchParams.get("start_date") || "");
+    const [end_date, setEndDate] = useState(searchParams.get("end_date") || "");
+    const [machine_id, setMachineId] = useState<string | null>(searchParams.get("machine_id") || null);
+    const [machine_area_id, setMachineAreaId] = useState<string | null>(searchParams.get("machine_area_id") || null);
+    // const debouncedSearch = useDebounce(keyword, 500);
     const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
 
     const handlePageChange = (page: number) => {
@@ -54,11 +63,28 @@ export const useFetchDataStock = <T>(
         newParams.set("limit", limit.toString());
         newParams.set("page", currentPage.toString());
 
+        if (keyword) {
+            newParams.set("keyword", keyword);
+        } else {
+            newParams.delete("keyword");
+        }
 
         if (filter.start_date) {
             newParams.set("start_date", filter.start_date);
         } else {
             newParams.delete("start_date");
+        }
+
+        if (filter.machine_id) {
+            newParams.set("machine_id", filter.machine_id.toString());
+        } else {
+            newParams.delete("machine_id");
+        }
+
+        if (filter.machine_area_id) {
+            newParams.set("machine_area_id", filter.machine_area_id.toString());
+        } else {
+            newParams.delete("machine_area_id");
         }
 
         if (filter.end_date) {
@@ -74,7 +100,7 @@ export const useFetchDataStock = <T>(
         }
 
         router.push(`?${newParams.toString()}`, { scroll: false });
-    }, [code, currentPage, limit, filter, usePagination, router, searchParams]);
+    }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
     const fetchData = async (): Promise<T[]> => {
         const res = await fetchFunction(
@@ -82,7 +108,9 @@ export const useFetchDataStock = <T>(
             limit,
             filter.start_date,
             filter.end_date,
-            filter.code
+            filter.code,
+            filter.machine_id,
+            filter.machine_area_id
         );
         setPagination(res.pagination);
         return res.data;
@@ -90,7 +118,7 @@ export const useFetchDataStock = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, debouncedSearch, filter.start_date, filter.end_date, filter.code]
+            ? [queryKey, currentPage, limit, filter.start_date, filter.end_date, filter.code, filter.machine_id, filter.machine_area_id]
             : [queryKey],
         queryFn: fetchData,
     });
@@ -101,8 +129,8 @@ export const useFetchDataStock = <T>(
         pagination,
         currentPage,
         limit,
-        code,
-        setcode,
+        keyword,
+        setKeyword,
         setCurrentPage: handlePageChange,
         setLimit,
         refetch,

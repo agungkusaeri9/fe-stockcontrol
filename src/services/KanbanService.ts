@@ -22,7 +22,8 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   keyword = "",
   machine_id = null,
   machine_area_id = null,
-  rack_id = null
+  rack_id = null,
+  status = null
 ): Promise<PaginatedResponse<Kanban>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
@@ -35,7 +36,7 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   if(machine_area_id) params.machine_area_id = machine_area_id;
   if(rack_id) params.rack_id = rack_id;
   if(keyword) params.keyword = keyword;
-
+  if(status) params.status = status;
   const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {params});
   return response.data;
 };

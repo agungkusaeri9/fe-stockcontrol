@@ -70,7 +70,7 @@ export default function AreaListPage() {
 
     return (
         <div>
-            <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'machines', href: '/machines' }]} />
+            <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Machines', href: '/machines' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
                     <ButtonLink size='xs' href="/machines/create">Create Machine</ButtonLink>

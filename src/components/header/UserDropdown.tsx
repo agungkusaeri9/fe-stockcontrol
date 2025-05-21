@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next/client";
+import Loading from "../common/Loading";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +38,8 @@ export default function UserDropdown() {
   const handleLogout = async () => {
     deleteCookie('token', { path: '/' });
     deleteCookie('user', { path: '/' });
+    <Loading/>
     router.push("/");
-
   }
   return (
     <div className="relative">

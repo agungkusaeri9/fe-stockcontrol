@@ -14,13 +14,15 @@ import RackService from "@/services/RackService";
 import MachineService from "@/services/MachineService";
 import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
+import { Badge } from "lucide-react";
 
 export default function Page() {
       const [filter, setFilter] = useState({
         machine_id: null as number | null,
         machine_area_id: null as number | null,
         rack_id: null as number | null,
-        keyword:""
+        keyword:"",
+        status: null as string | null
     });
  const {
         data: kanbans,
@@ -50,10 +52,10 @@ export default function Page() {
             header: "Description",
             accessorKey: "description",
         },
-          {
-            header: "Specification",
-            accessorKey: "specification",
-        },
+        //   {
+        //     header: "Specification",
+        //     accessorKey: "specification",
+        // },
           {
             header: "Machine",
             accessorKey: "machine",
@@ -69,9 +71,33 @@ export default function Page() {
             accessorKey: "rack",
             cell: (item: Kanban) => item.rack?.code || '-'
         },
+         {
+            header: "Min.",
+            accessorKey: "min_quantity",
+        },
+         {
+            header: "Max.",
+            accessorKey: "max_quantity",
+        },
           {
             header: "Balance",
             accessorKey: "balance",
+        },
+        {
+            header: "Status",
+            accessorKey: "status",
+            cell: (item: Kanban) => {
+                const balance = Number(item.balance);
+                const min = Number(item.min_quantity);
+                const max = Number(item.max_quantity);
+
+                if(balance > max)
+                  return <div className="text-red-700 text-xs text-center w-full bg-red-100 rounded-md px-2 py-1 dark:bg-red-800/20 dark:text-red-400">Over Stock</div>
+                else if(balance < min)
+                  return <div className="text-yellow-700 text-xs text-center w-full bg-yellow-100 rounded-md px-2 py-1 dark:bg-yellow-800/20 dark:text-yellow-400">Under Stock</div>
+                else
+                  return <div className="text-green-700 text-xs text-center w-full bg-green-100 rounded-md px-2 py-1 dark:bg-green-800/20 dark:text-green-400">Normal</div>
+            }
         }
     ];
     
@@ -82,14 +108,11 @@ export default function Page() {
                 { label: 'Balance', href: '/balance' }
             ]} />
            <div className="space-y-6">
-                <FilterKanban
-                    filter={filter}
-                    setFilter={setFilter}
-                />
                 <DataTable
                     title="Balance"
                     columns={columns}
                     data={kanbans || []}
+                    headerRight={<FilterKanban filter={filter} setFilter={setFilter} />}
                     isLoading={isLoading}
                     pagination={{
                         currentPage: pagination?.curr_page || 1,

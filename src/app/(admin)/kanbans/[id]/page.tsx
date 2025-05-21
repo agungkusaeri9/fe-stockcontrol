@@ -1,26 +1,48 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import PurchaseOrderService from "@/services/PurchaseOrderService";
 import { useParams } from "next/navigation";
 import { useFetchById } from "@/hooks/useFetchDetailData";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import { dateFormat } from "@/utils/dateFormat";
 import DataTable from "@/components/common/DataTable";
-import { PurchaseOrder } from "@/types/purchaseOrder";
 import { Kanban } from "@/types/kanban";
 import KanbanService from "@/services/KanbanService";
+import { Supplier } from "@/types/supplier";
 
 export default function Page() {
     const params = useParams();
     const id = params.id;
     const { data: kanban } = useFetchById<Kanban>(KanbanService.getById, Number(id), "kanban");
 
+
     if (!kanban) return (
-        <div className="flex items-center justify-center min-h-[400px]">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+            <div className="flex flex-col items-center gap-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <div className="text-gray-500">Loading...</div>
+            </div>
         </div>
     );
+
+    let counter = 0;
+    const columns = [
+          {
+            header: "No.",
+            accessorKey: "id",
+            cell: (item:any) => {
+                const suppliers = Array.isArray(kanban?.supplier) ? kanban.supplier : [kanban?.supplier];
+                const index = suppliers.findIndex((area: any) => area.id === item.id) ?? 0;
+                return index + 1;
+            },
+        },
+        {
+            header: "Name",
+            accessorKey: "name",
+            cell: (item: Supplier) => {
+                return <div>{item?.name || '-'}</div>
+            },
+        }
+    ];
 
     return (
         <div className="space-y-6">
@@ -144,6 +166,12 @@ export default function Page() {
                         </div>
                     </div>
                 </ComponentCard>
+                     <DataTable
+                    title="Supplier List"
+                    columns={columns}
+                    data={kanban.supplier ? (Array.isArray(kanban.supplier) ? kanban.supplier : [kanban.supplier]) : []}
+                    // isLoading={isLoading}
+                    />
             </div>
         </div>
     );

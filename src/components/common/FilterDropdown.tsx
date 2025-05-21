@@ -1,54 +1,45 @@
-import ComponentCard from '@/components/common/ComponentCard'
-import InputLabel from '@/components/form/FormInput'
-import Button from '@/components/ui/button/Button'
-import React, { useState, useEffect } from 'react'
-import { useFetchData } from '@/hooks/useFetchData'
-import MachineService from '@/services/MachineService'
-import AreaService from '@/services/AreaService'
-import { Machine } from '@/types/machine'
-import { Area } from '@/types/area'
-import { useForm } from 'react-hook-form'
-import FormSelect2 from '@/components/form/FormSelect2'
-import DatePicker from '@/components/form/datePicker'
-import { dateFormat } from '@/utils/dateFormat'
-import { Dropdown } from '@/components/ui/dropdown/Dropdown'
+import React, { useState, useEffect } from 'react';
+import { Dropdown } from '@/components/ui/dropdown/Dropdown';
+import Button from '@/components/ui/button/Button';
+import DatePicker from '@/components/form/datePicker';
+import FormSelect2 from '@/components/form/FormSelect2';
+import { useForm } from 'react-hook-form';
+import { useFetchData } from '@/hooks/useFetchData';
+import MachineService from '@/services/MachineService';
+import AreaService from '@/services/AreaService';
+import { Machine } from '@/types/machine';
+import { Area } from '@/types/area';
+import { dateFormat } from '@/utils/dateFormat';
 
 interface FilterFormData {
     start_date: string;
     end_date: string;
-    code: string;
     machine_id: { value: number; label: string } | null;
     machine_area_id: { value: number; label: string } | null;
 }
 
-const FilterStockOut = ({ 
-    filter, 
-    setFilter 
-}: { 
-    filter: { 
-        start_date: string,
-        end_date: string,
-        code: string,
-        machine_id: number | null, 
-        machine_area_id: number | null,
-        keyword: string
-    }, 
-    setFilter: (filter: { 
-        start_date: string,
-        end_date: string,
-        code: string,
-        machine_id: number | null, 
-        machine_area_id: number | null,
-        keyword: string
-    }) => void 
-}) => {
+interface FilterDropdownProps {
+    filter: {
+        start_date: string;
+        end_date: string;
+        machine_id: number | null;
+        machine_area_id: number | null;
+    };
+    setFilter: (filter: {
+        start_date: string;
+        end_date: string;
+        machine_id: number | null;
+        machine_area_id: number | null;
+    }) => void;
+}
+
+const FilterDropdown: React.FC<FilterDropdownProps> = ({ filter, setFilter }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
-    const { register, handleSubmit, reset, control, setValue, watch } = useForm<FilterFormData>({
+    const { control, handleSubmit, reset, setValue, watch } = useForm<FilterFormData>({
         defaultValues: {
             start_date: filter.start_date,
             end_date: filter.end_date,
-            code: filter.code,
             machine_id: null,
             machine_area_id: null,
         }
@@ -57,41 +48,35 @@ const FilterStockOut = ({
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
     const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
 
+    // Watch form values to update active filters count
     const formValues = watch();
     useEffect(() => {
         let count = 0;
         if (formValues.start_date) count++;
         if (formValues.end_date) count++;
-        if (formValues.code) count++;
         if (formValues.machine_id) count++;
         if (formValues.machine_area_id) count++;
         setActiveFilters(count);
     }, [formValues]);
 
     const onSubmit = (data: FilterFormData) => {
-        const newFilter = {
-            machine_id: data.machine_id?.value || null, 
-            machine_area_id: data.machine_area_id?.value || null,  
+        setFilter({
             start_date: data.start_date,
             end_date: data.end_date,
-            code: data.code,
-            keyword: ""
-        };
-        setFilter(newFilter);
+            machine_id: data.machine_id?.value || null,
+            machine_area_id: data.machine_area_id?.value || null,
+        });
         setIsOpen(false);
     };
 
     const handleReset = () => {
         reset();
-        const emptyFilter = {
+        setFilter({
             start_date: "",
             end_date: "",
-            code: "",
-            machine_id: null, 
-            machine_area_id: null, 
-            keyword: ""
-        };
-        setFilter(emptyFilter);
+            machine_id: null,
+            machine_area_id: null,
+        });
         setIsOpen(false);
     };
 
@@ -138,17 +123,6 @@ const FilterStockOut = ({
                         </button>
                     </div>
                 )}
-                {filter.code && (
-                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Code: {filter.code}</span>
-                        <button 
-                            onClick={() => removeFilter('code')}
-                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                            ×
-                        </button>
-                    </div>
-                )}
                 {filter.machine_id && machines && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Machine: {machines.find(m => m.id === filter.machine_id)?.code}</span>
@@ -177,7 +151,7 @@ const FilterStockOut = ({
                     onClick={() => setIsOpen(!isOpen)}
                     variant="outline"
                     size="sm"
-                    className="flex items-center gap-2 relative"
+                    className="flex items-center gap-2"
                 >
                     <svg
                         className="w-4 h-4"
@@ -194,14 +168,14 @@ const FilterStockOut = ({
                         />
                     </svg>
                     Filter
-                    {/* {activeFilters} */}
                     {activeFilters > 0 && (
-                        <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-blue-500 rounded-full">
+                        <span className="flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-primary rounded-full">
                             {activeFilters}
                         </span>
                     )}
                 </Button>
             </div>
+
             <Dropdown
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
@@ -213,13 +187,6 @@ const FilterStockOut = ({
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="space-y-4">
-                        <InputLabel
-                            placeholder="Code"
-                            label="Code"
-                            name="code"
-                            onChange={(e) => setValue('code', e.target.value)}
-                            register={register("code")}
-                        />
                         <DatePicker
                             placeholder='Start Date'
                             label='Start Date'
@@ -281,7 +248,7 @@ const FilterStockOut = ({
                 </form>
             </Dropdown>
         </div>
-    )
-}
+    );
+};
 
-export default FilterStockOut
+export default FilterDropdown; 

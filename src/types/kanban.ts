@@ -1,6 +1,7 @@
 import { Area } from "./area";
 import { Machine } from "./machine";
 import { Rack } from "./rack";
+import { Supplier } from "./supplier";
 
 export type Kanban = {
     id: number;
@@ -16,6 +17,7 @@ export type Kanban = {
     rack: Rack;
     stock_in_quantity: number;
     uom: string;
+    supplier: Supplier;
     created_at: string;
     updated_at: string;
 }

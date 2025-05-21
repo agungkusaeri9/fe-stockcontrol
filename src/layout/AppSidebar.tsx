@@ -103,6 +103,8 @@ const AppSidebar: React.FC = () => {
         { name: "Machine", path: "/machines", pro: false },
         { name: "Rack", path: "/racks", pro: false },
         { name: "Kanban", path: "/kanbans", pro: false },
+        { name: "Makers", path: "/makers", pro: false },
+        { name: "Suppliers", path: "/suppliers", pro: false },
       ],
       requiresAuth: true
     },

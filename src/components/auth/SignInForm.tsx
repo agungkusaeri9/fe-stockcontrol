@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { loginValidation } from "@/validators/auth/login";
 import InputLabel from "../form/FormInput";
 import { z } from "zod";
+import Loading from "../common/Loading";
 
 type LoginFormData = z.infer<typeof loginValidation>;
 
@@ -24,7 +25,7 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-  const { mutate: loginMutation, isPending: loading } = useMutation({
+  const { mutate: loginMutation, isPending: loading, isSuccess  } = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const response = await AuthService.login(data);
       return response;
@@ -48,8 +49,7 @@ export default function SignInForm() {
       router.push(callbackUrl);
     },
     onError: (error) => {
-      console.error('Login error:', error);
-      handleError(error);
+      // handleError(error);
     }
   });
 
@@ -62,10 +62,15 @@ export default function SignInForm() {
     loginMutation(data);
   };
 
+ if (isSuccess) return (
+       <Loading/>
+    );
+
   const handleWithoutLogin = () => {
     localStorage.setItem('role', 'guest');
     router.push("/dashboard");
   };
+
 
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full max-w-md mx-auto px-4 sm:px-0 mt-25">
