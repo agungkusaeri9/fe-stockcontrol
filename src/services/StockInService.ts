@@ -40,5 +40,26 @@ const getById = async (
   return response.data;
 };
 
-const StockInService = { get, getById };
+const exportExcel = async (
+  start_date?: string,
+  end_date?: string,
+  keyword?: string
+): Promise<Blob> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const params: any = {
+  };
+  
+  if (start_date)  params.start_date = start_date;
+  if (end_date) params.end_date = end_date;
+  if (keyword) params.keyword = keyword;
+
+  const response = await api.get("stock-ins/export/excel", { 
+    params,
+    responseType: 'blob'
+  });
+  return response.data;
+};
+
+
+const StockInService = { get, getById, exportExcel };
 export default StockInService;

@@ -12,6 +12,7 @@ interface FilterFormData {
     pr_number: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FilterPurchaseRequest = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
@@ -77,7 +78,7 @@ const FilterPurchaseRequest = ({ filter, setFilter }: { filter: any, setFilter: 
                 {filter.start_date && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Start: {dateFormat(filter.start_date, 'DD MMM YYYY')}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('start_date')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -88,7 +89,7 @@ const FilterPurchaseRequest = ({ filter, setFilter }: { filter: any, setFilter: 
                 {filter.end_date && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>End: {dateFormat(filter.end_date, 'DD MMM YYYY')}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('end_date')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -99,7 +100,7 @@ const FilterPurchaseRequest = ({ filter, setFilter }: { filter: any, setFilter: 
                 {filter.pr_number && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>PR: {filter.pr_number}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('pr_number')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >

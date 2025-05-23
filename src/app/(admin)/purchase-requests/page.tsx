@@ -10,7 +10,7 @@ import { PurchaseRequest } from "@/types/purchaseRequest";
 import { useFetchDataPR } from "@/hooks/useFetchDataPR";
 import Loading from "@/components/common/Loading";
 
- function ListPr() {
+function ListPr() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
@@ -56,10 +56,10 @@ import Loading from "@/components/common/Loading";
             header: 'Action',
             accessorKey: 'id',
             cell: (item: PurchaseRequest) => (
-                <ButtonLink 
-                    href={`/purchase-requests/${item.id}`} 
-                    variant='outline' 
-                    size='xs' 
+                <ButtonLink
+                    href={`/purchase-requests/${item.id}`}
+                    variant='outline'
+                    size='xs'
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                     Show
@@ -75,7 +75,7 @@ import Loading from "@/components/common/Loading";
                 <DataTable
                     title="Purchase Request History"
                     columns={columns}
-                    headerRight={ <FilterPurchaseRequest filter={filter} setFilter={setFilter} />}
+                    headerRight={<FilterPurchaseRequest filter={filter} setFilter={setFilter} />}
                     data={purchaseRequests || []}
                     isLoading={isLoading}
                     pagination={pagination ? {
@@ -95,7 +95,7 @@ import Loading from "@/components/common/Loading";
 export default function Page() {
     return (
         <Suspense fallback={<Loading />}>
-            <ListPr/>
+            <ListPr />
         </Suspense>
     );
 }

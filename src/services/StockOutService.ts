@@ -42,5 +42,30 @@ const getById = async (
   return response.data;
 };
 
-const StockOutService = { get, getById } ;
+
+const exportExcel = async (
+  code?: string,
+  start_date?: string,
+  end_date?: string,
+  machine_id?: number,
+  machine_area_id?: number,
+): Promise<Blob> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const params: any = {
+  };
+  
+  if (start_date)  params.start_date = start_date;
+  if (end_date) params.end_date = end_date;
+  if (code) params.keyword = code;
+  if (machine_id) params.machine_id = machine_id;
+  if (machine_area_id) params.machine_area_id = machine_area_id;
+
+  const response = await api.get("stock-outs/export/excel", { 
+    params,
+    responseType: 'blob'
+  });
+  return response.data;
+};
+
+const StockOutService = { get, getById,exportExcel } ;
 export default StockOutService;

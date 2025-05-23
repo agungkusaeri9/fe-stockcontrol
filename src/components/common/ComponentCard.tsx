@@ -22,7 +22,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
         <h3 className="text-base font-medium text-gray-800 dark:text-white/90">
           {title}
         </h3>
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-3">
           {headerRight}
         </div>
         {/* {desc && (
@@ -36,7 +36,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
       <div className="p-4 border-t border-gray-100 dark:border-gray-800 sm:p-6">
         <div className="space-y-6">
           {children}
-          </div>
+        </div>
       </div>
     </div>
   );

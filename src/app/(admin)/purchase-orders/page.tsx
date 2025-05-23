@@ -36,17 +36,17 @@ function PoList() {
             header: 'PO. Number',
             accessorKey: 'po_number'
         },
-         {
+        {
             header: 'PO.Date',
             accessorKey: 'po_date',
             cell: (item: PurchaseOrder) => dateFormat(item.po_date)
         },
-         {
+        {
             header: 'PR. Date',
             accessorKey: 'pr_date',
             cell: (item: PurchaseOrder) => dateFormat(item.pr_date)
         },
-         {
+        {
             header: 'Supplier',
             accessorKey: 'supplier_name',
             cell: (item: PurchaseOrder) => item.supplier?.name
@@ -55,10 +55,10 @@ function PoList() {
             header: 'Action',
             accessorKey: 'id',
             cell: (item: PurchaseOrder) => (
-                <ButtonLink 
-                    href={`/purchase-orders/${item.id}`} 
-                    variant='outline' 
-                    size='xs' 
+                <ButtonLink
+                    href={`/purchase-orders/${item.id}`}
+                    variant='outline'
+                    size='xs'
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                     Show
@@ -74,7 +74,7 @@ function PoList() {
                 <DataTable
                     title="Purchase Order History"
                     columns={columns}
-                    headerRight={  <FilterPurchaseOrder filter={filter} setFilter={setFilter} />}
+                    headerRight={<FilterPurchaseOrder filter={filter} setFilter={setFilter} />}
                     data={purchaseOrders || []}
                     isLoading={isLoading}
                     pagination={pagination ? {

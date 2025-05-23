@@ -11,7 +11,7 @@ interface FilterFormData {
     end_date: string;
     code: string;
 }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
@@ -52,7 +52,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
         setIsOpen(false);
     };
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
         if (inputId === 'start_date') {
@@ -77,7 +77,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                 {filter.start_date && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Start: {dateFormat(filter.start_date, 'DD MMM YYYY')}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('start_date')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -88,7 +88,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                 {filter.end_date && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>End: {dateFormat(filter.end_date, 'DD MMM YYYY')}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('end_date')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -99,7 +99,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                 {filter.code && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Code: {filter.code}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('code')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -149,7 +149,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="space-y-4">
-                         <InputLabel
+                        <InputLabel
                             placeholder="Code"
                             label="Code"
                             name="code"
@@ -172,7 +172,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                             mode='single'
                             defaultDate={filter.end_date}
                         />
-                       
+
                     </div>
                     <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button

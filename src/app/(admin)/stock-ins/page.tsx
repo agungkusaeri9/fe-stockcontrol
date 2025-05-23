@@ -10,6 +10,7 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchDataStock } from "@/hooks/useFetchDataStock";
 import FilterStockIn from "@/components/pages/stock-in/FilterStockInOld";
 import Loading from "@/components/common/Loading";
+import ExportStockIn from "@/components/pages/stock-in/ExportStockIn";
 
 function StockInList() {
     const [filter, setFilter] = useState({
@@ -31,29 +32,29 @@ function StockInList() {
             accessorKey: 'po_date',
             cell: (item: StockIn) => dateFormat(item.created_at)
         },
-       {
+        {
             header: "Code",
             accessorKey: "kanban_code"
         },
-          {
+        {
             header: "Quantity",
             accessorKey: "quantity"
         },
-           {
+        {
             header: "Operator",
             accessorKey: "operator",
-             cell: (item: StockIn) => (
-                item.operator?.name 
-             )
+            cell: (item: StockIn) => (
+                item.operator?.name
+            )
         },
         {
             header: 'Action',
             accessorKey: 'id',
             cell: (item: PurchaseOrder) => (
-                <ButtonLink 
-                    href={`/stock-ins/${item.id}`} 
-                    variant='outline' 
-                    size='xs' 
+                <ButtonLink
+                    href={`/stock-ins/${item.id}`}
+                    variant='outline'
+                    size='xs'
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                     Show
@@ -74,7 +75,12 @@ function StockInList() {
                 {/* <FilterStockIn filter={filter} setFilter={setFilter} /> */}
                 <DataTable
                     title="Stock In History"
-                    headerRight={<FilterStockIn filter={filter} setFilter={setFilter} />}
+                    headerRight={
+                        <>
+                            <FilterStockIn filter={filter} setFilter={setFilter} />
+                            <ExportStockIn filter={filter} />
+                        </>
+                    }
                     columns={columns}
                     data={stockIn || []}
                     isLoading={isLoading}

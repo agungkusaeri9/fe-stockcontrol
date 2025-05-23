@@ -9,6 +9,7 @@ import { StockOut } from "@/types/stockOut";
 import FilterStockOut from "@/components/pages/stock-out/FilterStockOut";
 import { useFetchDataStockOut } from "@/hooks/useFetchDataStockOut";
 import Loading from "@/components/common/Loading";
+import ExportStockOut from "@/components/pages/stock-out/ExportStockOut";
 
 function StockOutList() {
     const [filter, setFilter] = useState({
@@ -33,39 +34,39 @@ function StockOutList() {
             accessorKey: 'po_date',
             cell: (item: StockOut) => dateFormat(item.created_at)
         },
-       {
+        {
             header: "Code",
             accessorKey: "kanban_code"
         },
-         
-          {
+
+        {
             header: "Machine",
             accessorKey: "machine.code",
-            cell: (item: StockOut) => item.machine?.code 
-            
+            cell: (item: StockOut) => item.machine?.code
+
         },
-          {
+        {
             header: "Machine Area",
             accessorKey: "machine_area",
-             cell: (item: StockOut) => item.machine_area?.name
+            cell: (item: StockOut) => item.machine_area?.name
         },
-         {
+        {
             header: "Quantity",
             accessorKey: "quantity"
         },
-          {
+        {
             header: "Operator",
             accessorKey: "operator",
-             cell: (item: StockOut) => item.operator?.name
+            cell: (item: StockOut) => item.operator?.name
         },
         {
             header: 'Action',
             accessorKey: 'id',
             cell: (item: StockOut) => (
-                <ButtonLink 
-                    href={`/stock-outs/${item.id}`} 
-                    variant='outline' 
-                    size='xs' 
+                <ButtonLink
+                    href={`/stock-outs/${item.id}`}
+                    variant='outline'
+                    size='xs'
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                     Show
@@ -86,7 +87,13 @@ function StockOutList() {
                 {/* <FilterStockOutOld filter={filter} setFilter={setFilter} /> */}
                 <DataTable
                     title="Stock Out History"
-                    headerRight={<FilterStockOut filter={filter} setFilter={setFilter} />}
+                    headerRight={
+
+                        <>
+                            <FilterStockOut filter={filter} setFilter={setFilter} />
+                            <ExportStockOut filter={filter} />
+                        </>
+                    }
                     columns={columns}
                     data={stockOut || []}
                     isLoading={isLoading}
