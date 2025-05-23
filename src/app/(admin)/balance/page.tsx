@@ -9,14 +9,14 @@ import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 import Loading from "@/components/common/Loading";
 
 function BalanceList() {
-      const [filter, setFilter] = useState({
+    const [filter, setFilter] = useState({
         machine_id: null as number | null,
         machine_area_id: null as number | null,
         rack_id: null as number | null,
-        keyword:"",
+        keyword: "",
         status: null as string | null
     });
- const {
+    const {
         data: kanbans,
         isLoading,
         setCurrentPage,
@@ -25,7 +25,7 @@ function BalanceList() {
         pagination
     } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
-     const columns = [
+    const columns = [
         // {
         //     header: "#",
         //     accessorKey: "id",
@@ -38,7 +38,7 @@ function BalanceList() {
             header: "Code",
             accessorKey: "code",
         },
-          {
+        {
             header: "Description",
             accessorKey: "description",
         },
@@ -46,30 +46,30 @@ function BalanceList() {
         //     header: "Specification",
         //     accessorKey: "specification",
         // },
-          {
+        {
             header: "Machine",
             accessorKey: "machine",
             cell: (item: Kanban) => item.machine?.code || '-'
         },
-          {
+        {
             header: "Machine Area",
             accessorKey: "machine_area",
             cell: (item: Kanban) => item.machine_area?.name || '-'
         },
-          {
+        {
             header: "Rack",
             accessorKey: "rack",
             cell: (item: Kanban) => item.rack?.code || '-'
         },
-         {
+        {
             header: "Min.",
             accessorKey: "min_quantity",
         },
-         {
+        {
             header: "Max.",
             accessorKey: "max_quantity",
         },
-          {
+        {
             header: "Balance",
             accessorKey: "balance",
         },
@@ -81,23 +81,23 @@ function BalanceList() {
                 const min = Number(item.min_quantity);
                 const max = Number(item.max_quantity);
 
-                if(balance > max)
-                  return <div className="text-red-700 text-xs text-center w-full bg-red-100 rounded-md px-2 py-1 dark:bg-red-800/20 dark:text-red-400">Over Stock</div>
-                else if(balance < min)
-                  return <div className="text-yellow-700 text-xs text-center w-full bg-yellow-100 rounded-md px-2 py-1 dark:bg-yellow-800/20 dark:text-yellow-400">Under Stock</div>
+                if (balance > max)
+                    return <div className="text-red-700 text-xs text-center w-full bg-red-100 rounded-md px-2 py-1 dark:bg-red-800/20 dark:text-red-400">Overstock</div>
+                else if (balance < min)
+                    return <div className="text-yellow-700 text-xs text-center w-full bg-yellow-100 rounded-md px-2 py-1 dark:bg-yellow-800/20 dark:text-yellow-400">Understock</div>
                 else
-                  return <div className="text-green-700 text-xs text-center w-full bg-green-100 rounded-md px-2 py-1 dark:bg-green-800/20 dark:text-green-400">Normal</div>
+                    return <div className="text-green-700 text-xs text-center w-full bg-green-100 rounded-md px-2 py-1 dark:bg-green-800/20 dark:text-green-400">Normal</div>
             }
         }
     ];
-    
+
     return (
         <div>
             <Breadcrumb items={[
-                { label: 'Dashboard', href: '/dashboard' }, 
+                { label: 'Dashboard', href: '/dashboard' },
                 { label: 'Balance', href: '/balance' }
             ]} />
-           <div className="space-y-6">
+            <div className="space-y-6">
                 <DataTable
                     title="Balance"
                     columns={columns}

@@ -1,7 +1,9 @@
+import { Supplier } from "./supplier";
+
 export type PurchaseOrder = {
     id: number;
     department:string;
-    supplier:string;
+    supplier:Supplier;
     po_number:string;
     po_date:string;
     pr_number:string;

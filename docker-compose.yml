@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stock-control-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:3210
+    restart: unless-stopped
+    networks:
+      - stock-control-network
+
+networks:
+  stock-control-network:
+    driver: bridge 

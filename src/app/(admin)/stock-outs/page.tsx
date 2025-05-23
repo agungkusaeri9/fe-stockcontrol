@@ -53,6 +53,11 @@ function StockOutList() {
             header: "Quantity",
             accessorKey: "quantity"
         },
+          {
+            header: "Operator",
+            accessorKey: "operator",
+             cell: (item: StockOut) => item.operator?.name
+        },
         {
             header: 'Action',
             accessorKey: 'id',

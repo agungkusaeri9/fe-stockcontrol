@@ -36,17 +36,20 @@ function PoList() {
             header: 'PO. Number',
             accessorKey: 'po_number'
         },
-        {
-            header: 'PR. Number',
-            accessorKey: 'pr_number'
+         {
+            header: 'PO.Date',
+            accessorKey: 'po_date',
+            cell: (item: PurchaseOrder) => dateFormat(item.po_date)
         },
-        {
-            header: 'Department',
-            accessorKey: 'department'
+         {
+            header: 'PR. Date',
+            accessorKey: 'pr_date',
+            cell: (item: PurchaseOrder) => dateFormat(item.pr_date)
         },
-        {
+         {
             header: 'Supplier',
-            accessorKey: 'supplier'
+            accessorKey: 'supplier_name',
+            cell: (item: PurchaseOrder) => item.supplier?.name
         },
         {
             header: 'Action',
@@ -68,10 +71,10 @@ function PoList() {
         <div>
             <PageBreadcrumb pageTitle="Purchase Order" />
             <div className="space-y-6">
-                <FilterPurchaseOrder filter={filter} setFilter={setFilter} />
                 <DataTable
                     title="Purchase Order History"
                     columns={columns}
+                    headerRight={  <FilterPurchaseOrder filter={filter} setFilter={setFilter} />}
                     data={purchaseOrders || []}
                     isLoading={isLoading}
                     pagination={pagination ? {

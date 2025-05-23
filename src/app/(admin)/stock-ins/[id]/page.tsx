@@ -22,12 +22,12 @@ export default function Page() {
 
     return (
         <div className="space-y-6">
-            <Breadcrumb 
+            <Breadcrumb
                 items={[
-                    { label: 'Dashboard', href: '/dashboard' }, 
-                    { label: 'Stock In', href: '/stock-ins' }, 
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Stock In', href: '/stock-ins' },
                     { label: 'Detail' }
-                ]} 
+                ]}
             />
 
             <div className="grid gap-6">
@@ -37,7 +37,7 @@ export default function Page() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                      Date
+                                        Date
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
                                         {dateFormat(stockIn?.created_at)}
@@ -45,23 +45,14 @@ export default function Page() {
                                 </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                      Kanban Number
+                                        Kanban Number
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                      {stockIn?.kanban?.code}
+                                        {stockIn?.kanban?.code}
                                     </div>
                                 </div>
                             </div>
-
                             <div className="grid grid-cols-2 gap-4">
-                                 <div className="space-y-1">
-                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                       Specification
-                                    </div>
-                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockIn.kanban?.specification}
-                                    </div>
-                                </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         Quantity
@@ -70,12 +61,28 @@ export default function Page() {
                                         {stockIn?.quantity}
                                     </div>
                                 </div>
-                               
+
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Unit
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {stockIn?.kanban?.uom}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Specification
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {stockIn.kanban?.specification}
+                                    </div>
+                                </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         Description
@@ -84,17 +91,20 @@ export default function Page() {
                                         {stockIn?.kanban?.description}
                                     </div>
                                 </div>
+
                             </div>
+
+
                             <div className="space-y-1">
                                 <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    Unit
+                                    Operator
                                 </div>
                                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {stockIn?.kanban?.uom}
+                                    {stockIn?.operator?.name}
                                 </div>
                             </div>
-                    
                         </div>
+
                     </div>
                 </ComponentCard>
             </div>

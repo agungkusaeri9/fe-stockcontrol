@@ -22,12 +22,12 @@ export default function Page() {
 
     return (
         <div className="space-y-6">
-            <Breadcrumb 
+            <Breadcrumb
                 items={[
-                    { label: 'Dashboard', href: '/dashboard' }, 
-                    { label: 'Stock Out', href: '/stock-outs' }, 
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Stock Out', href: '/stock-outs' },
                     { label: 'Detail' }
-                ]} 
+                ]}
             />
 
             <div className="grid gap-6">
@@ -37,7 +37,7 @@ export default function Page() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                      Date
+                                        Date
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
                                         {dateFormat(stockOut?.created_at)}
@@ -45,23 +45,15 @@ export default function Page() {
                                 </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                      Code
+                                        Code
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                      {stockOut?.kanban_code}
+                                        {stockOut?.kanban_code}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                                 <div className="space-y-1">
-                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                       Machine Code
-                                    </div>
-                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockOut.machine?.code}
-                                    </div>
-                                </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         Quantity
@@ -70,7 +62,15 @@ export default function Page() {
                                         {stockOut?.quantity}
                                     </div>
                                 </div>
-                               
+
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Operator
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {stockOut?.operator?.name}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -84,16 +84,15 @@ export default function Page() {
                                         {stockOut?.machine_area?.name}
                                     </div>
                                 </div>
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Machine Code
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {stockOut.machine?.code}
+                                    </div>
+                                </div>
                             </div>
-                            {/* <div className="space-y-1">
-                                <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    Unit
-                                </div>
-                                <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {stockOut?.kanban?.uom}
-                                </div>
-                            </div> */}
-                    
                         </div>
                     </div>
                 </ComponentCard>

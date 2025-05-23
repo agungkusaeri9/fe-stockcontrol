@@ -59,9 +59,9 @@ export default function Page() {
 
             <div className="grid gap-6">
                 <ComponentCard title="Purchase Order Detail" className="w-full">
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-1 gap-8">
                         <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-4 gap-4">
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         PO. Number
@@ -75,58 +75,23 @@ export default function Page() {
                                         PO. Date
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {dateFormat(purchaseOrder.po_date)}
+                                        {dateFormat(purchaseOrder?.po_date)}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        PR. Number
-                                    </div>
-                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {purchaseOrder?.pr_number}
-                                    </div>
-                                </div>
-                                <div className="space-y-1">
+                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         PR. Date
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {dateFormat(purchaseOrder.pr_date)}
+                                        {dateFormat(purchaseOrder?.pr_date)}
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
+                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        Department
+                                     Supplier
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {purchaseOrder?.department}
-                                    </div>
-                                </div>
-                                <div className="space-y-1">
-                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        Supplier
-                                    </div>
-                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {purchaseOrder?.supplier}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        Created
-                                    </div>
-                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {dateFormat(purchaseOrder.createdAt)}
+                                      {purchaseOrder?.supplier?.name}
                                     </div>
                                 </div>
                             </div>

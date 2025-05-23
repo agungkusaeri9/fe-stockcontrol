@@ -52,8 +52,8 @@ export default function DataTable({
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
     const toggleRow = (index: number) => {
-        setExpandedRows(prev => 
-            prev.includes(index) 
+        setExpandedRows(prev =>
+            prev.includes(index)
                 ? prev.filter(i => i !== index)
                 : [...prev, index]
         );
@@ -130,8 +130,8 @@ export default function DataTable({
                                         <div className="flex items-center gap-1 cursor-pointer">
                                             {column.header}
                                             {sortConfig?.key === column.accessorKey && (
-                                                sortConfig.direction === 'asc' ? 
-                                                    <ChevronUp className="h-4 w-4" /> : 
+                                                sortConfig.direction === 'asc' ?
+                                                    <ChevronUp className="h-4 w-4" /> :
                                                     <ChevronDown className="h-4 w-4" />
                                             )}
                                             {sortConfig?.key !== column.accessorKey && (
@@ -145,13 +145,13 @@ export default function DataTable({
                         <tbody className="bg-white divide-y divide-gray-200 dark:divide-white/[0.05] dark:bg-white/[0.03]">
                             {isLoading ? (
                                 <tr>
-                                    <td colSpan={columns.length + (expandable ? 1 : 0)} className="px-3 py-3 text-center text-sm text-gray-500 dark:text-gray-400">
+                                    <td colSpan={columns.length + (expandable ? 1 : 0)} className="px-3 py-[5px] text-center text-sm text-gray-500 dark:text-gray-400">
                                         Loading...
                                     </td>
                                 </tr>
                             ) : sortedData.length === 0 ? (
                                 <tr>
-                                    <td colSpan={columns.length + (expandable ? 1 : 0)} className="px-3 py-3 text-center text-sm text-gray-500 dark:text-gray-400">
+                                    <td colSpan={columns.length + (expandable ? 1 : 0)} className="px-3 py-[5px] text-center text-sm text-gray-500 dark:text-gray-400">
                                         No results found.
                                     </td>
                                 </tr>
@@ -160,7 +160,7 @@ export default function DataTable({
                                     <React.Fragment key={index}>
                                         <tr className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
                                             {expandable && (
-                                                <td className="px-3 py-3 text-center">
+                                                <td className="px-3 py-[5px] text-center">
                                                     <button
                                                         onClick={() => toggleRow(index)}
                                                         className="inline-flex items-center justify-center p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
@@ -175,7 +175,7 @@ export default function DataTable({
                                                 </td>
                                             )}
                                             {columns.map((column, colIndex) => (
-                                                <td key={colIndex} className={`px-3 py-3 text-sm text-gray-500 dark:text-gray-400 ${column.className || ''}`}>
+                                                <td key={colIndex} className={`px-3 py-[5px] text-sm text-gray-500 dark:text-gray-400 ${column.className || ''}`}>
                                                     {column.cell ? column.cell(item) : item[column.accessorKey]}
                                                 </td>
                                             ))}

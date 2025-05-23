@@ -72,10 +72,10 @@ import Loading from "@/components/common/Loading";
         <div>
             <PageBreadcrumb pageTitle="Purchase Requests" />
             <div className="space-y-6">
-                <FilterPurchaseRequest filter={filter} setFilter={setFilter} />
                 <DataTable
                     title="Purchase Request History"
                     columns={columns}
+                    headerRight={ <FilterPurchaseRequest filter={filter} setFilter={setFilter} />}
                     data={purchaseRequests || []}
                     isLoading={isLoading}
                     pagination={pagination ? {

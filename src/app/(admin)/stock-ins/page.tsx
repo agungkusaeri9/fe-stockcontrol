@@ -39,6 +39,13 @@ function StockInList() {
             header: "Quantity",
             accessorKey: "quantity"
         },
+           {
+            header: "Operator",
+            accessorKey: "operator",
+             cell: (item: StockIn) => (
+                item.operator?.name 
+             )
+        },
         {
             header: 'Action',
             accessorKey: 'id',
