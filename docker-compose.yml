@@ -1,16 +1,16 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  frontend:
+  cmwi-stock-control:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: stock-control-frontend
+    container_name: cmwi-frontend
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://localhost:3210
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:3210
     restart: unless-stopped
     networks:
       - stock-control-network
