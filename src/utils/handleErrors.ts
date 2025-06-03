@@ -37,8 +37,6 @@ export function handleError(
       return;
     }
 
-    console.log(error.response)
-
     // Catch-all untuk response.message
     if (error.response?.data?.message) {
       toast.error(error.response.data.message);

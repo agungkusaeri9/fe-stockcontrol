@@ -36,7 +36,7 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   if(machine_area_id) params.machine_area_id = machine_area_id;
   if(rack_id) params.rack_id = rack_id;
   if(keyword) params.keyword = keyword;
-  if(status) params.status = status;
+  if(status) params.stock_status = status;
   const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {params});
   return response.data;
 };

@@ -14,7 +14,9 @@ function ReminderList() {
         isLoading,
         setCurrentPage,
         setLimit,
+        setKeyword,
         limit,
+        keyword,
         pagination
     } = useFetchData(ReminderService.get, "reminders", true);
 
@@ -65,7 +67,11 @@ function ReminderList() {
                         onPageChange: setCurrentPage,
                         onLimitChange: setLimit,
                     }}
-
+                    search={{
+                        value: keyword,
+                        onChange: setKeyword,
+                        placeholder: "Search code...",
+                    }}
                 />
             </div>
         </div>

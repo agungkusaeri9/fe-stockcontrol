@@ -15,16 +15,15 @@ export default function Page() {
     const id = params.id;
     const { data: kanban } = useFetchById<Kanban>(KanbanService.getById, Number(id), "kanban");
 
-
     if (!kanban) return (
-      <Loading/>
+        <Loading />
     );
 
     const columns = [
-          {
+        {
             header: "No.",
             accessorKey: "id",
-            cell: (item:Supplier) => {
+            cell: (item: Supplier) => {
                 const suppliers = Array.isArray(kanban?.supplier) ? kanban.supplier : [kanban?.supplier];
                 const index = suppliers.findIndex((supplier: Supplier) => supplier.id === item.id) ?? 0;
                 return index + 1;
@@ -41,12 +40,12 @@ export default function Page() {
 
     return (
         <div className="space-y-6">
-            <Breadcrumb 
+            <Breadcrumb
                 items={[
-                    { label: 'Dashboard', href: '/dashboard' }, 
-                    { label: 'Kanban', href: '/kanbans' }, 
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Kanban', href: '/kanbans' },
                     { label: 'Detail' }
-                ]} 
+                ]}
             />
 
             <div className="grid gap-6">
@@ -110,7 +109,6 @@ export default function Page() {
                                 </div>
                             </div>
                         </div>
-
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
@@ -123,7 +121,7 @@ export default function Page() {
                                 </div>
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        Machine Area    
+                                        Machine Area
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
                                         {kanban?.machine_area?.name}
@@ -139,7 +137,7 @@ export default function Page() {
                                         {kanban?.rack?.code}
                                     </div>
                                 </div>
-                                 <div className="space-y-1">
+                                <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         Max Quantity
                                     </div>
@@ -148,7 +146,7 @@ export default function Page() {
                                     </div>
                                 </div>
                             </div>
-                             <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         Lead Time
@@ -157,16 +155,36 @@ export default function Page() {
                                         {kanban?.lead_time}
                                     </div>
                                 </div>
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        Maker
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.maker?.name || '-'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        JS Ending Quantity
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {kanban?.js_ending_quantity}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </ComponentCard>
-                     <DataTable
+                <DataTable
                     title="Supplier List"
                     columns={columns}
                     data={kanban.supplier ? (Array.isArray(kanban.supplier) ? kanban.supplier : [kanban.supplier]) : []}
-                    // isLoading={isLoading}
-                    />
+                // isLoading={isLoading}
+                />
             </div>
         </div>
     );

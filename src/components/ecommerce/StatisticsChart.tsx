@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 // import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import ChartTab from "../common/ChartTab";
@@ -10,115 +10,174 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function StatisticsChart() {
+type TimePeriod = "daily" | "weekly" | "monthly";
+
+interface StockData {
+  stockIn: {
+    daily: Record<string, number>;
+    weekly: Record<string, number>;
+    monthly: Record<string, number>;
+  };
+  stockOut: {
+    daily: Record<string, number>;
+    weekly: Record<string, number>;
+    monthly: Record<string, number>;
+  };
+}
+
+interface Props {
+  data?: StockData;
+}
+
+export default function StatisticsChart({ data }: Props) {
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>("monthly");
+
+  // Get all unique dates from both stockIn and stockOut
+  const getAllDates = () => {
+    const stockInDates = data?.stockIn[timePeriod] ? Object.keys(data.stockIn[timePeriod]) : [];
+    const stockOutDates = data?.stockOut[timePeriod] ? Object.keys(data.stockOut[timePeriod]) : [];
+    const allDates = [...new Set([...stockInDates, ...stockOutDates])];
+    return allDates.sort();
+  };
+
+  // Get values for a specific date, defaulting to 0 if not present
+  const getValueForDate = (date: string, type: 'stockIn' | 'stockOut') => {
+    return data?.[type][timePeriod]?.[date] ?? 0;
+  };
+
+  const dates = getAllDates();
+
   const options: ApexOptions = {
     legend: {
-      show: false, // Hide legend
+      show: true,
       position: "top",
-      horizontalAlign: "left",
+      horizontalAlign: "right",
+      labels: {
+        colors: ["#6B7280"],
+      },
+      markers: {
+        size: 12,
+        strokeWidth: 0,
+        offsetX: 0,
+        offsetY: 0
+      },
     },
-    colors: ["#465FFF", "#9CB9FF"], // Define line colors
+    colors: ["#465FFF", "#FF4B4B"],
     chart: {
       fontFamily: "Outfit, sans-serif",
       height: 310,
-      type: "line", // Set the chart type to 'line'
+      type: "bar",
       toolbar: {
-        show: false, // Hide chart toolbar
+        show: false,
+      },
+      stacked: false,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        borderRadius: 4,
+        dataLabels: {
+          position: 'top',
+        },
       },
     },
     stroke: {
-      curve: "straight", // Define the line style (straight, smooth, or step)
-      width: [2, 2], // Line width for each dataset
+      show: true,
+      width: 2,
+      colors: ['transparent']
     },
-
     fill: {
-      type: "gradient",
-      gradient: {
-        opacityFrom: 0.55,
-        opacityTo: 0,
-      },
-    },
-    markers: {
-      size: 0, // Size of the marker points
-      strokeColors: "#fff", // Marker border color
-      strokeWidth: 2,
-      hover: {
-        size: 6, // Marker size on hover
-      },
+      opacity: 1,
+      type: 'solid',
     },
     grid: {
+      borderColor: '#f1f1f1',
       xaxis: {
         lines: {
-          show: false, // Hide grid lines on x-axis
+          show: false,
         },
       },
       yaxis: {
         lines: {
-          show: true, // Show grid lines on y-axis
+          show: true,
         },
+      },
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
       },
     },
     dataLabels: {
-      enabled: false, // Disable data labels
+      enabled: false,
     },
     tooltip: {
-      enabled: true, // Enable tooltip
+      enabled: true,
+      shared: true,
+      intersect: false,
       x: {
-        format: "dd MMM yyyy", // Format for x-axis tooltip
+        format: timePeriod === "daily" ? "dd MMM yyyy" : timePeriod === "weekly" ? "'Week' W, yyyy" : "MMM yyyy",
+      },
+      y: {
+        formatter: (value) => `${value} units`,
+      },
+      style: {
+        fontSize: '12px',
+        fontFamily: 'Outfit, sans-serif',
       },
     },
     xaxis: {
-      type: "category", // Category-based x-axis
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      type: "category",
+      categories: dates,
       axisBorder: {
-        show: false, // Hide x-axis border
+        show: false,
       },
       axisTicks: {
-        show: false, // Hide x-axis ticks
+        show: false,
       },
       tooltip: {
-        enabled: false, // Disable tooltip for x-axis points
+        enabled: false,
+      },
+      labels: {
+        style: {
+          colors: ["#6B7280"],
+          fontSize: '12px',
+        },
       },
     },
     yaxis: {
       labels: {
         style: {
-          fontSize: "12px", // Adjust font size for y-axis labels
-          colors: ["#6B7280"], // Color of the labels
+          fontSize: "12px",
+          colors: ["#6B7280"],
         },
+        formatter: (value) => `${value}`,
       },
       title: {
-        text: "", // Remove y-axis title
+        text: "Units",
         style: {
-          fontSize: "0px",
+          fontSize: "12px",
+          color: "#6B7280",
         },
       },
+      min: 0,
+      forceNiceScale: true,
     },
   };
 
   const series = [
     {
-      name: "In",
-      data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+      name: "Stock In",
+      data: dates.map(date => getValueForDate(date, 'stockIn')),
     },
     {
-      name: "Out",
-      data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+      name: "Stock Out",
+      data: dates.map(date => getValueForDate(date, 'stockOut')),
     },
   ];
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
       <div className="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
@@ -131,7 +190,7 @@ export default function StatisticsChart() {
           </p>
         </div>
         <div className="flex items-start w-full gap-3 sm:justify-end">
-          <ChartTab />
+          <ChartTab selected={timePeriod} onSelect={setTimePeriod} />
         </div>
       </div>
 
@@ -140,7 +199,7 @@ export default function StatisticsChart() {
           <ReactApexChart
             options={options}
             series={series}
-            type="area"
+            type="bar"
             height={310}
           />
         </div>

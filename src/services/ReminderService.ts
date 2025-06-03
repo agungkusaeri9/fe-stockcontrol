@@ -12,6 +12,7 @@ export interface PaginationMeta {
 const get: FetchFunctionWithPagination<Reminder> = async (
   page = 1,
   limit = 10,
+  keyword = ""
 ): Promise<PaginatedResponse<Reminder>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
@@ -19,6 +20,7 @@ const get: FetchFunctionWithPagination<Reminder> = async (
     limit,
     paginate: true,
   };
+  if(keyword) params.keyword = keyword;
   const response = await api.get<PaginatedResponse<Reminder>>("reminders", { params });
   return response.data;
 };

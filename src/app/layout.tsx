@@ -14,6 +14,7 @@ const outfit = Outfit({
 import NextTopLoader from 'nextjs-toploader';
 import { Suspense } from "react";
 import Loading from "@/components/common/Loading";
+import WebSocketNotification from "@/components/notification/webSocketNotification";
 
 export default function RootLayout({
   children,
@@ -26,6 +27,7 @@ export default function RootLayout({
         <title>CMWI Dashboard</title>
       </head>
       <body suppressHydrationWarning className={`${outfit.variable} dark:bg-gray-900`}>
+        <WebSocketNotification />
         <Toaster
           position="bottom-right"
           toastOptions={{
@@ -47,8 +49,8 @@ export default function RootLayout({
         <ThemeProvider>
           <SidebarProvider>
             <ReactQueryProvider>
-              <Suspense fallback={<Loading/>}>
-              {children}
+              <Suspense fallback={<Loading />}>
+                {children}
               </Suspense>
               {/* <ReminderModal /> */}
             </ReactQueryProvider>

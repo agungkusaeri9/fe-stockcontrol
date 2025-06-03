@@ -56,11 +56,11 @@ function BalanceList() {
             accessorKey: "machine_area",
             cell: (item: Kanban) => item.machine_area?.name || '-'
         },
-        {
-            header: "Rack",
-            accessorKey: "rack",
-            cell: (item: Kanban) => item.rack?.code || '-'
-        },
+        // {
+        //     header: "Rack",
+        //     accessorKey: "rack",
+        //     cell: (item: Kanban) => item.rack?.code || '-'
+        // },
         {
             header: "Min.",
             accessorKey: "min_quantity",
@@ -74,16 +74,25 @@ function BalanceList() {
             accessorKey: "balance",
         },
         {
+            header: "JS Ending Qty",
+            accessorKey: "balance",
+            cell: (item: Kanban) => {
+                const balance = Number(item.balance);
+                const js_ending_quantity = Number(item.js_ending_quantity);
+                if (balance !== js_ending_quantity) {
+                    return <div className="text-red-700 text-xs text-center w-full bg-red-100 rounded-md px-2 py-1 dark:bg-red-800/20 dark:text-red-400">{js_ending_quantity}</div>;
+                } else {
+                    return <div className="text-xs text-center w-full rounded-md px-2 py-1 dark:bg-green-800/20 dark:text-green-400">{js_ending_quantity}</div>;
+                }
+            }
+        },
+        {
             header: "Status",
             accessorKey: "status",
             cell: (item: Kanban) => {
-                const balance = Number(item.balance);
-                const min = Number(item.min_quantity);
-                const max = Number(item.max_quantity);
-
-                if (balance > max)
+                if (item.stock_status === "Overstock")
                     return <div className="text-red-700 text-xs text-center w-full bg-red-100 rounded-md px-2 py-1 dark:bg-red-800/20 dark:text-red-400">Overstock</div>
-                else if (balance < min)
+                else if (item.stock_status === "Understock")
                     return <div className="text-yellow-700 text-xs text-center w-full bg-yellow-100 rounded-md px-2 py-1 dark:bg-yellow-800/20 dark:text-yellow-400">Understock</div>
                 else
                     return <div className="text-green-700 text-xs text-center w-full bg-green-100 rounded-md px-2 py-1 dark:bg-green-800/20 dark:text-green-400">Normal</div>

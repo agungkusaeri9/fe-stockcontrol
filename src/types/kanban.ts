@@ -1,5 +1,6 @@
 import { Area } from "./area";
 import { Machine } from "./machine";
+import { Maker } from "./maker";
 import { Rack } from "./rack";
 import { Supplier } from "./supplier";
 
@@ -16,8 +17,11 @@ export type Kanban = {
     min_quantity: number;
     rack: Rack;
     stock_in_quantity: number;
+    js_ending_quantity?: number;
     uom: string;
+    maker?: Maker;
     supplier: Supplier;
+    stock_status: string;
     created_at: string;
     updated_at: string;
 }
