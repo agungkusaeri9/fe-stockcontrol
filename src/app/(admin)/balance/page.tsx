@@ -4,10 +4,9 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import KanbanService from "@/services/KanbanService";
 import { Kanban } from "@/types/kanban";
 import DataTable from "@/components/common/DataTable";
-import FilterKanban from "@/components/pages/kanban/Filter";
-import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 import Loading from "@/components/common/Loading";
 import FilterBalance from "@/components/pages/balance/FilterBalance";
+import { useFetchDataBalance } from "@/hooks/useFetchDataBalance";
 
 function BalanceList() {
     const [filter, setFilter] = useState({
@@ -24,7 +23,7 @@ function BalanceList() {
         setLimit,
         limit,
         pagination
-    } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
+    } = useFetchDataBalance(KanbanService.get, "kanbans", true, filter);
 
     const columns = [
         // {

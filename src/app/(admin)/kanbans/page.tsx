@@ -8,7 +8,6 @@ import DataTable from "@/components/common/DataTable";
 import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 import Loading from "@/components/common/Loading";
-import Button from "@/components/ui/button/Button";
 import KanbanExportExcel from "@/components/pages/kanban/KanbanExportExcel";
 
 function KanbanList() {

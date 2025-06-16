@@ -2,7 +2,6 @@ import Button from '@/components/ui/button/Button'
 import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
-import Loading from '@/components/common/Loading'
 import KanbanService from '@/services/KanbanService'
 
 const KanbanExportExcel = () => {

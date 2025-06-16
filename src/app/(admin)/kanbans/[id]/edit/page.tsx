@@ -2,7 +2,6 @@
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput';
-import SelectLabel from '@/components/form/FormSelect';
 import Button from '@/components/ui/button/Button';
 import { useFetchData } from '@/hooks/useFetchData';
 import KanbanService from '@/services/KanbanService';
@@ -35,7 +34,7 @@ const Page = () => {
     const params = useParams();
     const id = Number(params.id);
 
-    const { data: kanban, isLoading } = useFetchById<Kanban>(KanbanService.getById, id, "kanban");
+    const { data: kanban } = useFetchById<Kanban>(KanbanService.getById, id, "kanban");
     const { mutate: updateMutation, isPending } = useUpdateData(
         KanbanService.update,
         id,
@@ -78,7 +77,7 @@ const Page = () => {
     }, [kanban, reset]);
 
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: UpdateKanbanFormData) => {
         const formData = {
             ...data,
             machine_id: data.machine_id?.value || null,

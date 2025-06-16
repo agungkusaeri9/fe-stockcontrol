@@ -77,7 +77,7 @@ api.interceptors.response.use(
 
     // Handle authentication errors (401)
     if (status === 401) {
-      showToast(data?.message || "Authentication failed. Please login again.");
+      // showToast(data?.message || "Authentication failed. Please login again.");
       // Optionally redirect to login page
       // window.location.href = "/login";
       return Promise.reject(error);
@@ -85,18 +85,18 @@ api.interceptors.response.use(
 
     // Handle common error statuses
     if (status === 400 || status === 404 || status === 403 || status === 500) {
-      showToast(data?.message || "Request failed. Please try again.");
+      // showToast(data?.message || "Request failed. Please try again.");
       return Promise.reject(error);
     }
 
     // Handle network errors
     if (!error.response) {
-      showToast("Network error. Please check your connection.");
+      // showToast("Network error. Please check your connection.");
       return Promise.reject(error);
     }
 
     // Handle any other errors
-    showToast(data?.message || "An unexpected error occurred.");
+    // showToast(data?.message || "An unexpected error occurred.");
     return Promise.reject(error);
   }
 );

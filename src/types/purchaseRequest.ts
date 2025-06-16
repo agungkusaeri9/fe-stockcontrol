@@ -1,3 +1,5 @@
+import { Kanban } from "./kanban";
+
 export type PurchaseRequest = {
     id: number;
     date: string;

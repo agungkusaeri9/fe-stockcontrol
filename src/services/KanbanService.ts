@@ -29,7 +29,7 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   machine_area_id = null,
   rack_id = null,
   status = null,
-  completed_status = "all"
+  completed_status = null
 ): Promise<PaginatedResponse<Kanban>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {

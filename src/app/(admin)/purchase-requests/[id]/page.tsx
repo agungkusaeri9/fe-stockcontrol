@@ -24,7 +24,7 @@ export default function Page() {
     const columns = [
         {
             header: 'Item Code',
-            accessorKey: 'item_code'
+            accessorKey: 'kanban_code'
         },
         {
             header: 'Item Name',
@@ -58,23 +58,23 @@ export default function Page() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Specification</div>
-                <div className="text-sm text-gray-900 dark:text-white">{item.specification}</div>
+                <div className="text-sm text-gray-900 dark:text-white">{item.specification || "-"}</div>
             </div>
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Part</div>
-                <div className="text-sm text-gray-900 dark:text-white">{item.part}</div>
+                <div className="text-sm text-gray-900 dark:text-white">{item.part || "-"}</div>
             </div>
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Currency</div>
-                <div className="text-sm text-gray-900 dark:text-white">{item.currency}</div>
+                <div className="text-sm text-gray-900 dark:text-white">{item.currency || "-"}</div>
             </div>
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Required Delivery</div>
-                <div className="text-sm text-gray-900 dark:text-white">{dateFormat(item.req_delivery)}</div>
+                <div className="text-sm text-gray-900 dark:text-white">{dateFormat(item.req_delivery) || "-"}</div>
             </div>
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Supplier</div>
-                <div className="text-sm text-gray-900 dark:text-white">{item.supplier}</div>
+                <div className="text-sm text-gray-900 dark:text-white">{item.supplier || "-"}</div>
             </div>
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Remark</div>
@@ -82,19 +82,19 @@ export default function Page() {
             </div>
             <div>
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Purpose</div>
-                <div className="text-sm text-gray-900 dark:text-white">{item.purpose}</div>
+                <div className="text-sm text-gray-900 dark:text-white">{item.purpose || "-"}</div>
             </div>
         </div>
     );
 
     return (
         <div className="space-y-6">
-            <Breadcrumb 
+            <Breadcrumb
                 items={[
-                    { label: 'Dashboard', href: '/dashboard' }, 
-                    { label: 'Purchase Request', href: '/purchase-requests' }, 
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Purchase Request', href: '/purchase-requests' },
                     { label: 'Detail' }
-                ]} 
+                ]}
             />
 
             <div className="grid gap-6">

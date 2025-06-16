@@ -3,7 +3,6 @@ import React, { Suspense } from "react";
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
 import InputLabel from '@/components/form/FormInput';
-import SelectLabel from '@/components/form/FormSelect';
 import Button from '@/components/ui/button/Button';
 import { useCreateData } from '@/hooks/useCreateData';
 import { useFetchData } from '@/hooks/useFetchData';

@@ -15,6 +15,8 @@ import { loginValidation } from "@/validators/auth/login";
 import InputLabel from "../form/FormInput";
 import { z } from "zod";
 import Loading from "../common/Loading";
+import showToast from "@/utils/showToast";
+import { AxiosError } from "axios";
 
 type LoginFormData = z.infer<typeof loginValidation>;
 
@@ -24,7 +26,7 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-  const { mutate: loginMutation, isPending: loading, isSuccess  } = useMutation({
+  const { mutate: loginMutation, isPending: loading, isSuccess } = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const response = await AuthService.login(data);
       return response;
@@ -47,9 +49,8 @@ export default function SignInForm() {
       toast.success(response.data.message);
       router.push(callbackUrl);
     },
-    onError: (error) => {
-      // handleError(error);
-      console.log(error);
+    onError: (error: AxiosError<{ message: string }>) => {
+      showToast(error.response?.data.message ?? 'Terjadi kesalahan');
     }
   });
 
@@ -62,11 +63,12 @@ export default function SignInForm() {
     loginMutation(data);
   };
 
- if (isSuccess) return (
-       <Loading/>
-    );
+  if (isSuccess) return (
+    <Loading />
+  );
 
   const handleWithoutLogin = () => {
+    <Loading />
     localStorage.setItem('role', 'guest');
     router.push("/dashboard");
   };
@@ -128,10 +130,10 @@ export default function SignInForm() {
                   </div>
                 </div>
                 <div>
-                  <Button 
-                    loading={loading} 
-                    disabled={loading} 
-                    className="w-full" 
+                  <Button
+                    loading={loading}
+                    disabled={loading}
+                    className="w-full"
                     size="sm"
                     type="submit"
                   >
