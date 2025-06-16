@@ -14,8 +14,6 @@ export default function Page() {
     const params = useParams();
     const id = params.id;
     const { data: kanban } = useFetchById<Kanban>(KanbanService.getById, Number(id), "kanban");
-    console.log(kanban);
-
     if (!kanban) return (
         <Loading />
     );
@@ -113,7 +111,7 @@ export default function Page() {
                                     Balance
                                 </div>
                                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {kanban?.balance || '-'}
+                                    {kanban?.balance}
                                 </div>
                             </div>
                             <div className="space-y-1">
@@ -219,7 +217,7 @@ export default function Page() {
                                     JS Ending Quantity
                                 </div>
                                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {kanban?.js_ending_quantity || '-'}
+                                    {kanban?.js_ending_quantity}
                                 </div>
                             </div>
                         </div>

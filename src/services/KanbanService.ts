@@ -5,7 +5,7 @@ import api from "@/utils/api";
 
 interface FromData {
     code: string;
-    balance: number;
+    balance?: number | null;
     description: string;
     specification: string;
     lead_time: number;
@@ -60,6 +60,7 @@ const getWithoutPagination = async (
 
 const create = async (data: FromData) => {
     try {
+        data.balance =  0;
         const response = await api.post("kanbans", data);
         return response.data;
     } catch (error) {
@@ -78,6 +79,8 @@ const getById = async (id: number) => {
 
 const update = async (id: number, data: FromData) => {
     try {
+        const responseKanban = await getById(id);
+        data.balance = responseKanban.data.balance;
         const response = await api.put(`kanbans/${id}`, data);
         return response.data;
     } catch (error) {

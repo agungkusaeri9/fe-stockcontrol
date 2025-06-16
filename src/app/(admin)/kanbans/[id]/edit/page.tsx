@@ -49,14 +49,14 @@ const Page = () => {
         control
     } = useForm<UpdateKanbanFormData>({
         resolver: zodResolver(updateKanbanValidator),
-        mode: "onChange",
+        mode: "onChange"
     });
 
     useEffect(() => {
         if (kanban) {
             reset({
                 code: kanban.code,
-                balance: Number(kanban.balance),
+                // balance: Number(kanban.balance),
                 description: kanban.description.toString(),
                 specification: kanban.specification,
                 lead_time: kanban.lead_time,
@@ -171,9 +171,7 @@ const Page = () => {
                                 name="balance"
                                 type="number"
                                 required
-                                placeholder="Enter balance"
-                                register={register("balance", { valueAsNumber: true })}
-                                error={errors.balance}
+                                placeholder={kanban?.balance?.toString() || "0"}
                             />
                             <InputLabel
                                 label="Safety Stock"

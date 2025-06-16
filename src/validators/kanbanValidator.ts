@@ -7,7 +7,6 @@ const selectOptionSchema = z.object({
 
 export const createKanbanValidator = z.object({
     code: z.string().min(1, "Code is required"),
-    balance: z.number().min(1, "Balance is required"),
     price: z.number().min(1, "Price is required"),
     safety_stock: z.number().min(1, "Safety Stock is required"),
     description: z.string().min(1, "Description Time is required"),
@@ -27,7 +26,6 @@ export const createKanbanValidator = z.object({
 
 export const updateKanbanValidator = z.object({
     code: z.string().min(1, "Code is required"),
-    balance: z.number().min(1, "Balance is required"),
     description: z.string().min(1, "Description Time is required"),
     specification: z.string().min(1, "Specification Part is required"),
     min_quantity: z.number().min(1, "Min Quantity is required"),

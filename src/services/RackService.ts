@@ -56,7 +56,8 @@ const update = async (id: number, data: IForm) => {
 
 const remove = async (id: number): Promise<void> => {
   try {
-    await api.delete(`racks/${id}`);
+    const response =  await api.delete(`racks/${id}`);
+    return response.data;
   } catch (error) {
     throw error;
   }

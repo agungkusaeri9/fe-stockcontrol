@@ -28,7 +28,6 @@ function KanbanList() {
         pagination
     } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
-    console.log(kanbans)
 
     const columns = [
         // {

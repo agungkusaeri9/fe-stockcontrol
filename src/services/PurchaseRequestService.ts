@@ -50,8 +50,6 @@ const get: FetchFunctionWithPagination<PurchaseRequest> = async (
   if (po_number) params.keyword = po_number;
   if (keyword) params.keyword = keyword;
 
-  console.log({params});
-
   const response = await api.get<PaginatedResponse<PurchaseRequest>>("purchase-requests", { params });
   return response.data;
 };

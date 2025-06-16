@@ -33,6 +33,7 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
         if (formValues.start_date) count++;
         if (formValues.end_date) count++;
         if (formValues.po_number) count++;
+        console.log({ formValues })
         setActiveFilters(count);
     }, [formValues]);
 
@@ -145,7 +146,9 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
                                     <InputLabel
                                         placeholder="PO. Number"
                                         label="PO. Number"
-                                        {...register('po_number')}
+                                        name="po_number"
+                                        onChange={(e) => setValue('po_number', e.target.value)}
+                                        register={register("po_number")}
                                     />
                                     <DatePicker
                                         placeholder='Start Date'

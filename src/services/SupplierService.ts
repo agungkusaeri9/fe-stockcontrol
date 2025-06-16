@@ -55,7 +55,8 @@ const update = async (id: number, data: Form) => {
 
 const remove = async (id: number): Promise<void> => {
   try {
-    await api.delete(`suppliers/${id}`);
+    const response = await api.delete(`suppliers/${id}`);
+    return response.data;
   } catch (error) {
     throw error;
   }

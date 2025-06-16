@@ -42,7 +42,7 @@ function CreateKanbanForm() {
         handleSubmit,
         formState: { errors },
         reset,
-        control
+        control,
     } = useForm<CreateKanbanFormData>({
         resolver: zodResolver(createKanbanValidator),
         mode: "onChange",
@@ -138,15 +138,6 @@ function CreateKanbanForm() {
                         {/* Stock Information */}
                         <div className="grid grid-cols-2 gap-3">
                             <InputLabel
-                                label="Balance"
-                                name="balance"
-                                type="number"
-                                required
-                                placeholder="Enter balance"
-                                register={register("balance", { valueAsNumber: true })}
-                                error={errors.balance}
-                            />
-                            <InputLabel
                                 label="Safety Stock"
                                 name="safety_stock"
                                 type="number"
@@ -155,10 +146,6 @@ function CreateKanbanForm() {
                                 register={register("safety_stock", { valueAsNumber: true })}
                                 error={errors.safety_stock}
                             />
-                        </div>
-
-                        {/* Order Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Order Point"
                                 name="order_point"
@@ -168,6 +155,10 @@ function CreateKanbanForm() {
                                 register={register("order_point", { valueAsNumber: true })}
                                 error={errors.order_point}
                             />
+                        </div>
+
+                        {/* Order Information */}
+                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Lead Time"
                                 name="lead_time"
@@ -177,10 +168,6 @@ function CreateKanbanForm() {
                                 register={register("lead_time", { valueAsNumber: true })}
                                 error={errors.lead_time}
                             />
-                        </div>
-
-                        {/* Price Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Price"
                                 name="price"
@@ -190,6 +177,11 @@ function CreateKanbanForm() {
                                 register={register("price", { valueAsNumber: true })}
                                 error={errors.price}
                             />
+                        </div>
+
+                        {/* Price Information */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             <InputLabel
                                 label="Currency"
                                 name="currency"
@@ -199,10 +191,6 @@ function CreateKanbanForm() {
                                 register={register("currency")}
                                 error={errors.currency}
                             />
-                        </div>
-
-                        {/* Classification */}
-                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Rank"
                                 name="rank"
@@ -212,6 +200,11 @@ function CreateKanbanForm() {
                                 register={register("rank")}
                                 error={errors.rank}
                             />
+                        </div>
+
+                        {/* Classification */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             {makers && (
                                 <FormSelect2
                                     label="Maker"
@@ -225,10 +218,6 @@ function CreateKanbanForm() {
                                     placeholder="Select Maker"
                                 />
                             )}
-                        </div>
-
-                        {/* Location Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             {machines && (
                                 <FormSelect2
                                     label="Machine"
@@ -242,6 +231,11 @@ function CreateKanbanForm() {
                                     placeholder="Select Machine"
                                 />
                             )}
+                        </div>
+
+                        {/* Location Information */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             {racks && (
                                 <FormSelect2
                                     label="Rack"
@@ -255,10 +249,6 @@ function CreateKanbanForm() {
                                     placeholder="Select Rack"
                                 />
                             )}
-                        </div>
-
-                        {/* Area Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             {machineAreas && (
                                 <FormSelect2
                                     label="Machine Area"

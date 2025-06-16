@@ -49,12 +49,12 @@ export default function Page() {
 
     return (
         <div className="space-y-6">
-            <Breadcrumb 
+            <Breadcrumb
                 items={[
-                    { label: 'Dashboard', href: '/dashboard' }, 
-                    { label: 'Purchase Order', href: '/purchase-orders' }, 
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Purchase Order', href: '/purchase-orders' },
                     { label: 'Detail' }
-                ]} 
+                ]}
             />
 
             <div className="grid gap-6">
@@ -78,7 +78,7 @@ export default function Page() {
                                         {dateFormat(purchaseOrder?.po_date)}
                                     </div>
                                 </div>
-                                 <div className="space-y-1">
+                                <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         PR. Date
                                     </div>
@@ -86,12 +86,12 @@ export default function Page() {
                                         {dateFormat(purchaseOrder?.pr_date)}
                                     </div>
                                 </div>
-                                 <div className="space-y-1">
+                                <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                     Supplier
+                                        Supplier
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                      {purchaseOrder?.supplier?.name}
+                                        {purchaseOrder?.supplier?.name}
                                     </div>
                                 </div>
                             </div>
