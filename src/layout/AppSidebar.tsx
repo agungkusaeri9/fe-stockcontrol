@@ -18,13 +18,19 @@ import {
 import { getCookie } from "cookies-next";
 import { useQuery } from "@tanstack/react-query";
 import ReminderService from "@/services/ReminderService";
-
+import KanbanService from "@/services/KanbanService";
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
   count?: number;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: {
+    name: string;
+    path: string;
+    pro?: boolean;
+    new?: boolean;
+    count?: number;
+  }[];
   roles?: string[];
   requiresAuth?: boolean;
 };
@@ -53,8 +59,18 @@ const AppSidebar: React.FC = () => {
     gcTime: 360000,
     refetchInterval: 300000,
   });
+  const { data: uncompletedKanbansCount } = useQuery({
+    queryKey: ["uncompleted-kanbans-count"],
+    queryFn: async () => {
+      const response = await KanbanService.getUncompletedCount();
+      return response.pagination.total;
+    },
+    staleTime: 240000,
+    gcTime: 360000,
+    refetchInterval: 300000,
+  });
 
-  
+
   const navItems: NavItem[] = [
     {
       icon: <GridIcon />,
@@ -97,10 +113,16 @@ const AppSidebar: React.FC = () => {
         { name: "Area", path: "/areas", pro: false },
         { name: "Machine", path: "/machines", pro: false },
         { name: "Rack", path: "/racks", pro: false },
-        { name: "Kanban", path: "/kanbans", pro: false },
+        {
+          name: "Kanban",
+          path: "/kanbans",
+          pro: false,
+          count: uncompletedKanbansCount
+        },
         { name: "Makers", path: "/makers", pro: false },
         { name: "Suppliers", path: "/suppliers", pro: false },
       ],
+      count: uncompletedKanbansCount,
       requiresAuth: true
     },
     {
@@ -152,6 +174,13 @@ const AppSidebar: React.FC = () => {
                 {(isExpanded || isHovered || isMobileOpen) && (
                   <>
                     <span className={`menu-item-text`}>{nav.name}</span>
+                    {nav.count && nav.count > 0 && (
+                      <div className="bg-red-500 px-2 relative rounded-sm h-5 flex items-center justify-center animate-blink">
+                        <span className="menu-item-text text-[11px] text-white">
+                          {nav.count}
+                        </span>
+                      </div>
+                    )}
                   </>)}
                 {(isExpanded || isHovered || isMobileOpen) && (
                   <ChevronDownIcon
@@ -219,6 +248,13 @@ const AppSidebar: React.FC = () => {
                       >
                         {subItem.name}
                         <span className="flex items-center gap-1 ml-auto">
+                          {subItem.count && subItem.count > 0 && (
+                            <div className="bg-red-500 px-2 relative rounded-sm h-5 flex items-center justify-center animate-blink">
+                              <span className="menu-item-text text-[11px] text-white">
+                                {subItem.count}
+                              </span>
+                            </div>
+                          )}
                           {subItem.new && (
                             <span
                               className={`ml-auto ${isActive(subItem.path)

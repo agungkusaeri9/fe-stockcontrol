@@ -7,6 +7,7 @@ import DataTable from "@/components/common/DataTable";
 import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 import Loading from "@/components/common/Loading";
+import FilterBalance from "@/components/pages/balance/FilterBalance";
 
 function BalanceList() {
     const [filter, setFilter] = useState({
@@ -42,10 +43,10 @@ function BalanceList() {
             header: "Description",
             accessorKey: "description",
         },
-        //   {
-        //     header: "Specification",
-        //     accessorKey: "specification",
-        // },
+        {
+            header: "Specification",
+            accessorKey: "specification",
+        },
         {
             header: "Machine",
             accessorKey: "machine",
@@ -68,6 +69,10 @@ function BalanceList() {
         {
             header: "Max.",
             accessorKey: "max_quantity",
+        },
+        {
+            header: "Incoming Order Stock.",
+            accessorKey: "incoming_order_stock",
         },
         {
             header: "Balance",
@@ -111,7 +116,7 @@ function BalanceList() {
                     title="Balance"
                     columns={columns}
                     data={kanbans || []}
-                    headerRight={<FilterKanban filter={filter} setFilter={setFilter} />}
+                    headerRight={<FilterBalance filter={filter} setFilter={setFilter} />}
                     isLoading={isLoading}
                     pagination={{
                         currentPage: pagination?.curr_page || 1,

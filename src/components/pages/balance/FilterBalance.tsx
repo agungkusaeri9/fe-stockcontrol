@@ -19,10 +19,9 @@ interface FilterFormData {
     machine_area_id: { value: number; label: string } | null;
     rack_id: { value: number; label: string } | null;
     status: string | null;
-    completed_status: string | null;
 }
 
-const FilterKanban = ({
+const FilterBalance = ({
     filter,
     setFilter
 }: {
@@ -31,16 +30,14 @@ const FilterKanban = ({
         machine_area_id: number | null,
         rack_id: number | null,
         keyword: string,
-        status: string | null,
-        completed_status: string | null
+        status: string | null
     },
     setFilter: (filter: {
         machine_id: number | null,
         machine_area_id: number | null,
         rack_id: number | null,
         keyword: string,
-        status: string | null,
-        completed_status: string | null
+        status: string | null
     }) => void
 }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -51,13 +48,13 @@ const FilterKanban = ({
             machine_id: null,
             machine_area_id: null,
             rack_id: null,
-            status: null,
-            completed_status: null
+            status: null
         }
     });
-    const completed_status = ([
-        { label: "Completed", value: "Completed" },
-        { label: "Uncompleted", value: "Uncompleted" },
+    const statuses = ([
+        { label: "Normal", value: "Normal" },
+        { label: "Overstock", value: "Overstock" },
+        { label: "Understock", value: "Understock" },
     ]);
 
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
@@ -73,7 +70,6 @@ const FilterKanban = ({
         if (formValues.machine_area_id) count++;
         if (formValues.rack_id) count++;
         if (formValues.status) count++;
-        if (formValues.completed_status) count++;
         setActiveFilters(count);
     }, [formValues]);
 
@@ -83,8 +79,7 @@ const FilterKanban = ({
             machine_area_id: data.machine_area_id?.value || null,
             rack_id: data.rack_id?.value || null,
             keyword: data.keyword,
-            status: data.status,
-            completed_status: data.completed_status
+            status: data.status
         });
         setIsOpen(false);
     };
@@ -96,8 +91,7 @@ const FilterKanban = ({
             machine_area_id: null,
             rack_id: null,
             keyword: "",
-            status: null,
-            completed_status: ""
+            status: null
         });
         setIsOpen(false);
     };
@@ -158,11 +152,11 @@ const FilterKanban = ({
                         </button>
                     </div>
                 )}
-                {filter.completed_status && (
+                {filter.status && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Status: {filter.completed_status === 'completed' ? 'Completed' : 'Uncompleted'}</span>
+                        <span>Status: {filter.status}</span>
                         <button
-                            onClick={() => removeFilter('completed_status')}
+                            onClick={() => removeFilter('status')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                             ×
@@ -255,11 +249,11 @@ const FilterKanban = ({
                             />
                         )}
                         <SelectLabel
-                            label="Completed Status"
-                            name="completed_status"
-                            register={register("completed_status")}
-                            options={completed_status}
-                            placeholder="Select Completed Status"
+                            label="Status"
+                            name="status"
+                            register={register("status")}
+                            options={statuses}
+                            placeholder="Select Status"
                         />
                     </div>
                     <div className="flex justify-end gap-2 pt-4 border-t">
@@ -285,4 +279,4 @@ const FilterKanban = ({
     )
 }
 
-export default FilterKanban
+export default FilterBalance

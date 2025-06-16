@@ -7,8 +7,8 @@ import { Supplier } from "./supplier";
 export type Kanban = {
     id: number;
     code: string;
-    balance: string;
-    description: number;
+    balance: number;
+    description: string;
     specification: string;
     lead_time: number;
     machine: Machine;
@@ -22,6 +22,13 @@ export type Kanban = {
     maker?: Maker;
     supplier: Supplier;
     stock_status: string;
+    order_point: number;                    
+    currency: string;
+    rank: string;
     created_at: string;
     updated_at: string;
+    price: number;
+    safety_stock: number;
+    is_completed: boolean;
+    incoming_order_stock?: number;
 }

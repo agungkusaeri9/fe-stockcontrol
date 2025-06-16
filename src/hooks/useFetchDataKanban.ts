@@ -9,6 +9,7 @@ type Filter = {
     rack_id: number | null;
     keyword: string;
     status: string | null;
+    completed_status: string | null;
 }
 
 export type FetchFunctionWithPagination<T> = (
@@ -18,7 +19,8 @@ export type FetchFunctionWithPagination<T> = (
     machine_id?: number | null,
     machine_area_id?: number | null,
     rack_id?: number | null,
-    status?: string | null
+    status?: string | null,
+    completed_status?: string | null
 ) => Promise<PaginatedResponse<T>>;
 
 export const useFetchDataKanban = <T>(
@@ -37,6 +39,7 @@ export const useFetchDataKanban = <T>(
         usePagination ? Number(searchParams.get("limit")) || 10 : 50
     );
     const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
+    const [completed_status, setCompletedStatus] = useState(searchParams.get("completed_status") || "");
     const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
 
     const handlePageChange = (page: number) => {
@@ -86,6 +89,12 @@ export const useFetchDataKanban = <T>(
             newParams.delete("status");
         }
 
+        if (filter.completed_status) {
+            newParams.set("completed_status", filter.completed_status);
+        } else {
+            newParams.delete("completed_status");
+        }
+
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
@@ -97,7 +106,8 @@ export const useFetchDataKanban = <T>(
             filter.machine_id,
             filter.machine_area_id,
             filter.rack_id,
-            filter.status
+            filter.status,
+            filter.completed_status
         );
         setPagination(res.pagination);
         return res.data;
@@ -105,7 +115,7 @@ export const useFetchDataKanban = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id, filter.status]
+            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id, filter.status, filter.completed_status]
             : [queryKey],
         queryFn: fetchData,
     });
@@ -117,6 +127,7 @@ export const useFetchDataKanban = <T>(
         currentPage,
         limit,
         keyword,
+        completed_status,
         setKeyword,
         setCurrentPage: handlePageChange,
         setLimit,

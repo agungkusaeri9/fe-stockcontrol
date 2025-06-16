@@ -12,7 +12,7 @@ interface FormSelect2Props {
     label?: string;
     name: string;
     options?: Option[];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<any>;
     placeholder?: string;
     isMulti?: boolean;
@@ -88,7 +88,7 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
     };
 
     return (
-        <div className={`flex flex-col ${className}`}>
+        <div className={`flex flex-col ${className} mb-3`}>
             {label && (
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                     {label}
@@ -112,7 +112,7 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
                             styles={customStyles}
                             isLoading={isLoading}
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            onInputChange={(newValue : any) => {
+                            onInputChange={(newValue: any) => {
                                 setIsLoading(true);
                                 return newValue;
                             }}

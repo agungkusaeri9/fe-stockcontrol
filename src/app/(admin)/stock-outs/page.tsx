@@ -38,7 +38,16 @@ function StockOutList() {
             header: "Code",
             accessorKey: "kanban_code"
         },
-
+        {
+            header: "Description",
+            accessorKey: "description",
+            cell: (item: StockOut) => item.kanban?.description
+        },
+        {
+            header: "Specification",
+            accessorKey: "specification",
+            cell: (item: StockOut) => item.kanban?.specification
+        },
         {
             header: "Machine",
             accessorKey: "machine.code",

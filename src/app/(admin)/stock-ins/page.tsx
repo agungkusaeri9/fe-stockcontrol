@@ -37,6 +37,16 @@ function StockInList() {
             accessorKey: "kanban_code"
         },
         {
+            header: "Description",
+            accessorKey: "description",
+            cell: (item: StockIn) => item.kanban?.description || '-'
+        },
+        {
+            header: "Specification",
+            accessorKey: "specification",
+            cell: (item: StockIn) => item.kanban?.specification || '-'
+        },
+        {
             header: "Quantity",
             accessorKey: "quantity"
         },

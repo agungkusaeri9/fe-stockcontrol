@@ -98,7 +98,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                 )}
                 {filter.code && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Code: {filter.code}</span>
+                        <span>Search: {filter.code}</span>
                         <button
                             onClick={() => removeFilter('code')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -150,8 +150,8 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="space-y-4">
                         <InputLabel
-                            placeholder="Code"
-                            label="Code"
+                            placeholder="Search"
+                            label="Search"
                             name="code"
                             onChange={(e) => setValue('code', e.target.value)}
                             register={register("code")}

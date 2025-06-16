@@ -20,26 +20,26 @@ interface FilterFormData {
     machine_area_id: { value: number; label: string } | null;
 }
 
-const FilterStockOut = ({ 
-    filter, 
-    setFilter 
-}: { 
-    filter: { 
+const FilterStockOut = ({
+    filter,
+    setFilter
+}: {
+    filter: {
         start_date: string,
         end_date: string,
         code: string,
-        machine_id: number | null, 
+        machine_id: number | null,
         machine_area_id: number | null,
         keyword: string
-    }, 
-    setFilter: (filter: { 
+    },
+    setFilter: (filter: {
         start_date: string,
         end_date: string,
         code: string,
-        machine_id: number | null, 
+        machine_id: number | null,
         machine_area_id: number | null,
         keyword: string
-    }) => void 
+    }) => void
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
@@ -69,8 +69,8 @@ const FilterStockOut = ({
 
     const onSubmit = (data: FilterFormData) => {
         const newFilter = {
-            machine_id: data.machine_id?.value || null, 
-            machine_area_id: data.machine_area_id?.value || null,  
+            machine_id: data.machine_id?.value || null,
+            machine_area_id: data.machine_area_id?.value || null,
             start_date: data.start_date,
             end_date: data.end_date,
             code: data.code,
@@ -86,8 +86,8 @@ const FilterStockOut = ({
             start_date: "",
             end_date: "",
             code: "",
-            machine_id: null, 
-            machine_area_id: null, 
+            machine_id: null,
+            machine_area_id: null,
             keyword: ""
         };
         setFilter(emptyFilter);
@@ -119,7 +119,7 @@ const FilterStockOut = ({
                 {filter.start_date && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Start: {dateFormat(filter.start_date, 'DD MMM YYYY')}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('start_date')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -130,7 +130,7 @@ const FilterStockOut = ({
                 {filter.end_date && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>End: {dateFormat(filter.end_date, 'DD MMM YYYY')}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('end_date')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -140,8 +140,8 @@ const FilterStockOut = ({
                 )}
                 {filter.code && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Code: {filter.code}</span>
-                        <button 
+                        <span>Search: {filter.code}</span>
+                        <button
                             onClick={() => removeFilter('code')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -152,7 +152,7 @@ const FilterStockOut = ({
                 {filter.machine_id && machines && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Machine: {machines.find(m => m.id === filter.machine_id)?.code}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('machine_id')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -163,7 +163,7 @@ const FilterStockOut = ({
                 {filter.machine_area_id && machineAreas && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Area: {machineAreas.find(a => a.id === filter.machine_area_id)?.name}</span>
-                        <button 
+                        <button
                             onClick={() => removeFilter('machine_area_id')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
@@ -214,8 +214,8 @@ const FilterStockOut = ({
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="space-y-4">
                         <InputLabel
-                            placeholder="Code"
-                            label="Code"
+                            placeholder="Search"
+                            label="Search"
                             name="code"
                             onChange={(e) => setValue('code', e.target.value)}
                             register={register("code")}
