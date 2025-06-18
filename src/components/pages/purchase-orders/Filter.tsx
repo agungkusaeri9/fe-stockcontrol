@@ -33,7 +33,6 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
         if (formValues.start_date) count++;
         if (formValues.end_date) count++;
         if (formValues.po_number) count++;
-        console.log({ formValues })
         setActiveFilters(count);
     }, [formValues]);
 
@@ -110,7 +109,7 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
                 {/* Filter Button with Dropdown */}
                 <div className="relative">
                     <Button
-                        variant="outline"
+                        variant="secondary"
                         size="sm"
                         className="flex items-center gap-2 relative dropdown-toggle"
                         onClick={() => setIsOpen(!isOpen)}

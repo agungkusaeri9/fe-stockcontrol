@@ -167,13 +167,6 @@ const Page = () => {
                         {/* Stock Information */}
                         <div className="grid grid-cols-2 gap-3">
                             <InputLabel
-                                label="Balance"
-                                name="balance"
-                                type="number"
-                                required
-                                placeholder={kanban?.balance?.toString() || "0"}
-                            />
-                            <InputLabel
                                 label="Safety Stock"
                                 name="safety_stock"
                                 type="number"
@@ -182,10 +175,6 @@ const Page = () => {
                                 register={register("safety_stock", { valueAsNumber: true })}
                                 error={errors.safety_stock}
                             />
-                        </div>
-
-                        {/* Order Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Order Point"
                                 name="order_point"
@@ -195,6 +184,11 @@ const Page = () => {
                                 register={register("order_point", { valueAsNumber: true })}
                                 error={errors.order_point}
                             />
+                        </div>
+
+                        {/* Order Information */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             <InputLabel
                                 label="Lead Time"
                                 name="lead_time"
@@ -204,10 +198,6 @@ const Page = () => {
                                 register={register("lead_time", { valueAsNumber: true })}
                                 error={errors.lead_time}
                             />
-                        </div>
-
-                        {/* Price Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Price"
                                 name="price"
@@ -217,6 +207,11 @@ const Page = () => {
                                 register={register("price", { valueAsNumber: true })}
                                 error={errors.price}
                             />
+                        </div>
+
+                        {/* Price Information */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             <InputLabel
                                 label="Currency"
                                 name="currency"
@@ -226,10 +221,6 @@ const Page = () => {
                                 register={register("currency")}
                                 error={errors.currency}
                             />
-                        </div>
-
-                        {/* Classification */}
-                        <div className="grid grid-cols-2 gap-3">
                             <InputLabel
                                 label="Rank"
                                 name="rank"
@@ -239,6 +230,11 @@ const Page = () => {
                                 register={register("rank")}
                                 error={errors.rank}
                             />
+                        </div>
+
+                        {/* Classification */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             {makers && (
                                 <FormSelect2
                                     label="Maker"
@@ -252,10 +248,6 @@ const Page = () => {
                                     placeholder="Select Maker"
                                 />
                             )}
-                        </div>
-
-                        {/* Location Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             {machines && (
                                 <FormSelect2
                                     label="Machine"
@@ -269,6 +261,11 @@ const Page = () => {
                                     placeholder="Select Machine"
                                 />
                             )}
+                        </div>
+
+                        {/* Location Information */}
+                        <div className="grid grid-cols-2 gap-3">
+
                             {racks && (
                                 <FormSelect2
                                     label="Rack"
@@ -282,10 +279,6 @@ const Page = () => {
                                     placeholder="Select Rack"
                                 />
                             )}
-                        </div>
-
-                        {/* Area Information */}
-                        <div className="grid grid-cols-2 gap-3">
                             {machineAreas && (
                                 <FormSelect2
                                     label="Machine Area"
@@ -300,6 +293,7 @@ const Page = () => {
                                 />
                             )}
                         </div>
+
 
                         <div className="flex justify-end gap-2 mt-6">
                             <Button

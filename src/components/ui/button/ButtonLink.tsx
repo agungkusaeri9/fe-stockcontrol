@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 interface ButtonProps {
     children: ReactNode; // Button text or content
     size?: "sm" | "md" | "xs"; // Button size
-    variant?: "primary" | "outline" | "info" | "danger";
+    variant?: "primary" | "outline" | "info" | "danger" | "warning" | "secondary";
     className?: string; // Disabled state
     href: string; // Link URL
 }
@@ -33,6 +33,11 @@ const ButtonLink: React.FC<ButtonProps> = ({
             "bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:bg-brand-300",
         outline:
             "bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03] dark:hover:text-gray-300",
+        warning:
+            "bg-indigo-500 text-white hover:bg-indigo-600 hover:text-white shadow-theme-xs disabled:bg-indigo-300",
+        secondary:
+            "bg-gray-500 text-white hover:bg-gray-600 hover:text-white shadow-theme-xs disabled:bg-gray-300",
+
     };
 
     return (

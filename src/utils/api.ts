@@ -61,7 +61,6 @@ api.interceptors.response.use(
     return response;
   },
   (error: AxiosError<ErrorResponse>) => {
-    console.log(error);
     const status = error.response?.status;
     const data = error.response?.data;
 

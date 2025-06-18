@@ -28,7 +28,6 @@ function KanbanList() {
         pagination
     } = useFetchDataKanban(KanbanService.get, "kanbans", true, filter);
 
-
     const columns = [
         // {
         //     header: "#",
@@ -94,7 +93,7 @@ function KanbanList() {
                 <div className="flex items-center gap-2">
                     <ButtonLink
                         href={`/kanbans/${item.id}`}
-                        variant='outline'
+                        variant='secondary'
                         size='xs'
                     >
                         Show

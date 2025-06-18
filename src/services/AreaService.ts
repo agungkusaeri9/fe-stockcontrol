@@ -59,7 +59,6 @@ const remove = async (id: number) => {
     const response = await api.delete(`machine-areas/${id}`);
     return response.data;
   } catch (error) {
-    console.log(`Successfully deleted area with ID: ${id}`);
     throw error;
   }
 };

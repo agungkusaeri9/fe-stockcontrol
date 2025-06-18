@@ -25,6 +25,50 @@ function BalanceList() {
         pagination
     } = useFetchDataBalance(KanbanService.get, "kanbans", true, filter);
 
+    const getStatusStyle = (status: string) => {
+        switch (status) {
+            case "Overstock":
+                return {
+                    text: "text-red-700",
+                    bg: "bg-red-100",
+                    darkText: "dark:text-red-400",
+                    darkBg: "dark:bg-red-800/20",
+                };
+            case "Understock":
+                return {
+                    text: "text-yellow-700",
+                    bg: "bg-yellow-100",
+                    darkText: "dark:text-yellow-400",
+                    darkBg: "dark:bg-yellow-800/20",
+                };
+            case "Normal":
+                return {
+                    text: "text-green-700",
+                    bg: "bg-green-100",
+                    darkText: "dark:text-green-400",
+                    darkBg: "dark:bg-green-800/20",
+                };
+            default:
+                return {
+                    text: "text-slate-600",
+                    bg: "bg-slate-100",
+                    darkText: "dark:text-slate-300",
+                    darkBg: "dark:bg-slate-800/20",
+                };
+        }
+    };
+
+    const renderStatus = (status: string) => {
+        const { text, bg, darkText, darkBg } = getStatusStyle(status);
+
+        return (
+            <div className={`${text} text-xs text-center w-full ${bg} rounded-md px-2 py-1 ${darkBg} ${darkText} capitalize`}>
+                {status || "Uncompleted"}
+            </div>
+        );
+    };
+
+
     const columns = [
         // {
         //     header: "#",
@@ -94,12 +138,8 @@ function BalanceList() {
             header: "Status",
             accessorKey: "status",
             cell: (item: Kanban) => {
-                if (item.stock_status === "Overstock")
-                    return <div className="text-red-700 text-xs text-center w-full bg-red-100 rounded-md px-2 py-1 dark:bg-red-800/20 dark:text-red-400">Overstock</div>
-                else if (item.stock_status === "Understock")
-                    return <div className="text-yellow-700 text-xs text-center w-full bg-yellow-100 rounded-md px-2 py-1 dark:bg-yellow-800/20 dark:text-yellow-400">Understock</div>
-                else
-                    return <div className="text-green-700 text-xs text-center w-full bg-green-100 rounded-md px-2 py-1 dark:bg-green-800/20 dark:text-green-400">Normal</div>
+                const status = item.stock_status || "Uncompleted";
+                return renderStatus(status);
             }
         }
     ];

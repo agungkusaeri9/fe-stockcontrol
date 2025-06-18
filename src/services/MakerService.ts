@@ -58,7 +58,6 @@ const remove = async (id: number) => {
     const response = await api.delete(`makers/${id}`);
     return response.data;
   } catch (error) {
-    console.log(`Successfully deleted operator with ID: ${id}`);
     throw error;
   }
 };

@@ -173,7 +173,7 @@ const FilterKanban = ({
                 {/* Filter Button */}
                 <Button
                     onClick={() => setIsOpen(!isOpen)}
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     className="flex items-center gap-2 relative"
                 >

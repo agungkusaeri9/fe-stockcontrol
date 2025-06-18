@@ -22,8 +22,8 @@ export default function Page() {
 
     const columns = [
         {
-            header: 'Code',
-            accessorKey: 'product_code'
+            header: 'Kanban Code',
+            accessorKey: 'kanban_code',
         },
         {
             header: 'Description',
@@ -31,7 +31,15 @@ export default function Page() {
         },
         {
             header: 'Specification',
-            accessorKey: 'spesification'
+            accessorKey: 'specification'
+        },
+        {
+            header: 'PR. Number',
+            accessorKey: 'pr_number',
+        },
+        {
+            header: 'PR. Requested',
+            accessorKey: 'pr_requested',
         },
         {
             header: 'Qty',

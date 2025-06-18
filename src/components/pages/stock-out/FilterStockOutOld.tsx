@@ -19,26 +19,26 @@ interface FilterFormData {
     machine_area_id: { value: number; label: string } | null;
 }
 
-const FilterStockOutOld = ({ 
-    filter, 
-    setFilter 
-}: { 
-    filter: { 
+const FilterStockOutOld = ({
+    filter,
+    setFilter
+}: {
+    filter: {
         start_date: string,
         end_date: string,
         code: string,
-        machine_id: number | null, 
+        machine_id: number | null,
         machine_area_id: number | null,
         keyword: string
-    }, 
-    setFilter: (filter: { 
+    },
+    setFilter: (filter: {
         start_date: string,
         end_date: string,
         code: string,
-        machine_id: number | null, 
+        machine_id: number | null,
         machine_area_id: number | null,
         keyword: string
-    }) => void 
+    }) => void
 }) => {
     const [localFilter, setLocalFilter] = useState({
         start_date: filter.start_date,
@@ -63,10 +63,9 @@ const FilterStockOutOld = ({
     const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
 
     const onSubmit = (data: FilterFormData) => {
-        console.log(data);
         const newFilter = {
-            machine_id: data.machine_id?.value || null, 
-            machine_area_id: data.machine_area_id?.value || null,  
+            machine_id: data.machine_id?.value || null,
+            machine_area_id: data.machine_area_id?.value || null,
             start_date: data.start_date,
             end_date: data.end_date,
             code: data.code,
@@ -81,14 +80,14 @@ const FilterStockOutOld = ({
             start_date: "",
             end_date: "",
             code: "",
-            machine_id: null, 
-            machine_area_id: null, 
+            machine_id: null,
+            machine_area_id: null,
             keyword: ""
         };
         setLocalFilter(emptyFilter);
         setFilter(emptyFilter);
     };
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (selectedDates: Date[], dateStr: string, instance: any) => {
         const inputId = instance.element.id;
@@ -113,24 +112,24 @@ const FilterStockOutOld = ({
                             onChange={(e) => setLocalFilter(prev => ({ ...prev, code: e.target.value }))}
                             register={register("code")}
                         />
-                        <DatePicker 
-                            placeholder='Start Date' 
-                            label='Start Date' 
-                            id='start_date' 
-                            mode='single' 
+                        <DatePicker
+                            placeholder='Start Date'
+                            label='Start Date'
+                            id='start_date'
+                            mode='single'
                             defaultDate={localFilter.start_date}
                             onChange={handleDateChange}
                         />
-                        <DatePicker 
-                            placeholder='End Date' 
-                            label='End Date' 
-                            id='end_date' 
-                            mode='single' 
+                        <DatePicker
+                            placeholder='End Date'
+                            label='End Date'
+                            id='end_date'
+                            mode='single'
                             defaultDate={localFilter.end_date}
                             onChange={handleDateChange}
                         />
                         {machines && (
-                             <FormSelect2
+                            <FormSelect2
                                 label="Machine"
                                 name="machine_id"
                                 control={control}
@@ -142,7 +141,7 @@ const FilterStockOutOld = ({
                             />
                         )}
                         {machineAreas && (
-                             <FormSelect2
+                            <FormSelect2
                                 label="Area"
                                 name="machine_area_id"
                                 control={control}
@@ -153,7 +152,7 @@ const FilterStockOutOld = ({
                                 placeholder="Select Area"
                             />
                         )}
-                       
+
                         <div className="flex flex-wrap gap-2 mt-1">
                             <Button
                                 type="reset"

@@ -57,7 +57,7 @@ function PoList() {
             cell: (item: PurchaseOrder) => (
                 <ButtonLink
                     href={`/purchase-orders/${item.id}`}
-                    variant='outline'
+                    variant='secondary'
                     size='xs'
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >

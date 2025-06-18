@@ -63,7 +63,7 @@ function StockInList() {
             cell: (item: PurchaseOrder) => (
                 <ButtonLink
                     href={`/stock-ins/${item.id}`}
-                    variant='outline'
+                    variant='secondary'
                     size='xs'
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >

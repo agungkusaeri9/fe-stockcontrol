@@ -59,7 +59,6 @@ const remove = async (id: number) => {
     const response = await api.delete(`machines/${id}`);
     return response.data;
   } catch (error) {
-    console.log(`Successfully deleted Machine with ID: ${id}`);
     throw error;
   }
 };
