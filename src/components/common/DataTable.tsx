@@ -120,17 +120,17 @@ export default function DataTable({
                     <div className="overflow-hidden rounded-md border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
                         <div className="max-w-full overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200 dark:divide-white/[0.05]">
-                                <thead className="bg-blue-900 text-white dark:bg-white/[0.02]">
+                                <thead className="bg-[#00008B] text-white dark:bg-white/[0.02]">
                                     <tr>
                                         {expandable && (
-                                            <th className="w-20 px-3 py-3 text-center text-xs font-medium text-white-500 uppercase tracking-wider dark:text-gray-400">
+                                            <th className="w-20 px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider dark:text-gray-400">
                                                 Action
                                             </th>
                                         )}
                                         {columns.map((column, index) => (
                                             <th
                                                 key={index}
-                                                className={`px-3 py-3 text-left text-xs font-medium text-white-500 uppercase tracking-wider dark:text-gray-400 ${column.className || ''}`}
+                                                className={`px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider dark:text-gray-400 ${column.className || ''}`}
                                                 onClick={() => handleSort(column.accessorKey)}
                                             >
                                                 <div className="flex items-center gap-1 cursor-pointer">
@@ -232,7 +232,7 @@ export default function DataTable({
                                 </div>
                                 <button
                                     onClick={() => pagination.onPageChange(pagination.currentPage + 1)}
-                                    disabled={pagination.currentPage === pagination.totalPages}
+                                    disabled={pagination.currentPage >= pagination.totalPages}
                                     className="ml-2.5 flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-gray-700 shadow-theme-xs text-sm hover:bg-gray-50 h-10 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]"
                                 >
                                     Next

@@ -6,9 +6,17 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci --force
 
+
 # Stage 2: Builder
 FROM node:18-alpine AS builder
 WORKDIR /app
+
+# ARG + ENV Harus Ada Di Sini!
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+
+ARG NEXT_PUBLIC_SOCKET_BASE_URL
+ENV NEXT_PUBLIC_SOCKET_BASE_URL=$NEXT_PUBLIC_SOCKET_BASE_URL
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

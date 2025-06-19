@@ -35,15 +35,15 @@ export default function SignInForm() {
       // Set user data cookie
       setCookie('user', response.data.data, {
         path: '/',
-        secure: true,
-        sameSite: 'strict',
+        secure: false,
+        sameSite: 'lax',
       });
 
       // Set auth token cookie
       setCookie('token', response.data.data.token, {
         path: '/',
-        secure: true,
-        sameSite: 'strict',
+        secure: false,
+        sameSite: 'lax',
       });
 
       toast.success(response.data.message);

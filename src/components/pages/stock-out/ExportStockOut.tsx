@@ -2,14 +2,12 @@ import Button from '@/components/ui/button/Button'
 import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
-import Loading from '@/components/common/Loading'
 import StockOutService from '@/services/StockOutService'
 
 const ExportStockOut = ({ filter }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filter: any
 }) => {
-    const isDisabled = !filter.code && !filter.start_date && !filter.end_date && !filter.machine_id && !filter.machine_area_id
 
     const exportMutation = useMutation({
         mutationFn: () => StockOutService.exportExcel(
@@ -51,18 +49,18 @@ const ExportStockOut = ({ filter }: {
     });
 
     const handleExport = () => {
-        if (isDisabled) return;
+        // if (isDisabled) return;
         exportMutation.mutate();
     };
 
-    if (exportMutation.isPending) {
-        <Loading />
-    }
+    // if (exportMutation.isPending) {
+    //     <Loading />
+    // }
 
     return (
         <Button
             onClick={handleExport}
-            disabled={isDisabled || exportMutation.isPending}
+            disabled={exportMutation.isPending}
             size="sm"
             className="flex items-center gap-2 bg-a-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >

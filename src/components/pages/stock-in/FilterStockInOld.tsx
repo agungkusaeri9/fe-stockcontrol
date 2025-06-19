@@ -162,7 +162,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                             id='start_date'
                             onChange={handleDateChange}
                             mode='single'
-                            defaultDate={filter.start_date}
+                            defaultDate={watch('start_date')}
                         />
                         <DatePicker
                             placeholder='End Date'
@@ -170,7 +170,7 @@ const FilterStockIn = ({ filter, setFilter }: { filter: any, setFilter: any }) =
                             id='end_date'
                             onChange={handleDateChange}
                             mode='single'
-                            defaultDate={filter.end_date}
+                            defaultDate={watch('end_date')}
                         />
 
                     </div>

@@ -370,7 +370,7 @@ const AppSidebar: React.FC = () => {
         className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
           }`}
       >
-        <Link href="/">
+        <Link href="/dashboard">
           {isExpanded || isHovered || isMobileOpen ? (
             <div className="flex flex-col align-center items-center" >
               <Image

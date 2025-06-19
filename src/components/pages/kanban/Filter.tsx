@@ -160,7 +160,7 @@ const FilterKanban = ({
                 )}
                 {filter.completed_status && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Status: {filter.completed_status === 'completed' ? 'Completed' : 'Uncompleted'}</span>
+                        <span>Status: {filter.completed_status === 'Completed' ? 'Completed' : 'Uncompleted'}</span>
                         <button
                             onClick={() => removeFilter('completed_status')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"

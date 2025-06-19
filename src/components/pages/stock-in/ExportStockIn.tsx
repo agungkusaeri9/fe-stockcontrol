@@ -3,7 +3,6 @@ import React from 'react'
 import StockInService from '@/services/StockInService'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
-import Loading from '@/components/common/Loading'
 
 const ExportStockIn = ({ filter }: {
     filter: {
@@ -12,8 +11,6 @@ const ExportStockIn = ({ filter }: {
         code: string
     }
 }) => {
-    const isDisabled = !filter.code && !filter.start_date && !filter.end_date;
-
     const exportMutation = useMutation({
         mutationFn: () => StockInService.exportExcel(
             filter.start_date,
@@ -52,18 +49,17 @@ const ExportStockIn = ({ filter }: {
     });
 
     const handleExport = () => {
-        if (isDisabled) return;
         exportMutation.mutate();
     };
 
-    if (exportMutation.isPending) {
-        return <Loading />;
-    }
+    // if (exportMutation.isPending) {
+    //     return <Loading />;
+    // }
 
     return (
         <Button
             onClick={handleExport}
-            disabled={isDisabled || exportMutation.isPending}
+            disabled={exportMutation.isPending}
             size="sm"
             className="flex items-center gap-2 bg-a-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >

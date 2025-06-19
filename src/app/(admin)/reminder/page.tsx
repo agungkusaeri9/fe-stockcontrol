@@ -20,10 +20,20 @@ function ReminderList() {
         pagination
     } = useFetchData(ReminderService.get, "reminders", true);
 
+    console.log("reminders", reminders);
+
     const columns = [
         {
             header: "No. Kanban",
             accessorKey: "code",
+        },
+        {
+            header: "Description",
+            accessorKey: "description",
+        },
+        {
+            header: "Specification",
+            accessorKey: "specification",
         },
         {
             header: 'PO. Status',
@@ -33,7 +43,7 @@ function ReminderList() {
         {
             header: 'PO. Date',
             accessorKey: 'po_date',
-            cell: (item: Reminder) => item.po_date ? dateFormat(item.po_date) : '-',
+            cell: (item: Reminder) => item.po_date ? dateFormat(item.po_date, "DD MMMM YYYY") : '-',
         },
         {
             header: 'PR. Status',
@@ -43,7 +53,7 @@ function ReminderList() {
         {
             header: 'PR. Date',
             accessorKey: 'pr_date',
-            cell: (item: Reminder) => item.pr_date ? dateFormat(item.pr_date) : '-',
+            cell: (item: Reminder) => item.pr_date ? dateFormat(item.pr_date, "DD MMMM YYYY") : '-',
         }
     ];
 
@@ -70,7 +80,7 @@ function ReminderList() {
                     search={{
                         value: keyword,
                         onChange: setKeyword,
-                        placeholder: "Search code...",
+                        placeholder: "Search...",
                     }}
                 />
             </div>

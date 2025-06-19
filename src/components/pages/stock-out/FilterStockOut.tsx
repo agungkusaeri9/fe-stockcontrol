@@ -226,7 +226,7 @@ const FilterStockOut = ({
                             id='start_date'
                             onChange={handleDateChange}
                             mode='single'
-                            defaultDate={filter.start_date}
+                            defaultDate={watch('start_date')}
                         />
                         <DatePicker
                             placeholder='End Date'
@@ -234,7 +234,7 @@ const FilterStockOut = ({
                             id='end_date'
                             onChange={handleDateChange}
                             mode='single'
-                            defaultDate={filter.end_date}
+                            defaultDate={watch('end_date')}
                         />
                         {machines && (
                             <FormSelect2
