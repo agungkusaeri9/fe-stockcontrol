@@ -19,6 +19,7 @@ interface FilterFormData {
     machine_area_id: { value: number; label: string } | null;
     rack_id: { value: number; label: string } | null;
     status: string | null;
+    js_balance_status: string;
 }
 
 const FilterBalance = ({
@@ -30,14 +31,16 @@ const FilterBalance = ({
         machine_area_id: number | null,
         rack_id: number | null,
         keyword: string,
-        status: string | null
+        status: string | null,
+        js_balance_status: string
     },
     setFilter: (filter: {
         machine_id: number | null,
         machine_area_id: number | null,
         rack_id: number | null,
         keyword: string,
-        status: string | null
+        status: string | null,
+        js_balance_status: string
     }) => void
 }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -48,13 +51,19 @@ const FilterBalance = ({
             machine_id: null,
             machine_area_id: null,
             rack_id: null,
-            status: null
+            status: null,
+            js_balance_status: ""
         }
     });
     const statuses = ([
         { label: "Normal", value: "Normal" },
         { label: "Overstock", value: "Overstock" },
         { label: "Understock", value: "Understock" },
+    ]);
+    const status_balances = ([
+        { label: "All", value: "" },
+        { label: "Balance", value: "balance" },
+        { label: "Unbalance", value: "unbalance" },
     ]);
 
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
@@ -70,16 +79,19 @@ const FilterBalance = ({
         if (formValues.machine_area_id) count++;
         if (formValues.rack_id) count++;
         if (formValues.status) count++;
+        if (formValues.js_balance_status) count++;
         setActiveFilters(count);
     }, [formValues]);
 
     const onSubmit = (data: FilterFormData) => {
+        console.log("Filter Data:", data);
         setFilter({
             machine_id: data.machine_id?.value || null,
             machine_area_id: data.machine_area_id?.value || null,
             rack_id: data.rack_id?.value || null,
             keyword: data.keyword,
-            status: data.status
+            status: data.status,
+            js_balance_status: data.js_balance_status
         });
         setIsOpen(false);
     };
@@ -91,7 +103,8 @@ const FilterBalance = ({
             machine_area_id: null,
             rack_id: null,
             keyword: "",
-            status: null
+            status: null,
+            js_balance_status: filter.js_balance_status
         });
         setIsOpen(false);
     };
@@ -157,6 +170,17 @@ const FilterBalance = ({
                         <span>Status: {filter.status}</span>
                         <button
                             onClick={() => removeFilter('status')}
+                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        >
+                            ×
+                        </button>
+                    </div>
+                )}
+                {filter.js_balance_status && (
+                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
+                        <span>JS Balance Status: {filter.js_balance_status}</span>
+                        <button
+                            onClick={() => removeFilter('js_balance_status')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                             ×
@@ -230,7 +254,7 @@ const FilterBalance = ({
                                 name="machine_area_id"
                                 control={control}
                                 options={machineAreas.map((d: Area) => ({
-                                    label: d.name,
+                                    label: d.name || "",
                                     value: Number(d.id),
                                 }))}
                                 placeholder="Select Area"
@@ -254,6 +278,13 @@ const FilterBalance = ({
                             register={register("status")}
                             options={statuses}
                             placeholder="Select Status"
+                        />
+                        <SelectLabel
+                            label="JS Balance Status"
+                            name="js_balance_status"
+                            register={register("js_balance_status")}
+                            options={status_balances}
+                            placeholder="Select JS Balance Status"
                         />
                     </div>
                     <div className="flex justify-end gap-2 pt-4 border-t">

@@ -13,6 +13,7 @@ interface InputLabelProps {
     disabled?: boolean;
     success?: boolean;
     hint?: string; // Optional hint text
+    defaultValue?: string | number; // Optional default value
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -27,6 +28,7 @@ const InputLabel: React.FC<InputLabelProps> = ({
     disabled = false,
     success = false,
     hint,
+    defaultValue = "",
     onChange
 }) => {
     // Class untuk input berdasarkan kondisi (disabled, success, error)
@@ -55,6 +57,7 @@ const InputLabel: React.FC<InputLabelProps> = ({
                 {...register}
                 disabled={disabled}
                 className={inputClasses}
+                defaultValue={defaultValue}
             />
             {error && <p className="text-sm text-error-500 mt-1">{error.message}</p>}
             {hint && !error && !success && (

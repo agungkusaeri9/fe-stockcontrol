@@ -7,6 +7,8 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import { dateFormat } from "@/utils/dateFormat";
 import StockOutService from "@/services/StockOutService";
 import { StockOut } from "@/types/stockOut";
+import DataTable from "@/components/common/DataTable";
+import { StockOutChangeLog } from "@/types/stockOutChangeLog";
 
 export default function Page() {
     const params = useParams();
@@ -18,6 +20,31 @@ export default function Page() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         </div>
     );
+
+    const columns = [
+        {
+            header: "Date",
+            accessorKey: "created_at",
+            cell: (item: StockOutChangeLog) => {
+                return dateFormat(item.created_at);
+            },
+        },
+        {
+            header: "Qty Before",
+            accessorKey: "name",
+            cell: (item: StockOutChangeLog) => {
+                return item.quantity_before;
+            },
+        },
+        {
+            header: "Qty After",
+            accessorKey: "name",
+            cell: (item: StockOutChangeLog) => {
+                return item.quantity_after;
+            },
+        },
+
+    ];
 
 
     return (
@@ -96,6 +123,12 @@ export default function Page() {
                         </div>
                     </div>
                 </ComponentCard>
+
+                <DataTable
+                    title="Stock Out Change Logs"
+                    columns={columns}
+                    data={stockOut.stock_out_change_logs ? (Array.isArray(stockOut.stock_out_change_logs) ? stockOut.stock_out_change_logs : [stockOut.stock_out_change_logs]) : []}
+                />
             </div>
         </div>
     );

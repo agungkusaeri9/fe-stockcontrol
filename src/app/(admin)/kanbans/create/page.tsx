@@ -255,7 +255,7 @@ function CreateKanbanForm() {
                                     name="machine_area_id"
                                     control={control}
                                     options={machineAreas.map((d: Area) => ({
-                                        label: d.name,
+                                        label: d.name || "",
                                         value: d.id,
                                     }))}
                                     error={errors.machine_area_id?.message}

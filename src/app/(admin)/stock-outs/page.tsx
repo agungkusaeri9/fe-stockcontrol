@@ -72,14 +72,24 @@ function StockOutList() {
             header: 'Action',
             accessorKey: 'id',
             cell: (item: StockOut) => (
-                <ButtonLink
-                    href={`/stock-outs/${item.id}`}
-                    variant='secondary'
-                    size='xs'
-                    className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                >
-                    Show
-                </ButtonLink>
+                <div className="flex items-center gap-2">
+                    <ButtonLink
+                        href={`/stock-outs/${item.id}/edit`}
+                        variant='info'
+                        size='xs'
+                    >
+                        Edit
+                    </ButtonLink>
+                    <ButtonLink
+                        href={`/stock-outs/${item.id}`}
+                        variant='secondary'
+                        size='xs'
+                        className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                        Show
+                    </ButtonLink>
+                </div>
+
             )
         }
     ];

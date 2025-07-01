@@ -236,7 +236,7 @@ const FilterKanban = ({
                                 name="machine_area_id"
                                 control={control}
                                 options={machineAreas.map((d: Area) => ({
-                                    label: d.name,
+                                    label: d.name || "",
                                     value: Number(d.id),
                                 }))}
                                 placeholder="Select Area"

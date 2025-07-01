@@ -9,6 +9,8 @@ type Filter = {
     rack_id: number | null;
     keyword: string;
     status: string | null;
+    completed_status?: string | null;
+    js_balance_status: string;
 }
 
 export type FetchFunctionWithPagination<T> = (
@@ -18,7 +20,9 @@ export type FetchFunctionWithPagination<T> = (
     machine_id?: number | null,
     machine_area_id?: number | null,
     rack_id?: number | null,
-    status?: string | null
+    status?: string | null,
+    completed_status?: string | null,
+    js_balance_status?: string
 ) => Promise<PaginatedResponse<T>>;
 
 export const useFetchDataBalance = <T>(
@@ -86,6 +90,12 @@ export const useFetchDataBalance = <T>(
             newParams.delete("status");
         }
 
+        if (filter.js_balance_status) {
+            newParams.set("js_balance_status", filter.js_balance_status);
+        } else {
+            newParams.delete("js_balance_status");
+        }
+
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
@@ -97,7 +107,9 @@ export const useFetchDataBalance = <T>(
             filter.machine_id,
             filter.machine_area_id,
             filter.rack_id,
-            filter.status
+            filter.status,
+            filter.completed_status = null,
+            filter.js_balance_status
         );
         setPagination(res.pagination);
         return res.data;
@@ -105,7 +117,7 @@ export const useFetchDataBalance = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id, filter.status]
+            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id, filter.status,null, filter.js_balance_status]
             : [queryKey],
         queryFn: fetchData,
     });

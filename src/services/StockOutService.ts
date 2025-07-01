@@ -67,5 +67,16 @@ const exportExcel = async (
   return response.data;
 };
 
-const StockOutService = { get, getById,exportExcel } ;
+const update = async (id: number, data: {
+  quantity:number
+}) => {
+  try {
+    const response = await api.patch(`stock-outs/${id}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const StockOutService = { get, getById,exportExcel, update } ;
 export default StockOutService;

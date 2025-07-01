@@ -20,8 +20,6 @@ function ReminderList() {
         pagination
     } = useFetchData(ReminderService.get, "reminders", true);
 
-    console.log("reminders", reminders);
-
     const columns = [
         {
             header: "No. Kanban",

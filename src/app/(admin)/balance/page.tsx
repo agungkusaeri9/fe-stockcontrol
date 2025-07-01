@@ -14,7 +14,8 @@ function BalanceList() {
         machine_area_id: null as number | null,
         rack_id: null as number | null,
         keyword: "",
-        status: null as string | null
+        status: null as string | null,
+        js_balance_status: ""
     });
     const {
         data: kanbans,
@@ -100,11 +101,6 @@ function BalanceList() {
             accessorKey: "machine_area",
             cell: (item: Kanban) => item.machine_area?.name || '-'
         },
-        // {
-        //     header: "Rack",
-        //     accessorKey: "rack",
-        //     cell: (item: Kanban) => item.rack?.code || '-'
-        // },
         {
             header: "Min.",
             accessorKey: "min_quantity",
@@ -114,10 +110,15 @@ function BalanceList() {
             accessorKey: "max_quantity",
         },
         {
-            header: "Incoming Order Stock.",
+            header: "Ordered Stock",
             accessorKey: "incoming_order_stock",
         },
         {
+            header: "Stock In Qty.",
+            accessorKey: "stock_in_quantity",
+        },
+        {
+
             header: "Balance",
             accessorKey: "balance",
         },

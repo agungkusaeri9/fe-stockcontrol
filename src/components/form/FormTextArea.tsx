@@ -15,6 +15,7 @@ interface TextAreaLabelProps {
     disabled?: boolean;
     success?: boolean;
     hint?: string;
+    defaultValue?: string; // Optional default value
 }
 
 const TextAreaLabel = ({
@@ -28,6 +29,7 @@ const TextAreaLabel = ({
     rows = 4,
     disabled = false,
     success = false,
+    defaultValue = "",
     hint
 }: TextAreaLabelProps) => {
     let textareaClasses = `w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800`;
@@ -54,6 +56,7 @@ const TextAreaLabel = ({
                 placeholder={placeholder}
                 disabled={disabled}
                 {...register}
+                defaultValue={defaultValue}
             />
             {error && <p className="text-sm text-error-500 mt-1">{error.message}</p>}
             {hint && !error && !success && (

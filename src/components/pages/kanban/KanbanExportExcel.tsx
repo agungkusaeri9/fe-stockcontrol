@@ -22,7 +22,7 @@ const KanbanExportExcel = () => {
             const month = String(new Date().getMonth() + 1).padStart(2, '0');
             const day = String(new Date().getDate()).padStart(2, '0');
 
-            fileName = `${prefix}_${day}${month}${year}.xlsx`;
+            fileName = `${prefix}_${day}${month}${year}_1.xlsx`;
 
             link.setAttribute('download', fileName);
 

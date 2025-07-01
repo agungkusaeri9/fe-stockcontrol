@@ -60,7 +60,7 @@ const Page = () => {
                 description: kanban.description.toString(),
                 specification: kanban.specification,
                 lead_time: kanban.lead_time,
-                machine_id: { value: Number(kanban.machine?.id), label: kanban.machine?.code },
+                machine_id: { value: Number(kanban.machine?.id || 0), label: kanban.machine?.code },
                 machine_area_id: { value: Number(kanban.machine_area?.id), label: kanban.machine_area?.name },
                 rack_id: { value: Number(kanban.rack?.id), label: kanban.rack?.code },
                 max_quantity: Number(kanban.max_quantity),
@@ -105,9 +105,8 @@ const Page = () => {
                                 name="code"
                                 type="text"
                                 required
-                                placeholder="Enter Code"
-                                register={register("code")}
-                                error={errors.code}
+                                defaultValue={kanban?.code || ""}
+                                disabled
                             />
                             <InputLabel
                                 label="Uom"
@@ -285,9 +284,13 @@ const Page = () => {
                                     name="machine_area_id"
                                     control={control}
                                     options={machineAreas.map((d: Area) => ({
-                                        label: d.name,
+                                        label: d.name || "",
                                         value: d.id,
                                     }))}
+                                    // options={machineAreas.map((d: Area) => ({
+                                    //     label: d.name,
+                                    //     value: d.id,
+                                    // }))}
                                     error={errors.machine_area_id?.message}
                                     placeholder="Select Machine Area"
                                 />
