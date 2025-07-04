@@ -50,7 +50,7 @@ export default function Page() {
         },
         {
             header: 'Description',
-            accessorKey: 'description_of_good'
+            accessorKey: 'description_of_goods'
         }
     ];
 

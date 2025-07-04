@@ -119,79 +119,84 @@ export default function DataTable({
                     </div>
                     <div className="overflow-hidden rounded-md border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
                         <div className="max-w-full overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-white/[0.05]">
-                                <thead className="bg-[#00008B] text-white dark:bg-white/[0.02]">
-                                    <tr>
-                                        {expandable && (
-                                            <th className="w-20 px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider dark:text-gray-400">
-                                                Action
-                                            </th>
-                                        )}
-                                        {columns.map((column, index) => (
-                                            <th
-                                                key={index}
-                                                className={`px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider dark:text-gray-400 ${column.className || ''}`}
-                                                onClick={() => handleSort(column.accessorKey)}
-                                            >
-                                                <div className="flex items-center gap-1 cursor-pointer">
-                                                    {column.header}
-                                                    {sortConfig?.key === column.accessorKey && (
-                                                        sortConfig.direction === 'asc' ?
-                                                            <ChevronUp className="h-4 w-4" /> :
-                                                            <ChevronDown className="h-4 w-4" />
-                                                    )}
-                                                    {sortConfig?.key !== column.accessorKey && (
-                                                        <ChevronsUpDown className="h-4 w-4 opacity-50" />
-                                                    )}
-                                                </div>
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200 dark:divide-white/[0.05] dark:bg-white/[0.03]">
-                                    {sortedData.length === 0 ? (
+                            <div style={{ maxHeight: 500, overflowY: 'auto' }}>
+                                <table className="min-w-full divide-y divide-gray-200 dark:divide-white/[0.05]" style={{ tableLayout: 'fixed' }}>
+                                    <thead
+                                        className="bg-[#00008B] text-white dark:bg-white/[0.02]"
+                                        style={{ position: 'sticky', top: 0, zIndex: 2 }}
+                                    >
                                         <tr>
-                                            <td colSpan={columns.length + (expandable ? 1 : 0)} className="px-3 py-[5px] text-center text-sm text-gray-500 dark:text-gray-400">
-                                                No results found.
-                                            </td>
+                                            {expandable && (
+                                                <th className="w-20 px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider dark:text-gray-400">
+                                                    Action
+                                                </th>
+                                            )}
+                                            {columns.map((column, index) => (
+                                                <th
+                                                    key={index}
+                                                    className={`px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider dark:text-gray-400 ${column.className || ''}`}
+                                                    onClick={() => handleSort(column.accessorKey)}
+                                                >
+                                                    <div className="flex items-center gap-1 cursor-pointer">
+                                                        {column.header}
+                                                        {sortConfig?.key === column.accessorKey && (
+                                                            sortConfig.direction === 'asc' ?
+                                                                <ChevronUp className="h-4 w-4" /> :
+                                                                <ChevronDown className="h-4 w-4" />
+                                                        )}
+                                                        {sortConfig?.key !== column.accessorKey && (
+                                                            <ChevronsUpDown className="h-4 w-4 opacity-50" />
+                                                        )}
+                                                    </div>
+                                                </th>
+                                            ))}
                                         </tr>
-                                    ) : (
-                                        sortedData.map((item, index) => (
-                                            <React.Fragment key={index}>
-                                                <tr className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
-                                                    {expandable && (
-                                                        <td className="px-3 py-[5px] text-center">
-                                                            <button
-                                                                onClick={() => toggleRow(index)}
-                                                                className="inline-flex items-center justify-center p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
-                                                                title={expandedRows.includes(index) ? "Hide details" : "Show details"}
-                                                            >
-                                                                {expandedRows.includes(index) ? (
-                                                                    <ChevronUp className="w-4 h-4 text-gray-500" />
-                                                                ) : (
-                                                                    <ChevronDown className="w-4 h-4 text-gray-500" />
-                                                                )}
-                                                            </button>
-                                                        </td>
-                                                    )}
-                                                    {columns.map((column, colIndex) => (
-                                                        <td key={colIndex} className={`px-3 py-[5px] text-sm text-gray-500 dark:text-gray-400 ${column.className || ''}`}>
-                                                            {column.cell ? column.cell(item) : item[column.accessorKey]}
-                                                        </td>
-                                                    ))}
-                                                </tr>
-                                                {expandable && expandedRows.includes(index) && (
-                                                    <tr className="bg-gray-50 dark:bg-white/[0.02]">
-                                                        <td colSpan={columns.length + 1} className="px-3 py-4">
-                                                            {expandable.render(item)}
-                                                        </td>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-white/[0.05] dark:bg-white/[0.03]">
+                                        {sortedData.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={columns.length + (expandable ? 1 : 0)} className="px-3 py-[5px] text-center text-sm text-gray-500 dark:text-gray-400">
+                                                    No results found.
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            sortedData.map((item, index) => (
+                                                <React.Fragment key={index}>
+                                                    <tr className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                                                        {expandable && (
+                                                            <td className="px-3 py-[5px] text-center">
+                                                                <button
+                                                                    onClick={() => toggleRow(index)}
+                                                                    className="inline-flex items-center justify-center p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
+                                                                    title={expandedRows.includes(index) ? "Hide details" : "Show details"}
+                                                                >
+                                                                    {expandedRows.includes(index) ? (
+                                                                        <ChevronUp className="w-4 h-4 text-gray-500" />
+                                                                    ) : (
+                                                                        <ChevronDown className="w-4 h-4 text-gray-500" />
+                                                                    )}
+                                                                </button>
+                                                            </td>
+                                                        )}
+                                                        {columns.map((column, colIndex) => (
+                                                            <td key={colIndex} className={`px-3 py-[5px] text-sm text-gray-500 dark:text-gray-400 ${column.className || ''}`}>
+                                                                {column.cell ? column.cell(item) : item[column.accessorKey]}
+                                                            </td>
+                                                        ))}
                                                     </tr>
-                                                )}
-                                            </React.Fragment>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
+                                                    {expandable && expandedRows.includes(index) && (
+                                                        <tr className="bg-gray-50 dark:bg-white/[0.02]">
+                                                            <td colSpan={columns.length + 1} className="px-3 py-4">
+                                                                {expandable.render(item)}
+                                                            </td>
+                                                        </tr>
+                                                    )}
+                                                </React.Fragment>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
