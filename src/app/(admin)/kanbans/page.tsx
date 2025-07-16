@@ -42,6 +42,11 @@ function KanbanList() {
             accessorKey: "code",
         },
         {
+            header: "Rack",
+            accessorKey: "rack",
+            cell: (item: Kanban) => item.rack?.code || '-'
+        },
+        {
             header: "Description",
             accessorKey: "description",
         },
@@ -49,25 +54,18 @@ function KanbanList() {
             header: "Specification",
             accessorKey: "specification",
         },
-        //   {
-        //     header: "Specification",
-        //     accessorKey: "specification",
-        // },
-        {
-            header: "Machine",
-            accessorKey: "machine",
-            cell: (item: Kanban) => item.machine?.code || '-'
-        },
         {
             header: "Area",
             accessorKey: "machine_area",
             cell: (item: Kanban) => item.machine_area?.name || '-'
         },
+
         {
-            header: "Rack",
-            accessorKey: "rack",
-            cell: (item: Kanban) => item.rack?.code || '-'
+            header: "Machine",
+            accessorKey: "machine",
+            cell: (item: Kanban) => item.machine?.code || '-'
         },
+
         {
             header: "Max Qty",
             accessorKey: "max_quantity",

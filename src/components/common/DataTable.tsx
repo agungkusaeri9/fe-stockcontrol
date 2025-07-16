@@ -122,7 +122,7 @@ export default function DataTable({
                             <div style={{ maxHeight: 500, overflowY: 'auto' }}>
                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-white/[0.05]" style={{ tableLayout: 'fixed' }}>
                                     <thead
-                                        className="bg-[#00008B] text-white dark:bg-white/[0.02]"
+                                        className="bg-[#00008B] text-white"
                                         style={{ position: 'sticky', top: 0, zIndex: 2 }}
                                     >
                                         <tr>

@@ -132,17 +132,6 @@ const FilterBalance = ({
                         </button>
                     </div>
                 )}
-                {filter.machine_id && machines && (
-                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Machine: {machines.find(m => m.id === filter.machine_id)?.code}</span>
-                        <button
-                            onClick={() => removeFilter('machine_id')}
-                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                            ×
-                        </button>
-                    </div>
-                )}
                 {filter.machine_area_id && machineAreas && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Area: {machineAreas.find(a => a.id === filter.machine_area_id)?.name}</span>
@@ -154,6 +143,18 @@ const FilterBalance = ({
                         </button>
                     </div>
                 )}
+                {filter.machine_id && machines && (
+                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
+                        <span>Machine: {machines.find(m => m.id === filter.machine_id)?.code}</span>
+                        <button
+                            onClick={() => removeFilter('machine_id')}
+                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        >
+                            ×
+                        </button>
+                    </div>
+                )}
+
                 {filter.rack_id && racks && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Rack: {racks.find(r => r.id === filter.rack_id)?.code}</span>
@@ -236,18 +237,6 @@ const FilterBalance = ({
                             onChange={(e) => setValue('keyword', e.target.value)}
                             register={register("keyword")}
                         />
-                        {machines && (
-                            <FormSelect2
-                                label="Machine"
-                                name="machine_id"
-                                control={control}
-                                options={machines.map((d: Machine) => ({
-                                    label: d.code,
-                                    value: Number(d.id),
-                                }))}
-                                placeholder="Select Machine"
-                            />
-                        )}
                         {machineAreas && (
                             <FormSelect2
                                 label="Area"
@@ -260,6 +249,19 @@ const FilterBalance = ({
                                 placeholder="Select Area"
                             />
                         )}
+                        {machines && (
+                            <FormSelect2
+                                label="Machine"
+                                name="machine_id"
+                                control={control}
+                                options={machines.map((d: Machine) => ({
+                                    label: d.code,
+                                    value: Number(d.id),
+                                }))}
+                                placeholder="Select Machine"
+                            />
+                        )}
+
                         {racks && (
                             <FormSelect2
                                 label="Rack"

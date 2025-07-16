@@ -84,6 +84,11 @@ function BalanceList() {
             accessorKey: "code",
         },
         {
+            header: "Rack",
+            accessorKey: "rack_code",
+            cell: (item: Kanban) => item.rack?.code || '-'
+        },
+        {
             header: "Description",
             accessorKey: "description",
         },
@@ -92,15 +97,16 @@ function BalanceList() {
             accessorKey: "specification",
         },
         {
+            header: "Area",
+            accessorKey: "machine_area",
+            cell: (item: Kanban) => item.machine_area?.name || '-'
+        },
+        {
             header: "Machine",
             accessorKey: "machine",
             cell: (item: Kanban) => item.machine?.code || '-'
         },
-        {
-            header: "Machine Area",
-            accessorKey: "machine_area",
-            cell: (item: Kanban) => item.machine_area?.name || '-'
-        },
+
         {
             header: "Min.",
             accessorKey: "min_quantity",

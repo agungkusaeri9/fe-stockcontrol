@@ -49,16 +49,17 @@ function StockOutList() {
             cell: (item: StockOut) => item.kanban?.specification
         },
         {
+            header: "Area",
+            accessorKey: "machine_area",
+            cell: (item: StockOut) => item.machine_area?.name
+        },
+        {
             header: "Machine",
             accessorKey: "machine.code",
             cell: (item: StockOut) => item.machine?.code
 
         },
-        {
-            header: "Machine Area",
-            accessorKey: "machine_area",
-            cell: (item: StockOut) => item.machine_area?.name
-        },
+
         {
             header: "Quantity",
             accessorKey: "quantity"
