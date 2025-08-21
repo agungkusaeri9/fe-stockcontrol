@@ -28,6 +28,7 @@ function StockOutList() {
         limit,
         pagination
     } = useFetchDataStockOut(StockOutService.get, "stockOut", true, filter);
+
     const columns = [
         {
             header: 'Date',
@@ -37,6 +38,11 @@ function StockOutList() {
         {
             header: "Code",
             accessorKey: "kanban_code"
+        },
+        {
+            header: "Rack",
+            accessorKey: "rack",
+            cell: (item: StockOut) => item.kanban?.rack?.code
         },
         {
             header: "Description",

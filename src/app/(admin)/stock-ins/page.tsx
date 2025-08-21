@@ -26,6 +26,7 @@ function StockInList() {
         limit,
         pagination
     } = useFetchDataStock(StockInService.get, "stockIn", true, filter);
+
     const columns = [
         {
             header: 'Date',
@@ -35,6 +36,11 @@ function StockInList() {
         {
             header: "Code",
             accessorKey: "kanban_code"
+        },
+        {
+            header: "Rack",
+            accessorKey: "rack",
+            cell: (item: StockIn) => item.kanban?.rack?.code
         },
         {
             header: "Description",
