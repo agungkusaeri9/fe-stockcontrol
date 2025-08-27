@@ -24,6 +24,7 @@ function ReminderList() {
         {
             header: "No. Kanban",
             accessorKey: "code",
+            isNoWrap: true
         },
         {
             header: "Description",

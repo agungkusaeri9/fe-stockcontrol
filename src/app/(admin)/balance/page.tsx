@@ -82,10 +82,12 @@ function BalanceList() {
         {
             header: "Code",
             accessorKey: "code",
+            isNoWrap: true
         },
         {
             header: "Rack",
             accessorKey: "rack_code",
+            isNoWrap: true,
             cell: (item: Kanban) => item.rack?.code || '-'
         },
         {

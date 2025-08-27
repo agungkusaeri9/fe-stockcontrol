@@ -40,10 +40,12 @@ function KanbanList() {
         {
             header: "Code",
             accessorKey: "code",
+            isNoWrap: true
         },
         {
             header: "Rack",
             accessorKey: "rack",
+            isNoWrap: true,
             cell: (item: Kanban) => item.rack?.code || '-'
         },
         {

@@ -43,22 +43,23 @@ function RackListPage() {
         {
             header: "Code",
             accessorKey: "code",
+            isNoWrap: true
         },
         {
             header: "Action",
             accessorKey: "id",
             cell: (item: Rack) => (
                 <div className="flex items-center gap-2">
-                    <ButtonLink 
-                        href={`/racks/${item.id}/edit`} 
-                        variant='info' 
+                    <ButtonLink
+                        href={`/racks/${item.id}/edit`}
+                        variant='info'
                         size='xs'
                     >
                         Edit
                     </ButtonLink>
-                    <Button 
-                        onClick={() => handleDelete(item.id)} 
-                        variant='danger' 
+                    <Button
+                        onClick={() => handleDelete(item.id)}
+                        variant='danger'
                         size='xs'
                     >
                         Delete

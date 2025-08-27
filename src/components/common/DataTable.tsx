@@ -10,6 +10,7 @@ interface Column {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cell?: (info: any) => React.ReactNode;
     className?: string;
+    isNoWrap?: boolean;
 }
 
 interface DataTableProps {
@@ -95,7 +96,7 @@ export default function DataTable({
                                 <select
                                     className="h-9 bg-white rounded border font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                     value={pagination.itemsPerPage}
-                                    onChange={(e) => pagination.onLimitChange(Number(e.target.value))}
+                                    onChange={(e) => pagination.onLimitChange(e.target.value as unknown as number)}
                                 >
                                     <option value={10}>10</option>
                                     <option value={20}>20</option>
@@ -103,6 +104,7 @@ export default function DataTable({
                                     <option value={40}>40</option>
                                     <option value={50}>50</option>
                                     <option value={100}>100</option>
+                                    <option value={pagination.totalItems}>All</option>
                                 </select>
                                 <span className="text-gray-500">entries</span>
                             </div>
@@ -179,7 +181,7 @@ export default function DataTable({
                                                             </td>
                                                         )}
                                                         {columns.map((column, colIndex) => (
-                                                            <td key={colIndex} className={`px-3 py-[5px] text-sm text-gray-500 dark:text-gray-400 ${column.className || ''}`}>
+                                                            <td key={colIndex} className={`px-3 py-[5px] text-sm text-gray-500 dark:text-gray-400  ${column.isNoWrap ? "whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px]" : "whitespace-normal"} ${column.className || ''}`}>
                                                                 {column.cell ? column.cell(item) : item[column.accessorKey]}
                                                             </td>
                                                         ))}
