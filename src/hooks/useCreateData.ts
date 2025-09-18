@@ -16,7 +16,6 @@ export const useCreateData = <TForm, TResponse>(
       return await createFunction(formData);
     },
     onSuccess: (response) => {
-      // pastikan TResponse punya properti 'message' kalau ini ingin dipakai langsung
       toast.success((response as { message: string }).message || "Data berhasil ditambahkan.");
       queryClient.invalidateQueries({ queryKey });
       router.push(redirectUrl);

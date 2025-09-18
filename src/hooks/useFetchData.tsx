@@ -54,7 +54,7 @@ export const useFetchData = <T,>(
         }
     };
 
-    const { data, isLoading, refetch } = useQuery<T[]>({
+    const { data, isLoading, refetch, error, isError } = useQuery<T[]>({
         queryKey: usePagination
             ? [queryKey, currentPage, limit, debouncedSearch]
             : [queryKey],
@@ -68,6 +68,8 @@ export const useFetchData = <T,>(
         currentPage,
         limit,
         keyword,
+        error,
+        isError,
         setKeyword,
         setCurrentPage,
         setLimit,

@@ -51,6 +51,13 @@ function MachineList() {
             cell: (item: Machine) => (
                 <div className="flex items-center gap-2">
                     <ButtonLink
+                        href={`/sub-machines?machineId=${item.id}`}
+                        variant='secondary'
+                        size='xs'
+                    >
+                        Sub Machine
+                    </ButtonLink>
+                    <ButtonLink
                         href={`/machines/${item.id}/edit`}
                         variant='info'
                         size='xs'

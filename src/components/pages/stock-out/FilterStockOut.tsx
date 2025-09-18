@@ -11,6 +11,9 @@ import FormSelect2 from '@/components/form/FormSelect2'
 import DatePicker from '@/components/form/datePicker'
 import { dateFormat } from '@/utils/dateFormat'
 import { Dropdown } from '@/components/ui/dropdown/Dropdown'
+import SubMachineService from '@/services/SubMachineService'
+import { useQuery } from '@tanstack/react-query'
+import { SubMachine } from '@/types/subMachine'
 
 interface FilterFormData {
     start_date: string;
@@ -18,6 +21,7 @@ interface FilterFormData {
     code: string;
     machine_id: { value: number; label: string } | null;
     machine_area_id: { value: number; label: string } | null;
+    sub_machine_id: { value: number; label: string } | null;
 }
 
 const FilterStockOut = ({
@@ -30,6 +34,7 @@ const FilterStockOut = ({
         code: string,
         machine_id: number | null,
         machine_area_id: number | null,
+        sub_machine_id: number | null,
         keyword: string
     },
     setFilter: (filter: {
@@ -38,9 +43,12 @@ const FilterStockOut = ({
         code: string,
         machine_id: number | null,
         machine_area_id: number | null,
+        sub_machine_id: number | null,
         keyword: string
     }) => void
 }) => {
+    const [isMachineId, setIsMachineId] = useState(0);
+    const [localMachineId, setLocalMachineId] = useState<number | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
     const { register, handleSubmit, reset, control, setValue, watch } = useForm<FilterFormData>({
@@ -50,11 +58,23 @@ const FilterStockOut = ({
             code: filter.code,
             machine_id: null,
             machine_area_id: null,
+            sub_machine_id: null
         }
     });
 
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
     const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
+    const { data: subMachines } = useQuery({
+        queryKey: ["sub-machines", filter.machine_id],
+        queryFn: async () => {
+            if (!localMachineId) return [];
+            const response = await SubMachineService.getWithoutPagination(localMachineId || 0);
+            return response.data;
+        },
+        enabled: !!localMachineId
+    })
+
+
 
     const formValues = watch();
     useEffect(() => {
@@ -64,6 +84,7 @@ const FilterStockOut = ({
         if (formValues.code) count++;
         if (formValues.machine_id) count++;
         if (formValues.machine_area_id) count++;
+        if (formValues.sub_machine_id) count++;
         setActiveFilters(count);
     }, [formValues]);
 
@@ -71,6 +92,7 @@ const FilterStockOut = ({
         const newFilter = {
             machine_id: data.machine_id?.value || null,
             machine_area_id: data.machine_area_id?.value || null,
+            sub_machine_id: data.sub_machine_id?.value || null,
             start_date: data.start_date,
             end_date: data.end_date,
             code: data.code,
@@ -88,6 +110,7 @@ const FilterStockOut = ({
             code: "",
             machine_id: null,
             machine_area_id: null,
+            sub_machine_id: null,
             keyword: ""
         };
         setFilter(emptyFilter);
@@ -165,6 +188,18 @@ const FilterStockOut = ({
                         <span>Machine: {machines.find(m => m.id === filter.machine_id)?.code}</span>
                         <button
                             onClick={() => removeFilter('machine_id')}
+                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        >
+                            ×
+                        </button>
+                    </div>
+                )}
+
+                {filter.sub_machine_id && subMachines && (
+                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
+                        <span>Sub Machine: {subMachines?.find(m => m.id === filter.sub_machine_id)?.code}</span>
+                        <button
+                            onClick={() => removeFilter('sub_machine_id')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                             ×
@@ -259,9 +294,28 @@ const FilterStockOut = ({
                                     label: d.code,
                                     value: Number(d.id),
                                 }))}
+                                onChange={(selected) => {
+                                    setValue("machine_id", selected);
+                                    setLocalMachineId(selected ? selected.value : null);
+                                }}
                                 placeholder="Select Machine"
                             />
+
                         )}
+
+                        {subMachines && (
+                            <FormSelect2
+                                label="Sub Machine"
+                                name="sub_machine_id"
+                                control={control}
+                                options={subMachines.map((d: SubMachine) => ({
+                                    label: d.code,
+                                    value: Number(d.id),
+                                }))}
+                                placeholder="Select Sub Machine"
+                            />
+                        )}
+
 
                     </div>
                     <div className="flex justify-end gap-2 pt-4 border-t">

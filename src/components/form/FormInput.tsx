@@ -47,7 +47,12 @@ const InputLabel: React.FC<InputLabelProps> = ({
     return (
         <div className="mb-4">
             <Label htmlFor={name}>
-                {label} {required && <span className="text-error-500">*</span>}
+                {label}
+                {required ? (
+                    <span className="text-error-500">*</span>
+                ) : (
+                    <span className="text-gray-500">&nbsp;(Optional)</span>
+                )}
             </Label>
             <input
                 onChange={onChange}

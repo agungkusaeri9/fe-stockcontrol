@@ -7,16 +7,16 @@ import { PaginatedResponse } from "@/types/fetch";
 type Filter = {
     start_date: string;
     end_date: string;
-    pr_number: string;
+    kanban: string;
 }
 
 export type FetchFunctionWithPagination<T> = (
     page?: number,
     limit?: number,
     keyword?: string,
+    kanban?: string,
     start_date?: string,
     end_date?: string,
-    pr_number?: string
 ) => Promise<PaginatedResponse<T>>;
 
 export const useFetchDataPR = <T>(
@@ -49,7 +49,6 @@ export const useFetchDataPR = <T>(
 
     useEffect(() => {
         if (!usePagination) return;
-
         const newParams = new URLSearchParams(searchParams.toString());
 
         newParams.set("limit", limit.toString());
@@ -73,10 +72,10 @@ export const useFetchDataPR = <T>(
             newParams.delete("end_date");
         }
 
-        if (filter.pr_number) {
-            newParams.set("pr_number", filter.pr_number);
+        if (filter.kanban) {
+            newParams.set("kanban", filter.kanban);
         } else {
-            newParams.delete("pr_number");
+            newParams.delete("kanban");
         }
 
         router.push(`?${newParams.toString()}`, { scroll: false });
@@ -89,7 +88,7 @@ export const useFetchDataPR = <T>(
             debouncedSearch,
             filter.start_date,
             filter.end_date,
-            filter.pr_number
+            filter.kanban
         );
         setPagination(res.pagination);
         return res.data;
@@ -97,7 +96,7 @@ export const useFetchDataPR = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, debouncedSearch, filter.start_date, filter.end_date, filter.pr_number]
+            ? [queryKey, currentPage, limit, debouncedSearch, filter.start_date, filter.end_date, filter.kanban]
             : [queryKey],
         queryFn: fetchData,
     });

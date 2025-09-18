@@ -12,15 +12,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const EditOperator = () => {
 
     const params = useParams();
     const id = params.id;
-    type formData = {
-        name: string;
-        nik: string;
-    }
+    type FormData = z.infer<typeof operatorUpdateValidation>;
     const { data: operator } = useFetchById<Operator>(OperatorService.getById, Number(id), "operator");
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(operatorUpdateValidation),
@@ -31,6 +29,8 @@ const EditOperator = () => {
             reset({
                 name: operator.name,
                 nik: operator.nik,
+                username: operator.username,
+                password: undefined
             });
         }
     }, [operator, reset]);
@@ -42,7 +42,7 @@ const EditOperator = () => {
         "/operators"
     );
 
-    const onSubmit = (data: formData) => {
+    const onSubmit = (data: FormData) => {
         updateMutation(data);
     };
     return (
@@ -69,25 +69,42 @@ const EditOperator = () => {
                             register={register("nik")}
                             error={errors.nik}
                         />
+                        <InputLabel
+                            label="Username"
+                            name="username"
+                            type="text"
+                            required
+                            placeholder="Enter Username"
+                            register={register("username")}
+                            error={errors.username}
+                        />
+                        <InputLabel
+                            label="Password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter password"
+                            register={register("password")}
+                            error={errors.password}
+                        />
                         <div className="flex justify-end gap-2 mt-6">
-                            <Button 
+                            <Button
                                 type="button"
-                                size="sm" 
-                                variant="secondary" 
+                                size="sm"
+                                variant="secondary"
                                 className="px-4"
                                 onClick={() => reset()}
                             >
                                 Reset
                             </Button>
-                            <Button 
+                            <Button
                                 type="submit"
-                                size="sm" 
-                                variant="primary" 
-                                className="px-4" 
-                                disabled={isPending} 
+                                size="sm"
+                                variant="primary"
+                                className="px-4"
+                                disabled={isPending}
                                 loading={isPending}
                             >
-                                Update
+                                Update Operator
                             </Button>
                         </div>
                     </form>

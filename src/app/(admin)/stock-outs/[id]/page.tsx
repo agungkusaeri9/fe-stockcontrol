@@ -92,10 +92,10 @@ export default function Page() {
 
                                 <div className="space-y-1">
                                     <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        Operator
+                                        Requester
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockOut?.operator?.name}
+                                        {stockOut?.requester?.name || "-"}
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@ export default function Page() {
                                         Machine Code
                                     </div>
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {stockOut.machine?.code}
+                                        {stockOut.sub_machine ? stockOut.sub_machine.code : stockOut.machine?.code}
                                     </div>
                                 </div>
                             </div>

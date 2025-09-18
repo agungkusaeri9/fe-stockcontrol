@@ -9,6 +9,9 @@ import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 import Loading from "@/components/common/Loading";
 import KanbanExportExcel from "@/components/pages/kanban/KanbanExportExcel";
+import { useDeleteData } from "@/hooks/useDeleteData";
+import { confirmDelete } from "@/utils/confirm";
+import Button from "@/components/ui/button/Button";
 
 function KanbanList() {
     const [filter, setFilter] = useState({
@@ -19,6 +22,14 @@ function KanbanList() {
         status: null as string | null,
         completed_status: null as string | null
     });
+    const { mutate: remove } = useDeleteData(KanbanService.remove, ["kanbans"]);
+    const handleDelete = async (id: number) => {
+        const confirmed = await confirmDelete();
+        if (confirmed) {
+            remove(id);
+        }
+    };
+
     const {
         data: kanbans,
         isLoading,
@@ -105,6 +116,13 @@ function KanbanList() {
                     >
                         Edit
                     </ButtonLink>
+                    <Button
+                        onClick={() => handleDelete(item.id)}
+                        variant='danger'
+                        size='xs'
+                    >
+                        Delete
+                    </Button>
                 </div>
             ),
         },
@@ -139,7 +157,6 @@ function KanbanList() {
                         onPageChange: setCurrentPage,
                         onLimitChange: setLimit,
                     }}
-
                 />
             </div>
         </div>

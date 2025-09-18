@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { PaginatedResponse } from "@/types/fetch";
+import { useDebounce } from "./useDebounce";
 
 type Filter = {
     machine_id: number | null;
@@ -11,7 +12,7 @@ type Filter = {
     status: string | null;
     completed_status?: string | null;
     js_balance_status: string;
-}
+};
 
 export type FetchFunctionWithPagination<T> = (
     page?: number,
@@ -40,15 +41,16 @@ export const useFetchDataBalance = <T>(
     const [limit, setLimit] = useState(
         usePagination ? Number(searchParams.get("limit")) || 10 : 50
     );
-    const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
     const [pagination, setPagination] = useState<PaginatedResponse<T>["pagination"] | null>(null);
+
+    // 🔑 debounce keyword dari filter
+    const debouncedSearch = useDebounce(filter.keyword, 500);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        // Scroll to top of the table
-        const tableElement = document.querySelector('.overflow-x-auto');
+        const tableElement = document.querySelector(".overflow-x-auto");
         if (tableElement) {
-            tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            tableElement.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
 
@@ -60,55 +62,37 @@ export const useFetchDataBalance = <T>(
         newParams.set("limit", limit.toString());
         newParams.set("page", currentPage.toString());
 
-        if (filter.keyword) {
-            newParams.set("keyword", filter.keyword);
-        } else {
-            newParams.delete("keyword");
-        }
+        if (filter.keyword) newParams.set("keyword", filter.keyword);
+        else newParams.delete("keyword");
 
-        if (filter.machine_id) {
-            newParams.set("machine_id", filter.machine_id.toString());
-        } else {
-            newParams.delete("machine_id");
-        }
+        if (filter.machine_id) newParams.set("machine_id", filter.machine_id.toString());
+        else newParams.delete("machine_id");
 
-        if (filter.machine_area_id) {
-            newParams.set("machine_area_id", filter.machine_area_id.toString());
-        } else {
-            newParams.delete("machine_area_id");
-        }
+        if (filter.machine_area_id) newParams.set("machine_area_id", filter.machine_area_id.toString());
+        else newParams.delete("machine_area_id");
 
-        if (filter.rack_id) {
-            newParams.set("rack_id", filter.rack_id.toString());
-        } else {
-            newParams.delete("rack_id");
-        }
+        if (filter.rack_id) newParams.set("rack_id", filter.rack_id.toString());
+        else newParams.delete("rack_id");
 
-        if (filter.status) {
-            newParams.set("status", filter.status);
-        } else {
-            newParams.delete("status");
-        }
+        if (filter.status) newParams.set("status", filter.status);
+        else newParams.delete("status");
 
-        if (filter.js_balance_status) {
-            newParams.set("js_balance_status", filter.js_balance_status);
-        } else {
-            newParams.delete("js_balance_status");
-        }
+        if (filter.js_balance_status) newParams.set("js_balance_status", filter.js_balance_status);
+        else newParams.delete("js_balance_status");
 
         router.push(`?${newParams.toString()}`, { scroll: false });
-    }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
+    }, [filter, currentPage, limit, usePagination, router, searchParams]);
 
     const fetchData = async (): Promise<T[]> => {
         const res = await fetchFunction(
             currentPage,
             limit,
-            filter.keyword,
+            debouncedSearch, // pake debounce di sini
             filter.machine_id,
             filter.machine_area_id,
             filter.rack_id,
             filter.status,
-            filter.completed_status = null,
+            filter.completed_status ?? null,
             filter.js_balance_status
         );
         setPagination(res.pagination);
@@ -117,7 +101,18 @@ export const useFetchDataBalance = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, filter.keyword, filter.machine_id, filter.machine_area_id, filter.rack_id, filter.status,null, filter.js_balance_status]
+            ? [
+                  queryKey,
+                  currentPage,
+                  limit,
+                  debouncedSearch,
+                  filter.machine_id,
+                  filter.machine_area_id,
+                  filter.rack_id,
+                  filter.status,
+                  filter.completed_status ?? null,
+                  filter.js_balance_status,
+              ]
             : [queryKey],
         queryFn: fetchData,
     });
@@ -128,8 +123,7 @@ export const useFetchDataBalance = <T>(
         pagination,
         currentPage,
         limit,
-        keyword,
-        setKeyword,
+        keyword: filter.keyword,
         setCurrentPage: handlePageChange,
         setLimit,
         refetch,

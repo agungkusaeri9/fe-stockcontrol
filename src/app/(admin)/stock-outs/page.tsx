@@ -62,8 +62,7 @@ function StockOutList() {
         {
             header: "Machine",
             accessorKey: "machine.code",
-            cell: (item: StockOut) => item.machine?.code
-
+            cell: (item: StockOut) => item.sub_machine ? item.sub_machine.code : item.machine?.code
         },
 
         {
@@ -71,9 +70,9 @@ function StockOutList() {
             accessorKey: "quantity"
         },
         {
-            header: "Operator",
-            accessorKey: "operator",
-            cell: (item: StockOut) => item.operator?.name
+            header: "Requester",
+            accessorKey: "requester",
+            cell: (item: StockOut) => item.requester?.name || '-'
         },
         {
             header: 'Action',

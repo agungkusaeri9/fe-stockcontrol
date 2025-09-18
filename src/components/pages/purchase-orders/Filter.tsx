@@ -9,7 +9,7 @@ import { Dropdown } from '@/components/ui/dropdown/Dropdown'
 interface FilterForm {
     start_date: string;
     end_date: string;
-    po_number: string;
+    kanban: string;
 }
 
 const FilterPurchaseOrder = ({ filter, setFilter }: {
@@ -20,7 +20,7 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
         defaultValues: {
             start_date: filter.start_date || '',
             end_date: filter.end_date || '',
-            po_number: filter.po_number || ''
+            kanban: filter.kanban || ''
         }
     });
 
@@ -32,7 +32,7 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
         let count = 0;
         if (formValues.start_date) count++;
         if (formValues.end_date) count++;
-        if (formValues.po_number) count++;
+        if (formValues.kanban) count++;
         setActiveFilters(count);
     }, [formValues]);
 
@@ -46,7 +46,7 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
         setFilter({
             start_date: '',
             end_date: '',
-            po_number: ''
+            kanban: ''
         });
     };
 
@@ -94,11 +94,11 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
                         </button>
                     </div>
                 )}
-                {filter.po_number && (
+                {filter.kanban && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>PO: {filter.po_number}</span>
+                        <span>Kanban: {filter.kanban}</span>
                         <button
-                            onClick={() => removeFilter('po_number')}
+                            onClick={() => removeFilter('kanban')}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                             ×
@@ -143,11 +143,11 @@ const FilterPurchaseOrder = ({ filter, setFilter }: {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="space-y-4">
                                     <InputLabel
-                                        placeholder="PO. Number"
-                                        label="PO. Number"
-                                        name="po_number"
-                                        onChange={(e) => setValue('po_number', e.target.value)}
-                                        register={register("po_number")}
+                                        placeholder="Kanban"
+                                        label="Kanban"
+                                        name="kanban"
+                                        onChange={(e) => setValue('kanban', e.target.value)}
+                                        register={register("kanban")}
                                     />
                                     <DatePicker
                                         placeholder='Start Date'

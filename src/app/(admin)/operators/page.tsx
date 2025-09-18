@@ -37,6 +37,10 @@ function OperatorListContent() {
             accessorKey: "nik",
         },
         {
+            header: "Username",
+            accessorKey: "username",
+        },
+        {
             header: "Name",
             accessorKey: "name",
         },
@@ -45,16 +49,16 @@ function OperatorListContent() {
             accessorKey: "id",
             cell: (item: Operator) => (
                 <div className="flex items-center gap-2">
-                    <ButtonLink 
-                        href={`/operators/${item.id}/edit`} 
-                        variant='info' 
+                    <ButtonLink
+                        href={`/operators/${item.id}/edit`}
+                        variant='info'
                         size='xs'
                     >
                         Edit
                     </ButtonLink>
-                    <Button 
-                        onClick={() => handleDelete(item.id!)} 
-                        variant='danger' 
+                    <Button
+                        onClick={() => handleDelete(item.id!)}
+                        variant='danger'
                         size='xs'
                     >
                         Delete

@@ -12,7 +12,6 @@ interface ErrorResponse {
   errors?: ValidationErrors;
 }
 
-console.log("API BASE URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
 
 const showToast = (message: string, type: 'error' | 'success' = 'error') => {
   toast[type](message, {
@@ -92,7 +91,8 @@ api.interceptors.response.use(
 
     // Handle network errors
     if (!error.response) {
-      // showToast("Network error. Please check your connection.");
+      console.log(error);
+      showToast("Network error. Please check your connection.");
       return Promise.reject(error);
     }
 

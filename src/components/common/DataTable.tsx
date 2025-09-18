@@ -104,7 +104,7 @@ export default function DataTable({
                                     <option value={40}>40</option>
                                     <option value={50}>50</option>
                                     <option value={100}>100</option>
-                                    <option value={pagination.totalItems}>All</option>
+                                    <option value={pagination.totalItems ? pagination.totalItems : 0}>All</option>
                                 </select>
                                 <span className="text-gray-500">entries</span>
                             </div>

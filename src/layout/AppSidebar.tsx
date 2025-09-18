@@ -13,7 +13,8 @@ import {
   HorizontaLDots,
   PurchaseOrderIcon,
   PurchaseRequestIcon,
-  ReminderIcon
+  ReminderIcon,
+  TrashIcon
 } from "../icons/index";
 import { getCookie } from "cookies-next";
 import { useQuery } from "@tanstack/react-query";
@@ -121,8 +122,20 @@ const AppSidebar: React.FC = () => {
         },
         { name: "Makers", path: "/makers", pro: false },
         { name: "Suppliers", path: "/suppliers", pro: false },
+        { name: "Group", path: "/groups", pro: false },
+        { name: "Requester", path: "/requesters", pro: false },
+
       ],
       count: uncompletedKanbansCount,
+      requiresAuth: true
+    },
+    {
+      icon: <TrashIcon />,
+      name: "Trash",
+      subItems: [
+        { name: "Kanban", path: "/trash/kanbans", pro: false },
+
+      ],
       requiresAuth: true
     },
     {

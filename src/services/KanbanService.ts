@@ -21,6 +21,16 @@ interface FromData {
     rank: string;
 }
 
+
+type FilterExportBalance = {
+  machine_id: number | null;
+  machine_area_id: number | null;
+  rack_id: number | null;
+  keyword: string;
+  status: string | null;
+  js_balance_status: string;
+};
+
 const get: FetchFunctionWithPagination<Kanban> = async (
   page = 1,
   limit = 10,
@@ -47,6 +57,24 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   if(completed_status) params.completed_status = completed_status ;
   if(js_balance_status) params.js_balance_status = js_balance_status ;
 
+  const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {params});
+  return response.data;
+};
+
+const getTrash: FetchFunctionWithPagination<Kanban> = async (
+  page = 1,
+  limit = 10,
+  keyword = ""
+): Promise<PaginatedResponse<Kanban>> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const params: any = {
+    page,
+    limit,
+    paginate: true,
+    is_deleted: true
+  };
+
+  if(keyword) params.keyword = keyword;
   const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {params});
   return response.data;
 };
@@ -101,11 +129,68 @@ const remove = async (id: number) => {
 };
 
 const exportUncompleted = async () => {
-    const response = await api.get("kanbans/export/uncompleted/excel", {
-        responseType: 'blob'
-    });
+    const response = await api.get("kanbans/export/excel",{
+            params: {
+                completed_status: "uncompleted"
+            },
+            responseType: 'blob'
+        }, 
+    );
     return response.data;
 };
+
+const exportCompleted = async () => {
+   const response = await api.get("kanbans/export/excel",{
+            params: {
+                completed_status: "completed"
+            },
+            responseType: 'blob'
+        }, 
+    );
+    return response.data;
+};
+
+const exportAll = async () => {
+   const response = await api.get("kanbans/export/excel",{
+            params: {
+                completed_status: "all"
+            },
+            responseType: 'blob'
+        }, 
+    );
+    return response.data;
+};
+
+
+
+const exportBalance = async ({filter} : {filter: FilterExportBalance}) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const {
+      machine_id,
+      machine_area_id,
+      rack_id,
+      keyword,
+      status,
+      js_balance_status,
+    } = filter;
+    const params: any = {};
+
+    if (machine_id) params.machine_id = machine_id;
+    if (machine_area_id) params.machine_area_id = machine_area_id;
+    if (rack_id) params.rack_id = rack_id;
+    if (keyword) params.keyword = keyword;
+    if (status) params.stock_status = status;
+    if (js_balance_status) params.js_balance_status = js_balance_status;
+
+
+    const response = await api.get("/kanbans/export/excel/balance",{
+                params,
+                responseType: 'blob'
+            }, 
+        );
+    return response.data;
+};
+
 
 const getUncompletedCount = async () => {
     const response = await api.get("kanbans",{
@@ -120,6 +205,17 @@ const getUncompletedCount = async () => {
     return response.data;
 };
 
+const restore = async (id: number) => {
+    try {
+        const response = await api.patch(`kanbans/${id}/restore`);
+        console.log("response", response);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 const KanbanService = {
     get,
     getWithoutPagination,
@@ -129,6 +225,11 @@ const KanbanService = {
     remove,
     exportUncompleted,
     getUncompletedCount,
+    exportCompleted,
+    exportAll,
+    exportBalance,
+    getTrash,
+    restore
 };
 
 export default KanbanService;

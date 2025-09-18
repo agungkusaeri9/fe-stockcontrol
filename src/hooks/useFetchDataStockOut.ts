@@ -9,6 +9,8 @@ type Filter = {
     code: string;
     machine_id: number | null;
     machine_area_id: number | null;
+    sub_machine_id: number | null;
+    
 }
 
 export type FetchFunctionWithPagination<T> = (
@@ -19,6 +21,7 @@ export type FetchFunctionWithPagination<T> = (
     code?: string,
     machine_id?: number | null,
     machine_area_id?: number | null,
+    sub_machine_id?: number | null
 ) => Promise<PaginatedResponse<T>>;
 
 export const useFetchDataStockOut = <T>(
@@ -73,6 +76,12 @@ export const useFetchDataStockOut = <T>(
             newParams.delete("machine_id");
         }
 
+        if (filter.sub_machine_id) {
+            newParams.set("sub_machine_id", filter.sub_machine_id.toString());
+        } else {
+            newParams.delete("sub_machine_id");
+        }
+
         if (filter.machine_area_id) {
             newParams.set("machine_area_id", filter.machine_area_id.toString());
         } else {
@@ -102,7 +111,8 @@ export const useFetchDataStockOut = <T>(
             filter.end_date,
             filter.code,
             filter.machine_id,
-            filter.machine_area_id
+            filter.machine_area_id,
+            filter.sub_machine_id
         );
         setPagination(res.pagination);
         return res.data;
@@ -110,7 +120,7 @@ export const useFetchDataStockOut = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, filter.start_date, filter.end_date, filter.code, filter.machine_id, filter.machine_area_id]
+            ? [queryKey, currentPage, limit, filter.start_date, filter.end_date, filter.code, filter.machine_id, filter.machine_area_id, filter.sub_machine_id]
             : [queryKey],
         queryFn: fetchData,
     });

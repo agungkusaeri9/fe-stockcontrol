@@ -11,10 +11,11 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 
 const CreateOperator = () => {
-
     type formData = {
         name: string;
         nik: string;
+        username: string;
+        password: string;
     }
 
     const { mutate: createMutation, isPending } = useCreateData(
@@ -52,22 +53,40 @@ const CreateOperator = () => {
                             register={register("nik")}
                             error={errors.nik}
                         />
+                        <InputLabel
+                            label="Username"
+                            name="username"
+                            type="text"
+                            required
+                            placeholder="Enter Username"
+                            register={register("username")}
+                            error={errors.username}
+                        />
+                        <InputLabel
+                            label="Password"
+                            name="password"
+                            type="password"
+                            required
+                            placeholder="Enter password"
+                            register={register("password")}
+                            error={errors.password}
+                        />
                         <div className="flex justify-end gap-2 mt-6">
-                            <Button 
+                            <Button
                                 type="button"
-                                size="sm" 
-                                variant="secondary" 
+                                size="sm"
+                                variant="secondary"
                                 className="px-4"
                                 onClick={() => reset()}
                             >
                                 Reset
                             </Button>
-                            <Button 
+                            <Button
                                 type="submit"
-                                size="sm" 
-                                variant="primary" 
-                                className="px-4" 
-                                disabled={isPending} 
+                                size="sm"
+                                variant="primary"
+                                className="px-4"
+                                disabled={isPending}
                                 loading={isPending}
                             >
                                 Create Operator

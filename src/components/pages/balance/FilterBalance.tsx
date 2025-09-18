@@ -84,7 +84,6 @@ const FilterBalance = ({
     }, [formValues]);
 
     const onSubmit = (data: FilterFormData) => {
-        console.log("Filter Data:", data);
         setFilter({
             machine_id: data.machine_id?.value || null,
             machine_area_id: data.machine_area_id?.value || null,
@@ -121,17 +120,7 @@ const FilterBalance = ({
         <div className="relative">
             <div className="flex items-center gap-2">
                 {/* Active Filter Chips */}
-                {filter.keyword && (
-                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
-                        <span>Search: {filter.keyword}</span>
-                        <button
-                            onClick={() => removeFilter('keyword')}
-                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                            ×
-                        </button>
-                    </div>
-                )}
+
                 {filter.machine_area_id && machineAreas && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Area: {machineAreas.find(a => a.id === filter.machine_area_id)?.name}</span>
@@ -230,13 +219,6 @@ const FilterBalance = ({
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="space-y-4">
-                        <InputLabel
-                            placeholder="Search"
-                            label="Search"
-                            name="keyword"
-                            onChange={(e) => setValue('keyword', e.target.value)}
-                            register={register("keyword")}
-                        />
                         {machineAreas && (
                             <FormSelect2
                                 label="Area"

@@ -7,6 +7,7 @@ import DataTable from "@/components/common/DataTable";
 import Loading from "@/components/common/Loading";
 import FilterBalance from "@/components/pages/balance/FilterBalance";
 import { useFetchDataBalance } from "@/hooks/useFetchDataBalance";
+import ExportBalance from "@/components/pages/balance/exportBalance";
 
 function BalanceList() {
     const [filter, setFilter] = useState({
@@ -126,7 +127,10 @@ function BalanceList() {
             accessorKey: "stock_in_quantity",
         },
         {
-
+            header: "Total Stock Out Qty.",
+            accessorKey: "total_stock_out_quantity",
+        },
+        {
             header: "Balance",
             accessorKey: "balance",
         },
@@ -161,10 +165,16 @@ function BalanceList() {
             ]} />
             <div className="space-y-6">
                 <DataTable
+
                     title="Balance"
                     columns={columns}
                     data={kanbans || []}
-                    headerRight={<FilterBalance filter={filter} setFilter={setFilter} />}
+                    headerRight={
+                        <>
+                            <FilterBalance filter={filter} setFilter={setFilter} />
+                            <ExportBalance filter={filter} />
+                        </>
+                    }
                     isLoading={isLoading}
                     pagination={{
                         currentPage: pagination?.curr_page || 1,
@@ -173,6 +183,11 @@ function BalanceList() {
                         itemsPerPage: limit,
                         onPageChange: setCurrentPage,
                         onLimitChange: setLimit,
+                    }}
+                    search={{
+                        value: filter.keyword,
+                        onChange: (value) => setFilter({ ...filter, keyword: value }),
+                        placeholder: 'Search keyword...'
                     }}
 
                 />

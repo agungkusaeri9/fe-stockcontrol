@@ -33,7 +33,7 @@ export function handleError(
     }
 
      if (status === 401 || status === 400 || status === 404) {
-      toast.error(error.response?.data?.message || "Request failed");
+      toast.error(error.response?.data?.message || "Request failed Please try again.");
       return;
     }
 

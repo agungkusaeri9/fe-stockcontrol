@@ -14,8 +14,9 @@ function ListPr() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
-        pr_number: ''
+        kanban: ''
     });
+
 
     const {
         data: purchaseRequests,
