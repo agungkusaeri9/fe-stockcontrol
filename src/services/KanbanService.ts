@@ -208,7 +208,6 @@ const getUncompletedCount = async () => {
 const restore = async (id: number) => {
     try {
         const response = await api.patch(`kanbans/${id}/restore`);
-        console.log("response", response);
         return response.data;
     } catch (error) {
         throw error;

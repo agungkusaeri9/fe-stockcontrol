@@ -12,9 +12,6 @@ import KanbanExportExcel from "@/components/pages/kanban/KanbanExportExcel";
 import { useDeleteData } from "@/hooks/useDeleteData";
 import { confirmDelete } from "@/utils/confirm";
 import Button from "@/components/ui/button/Button";
-import { useMutation } from "@tanstack/react-query";
-import handleError from "@/utils/handleErrors";
-import toast from "react-hot-toast";
 
 function KanbanTrashList() {
     const [filter, setFilter] = useState({
@@ -25,18 +22,9 @@ function KanbanTrashList() {
         status: null as string | null,
         completed_status: null as string | null
     });
-    const { mutate: restore } = useMutation({
-        mutationFn: (id: number) => KanbanService.restore(id),
-        onSuccess: (response) => {
-            console.log(response);
-            toast.success("Kanban restored successfully");
-        },
-        onError: (error) => {
-            handleError(error);
-        },
-    })
+    const { mutate: restore } = useDeleteData(KanbanService.restore, ["kanbans"]);
     const handleRestore = async (id: number) => {
-        const confirmed = await confirmDelete();
+        const confirmed = await confirmDelete("Are you sure?", "Data cannot be restored!", "Yes, Restore!");
         if (confirmed) {
             restore(id);
         }

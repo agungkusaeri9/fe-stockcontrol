@@ -2,7 +2,8 @@ import Swal from "sweetalert2";
 
 export const confirmDelete = async (
     title = "Are you sure?",
-    text = "Data cannot be restored!"
+    text = "Data cannot be restored!",
+    confirmButtonText = "Yes, Delete!"
 ): Promise<boolean> => {
     const result = await Swal.fire({
         title,
@@ -11,7 +12,7 @@ export const confirmDelete = async (
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#aaa",
-        confirmButtonText: "Yes, Delete!",
+        confirmButtonText: confirmButtonText,
     });
 
     return result.isConfirmed;
