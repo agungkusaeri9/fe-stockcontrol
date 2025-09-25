@@ -1,17 +1,11 @@
 "use client";
 import React, { Suspense } from "react";
-import ButtonLink from "@/components/ui/button/ButtonLink";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import { useFetchData } from "@/hooks/useFetchData";
-import { useDeleteData } from "@/hooks/useDeleteData";
-import { confirmDelete } from "@/utils/confirm";
-import Button from "@/components/ui/button/Button";
 import DataTable from "@/components/common/DataTable";
 import Loading from "@/components/common/Loading";
 import GroupService from "@/services/GroupService";
-import { Group } from "@/types/group";
 import toast from "react-hot-toast";
-import { error } from "console";
 
 function GroupList() {
     const {
@@ -25,14 +19,14 @@ function GroupList() {
         keyword,
         pagination
     } = useFetchData(GroupService.get, "groups");
-    const { mutate: remove } = useDeleteData(GroupService.remove, ["groups"]);
+    // const { mutate: remove } = useDeleteData(GroupService.remove, ["groups"]);
 
-    const handleDelete = async (id: number) => {
-        const confirmed = await confirmDelete();
-        if (confirmed) {
-            remove(id);
-        }
-    };
+    // const handleDelete = async (id: number) => {
+    //     const confirmed = await confirmDelete();
+    //     if (confirmed) {
+    //         remove(id);
+    //     }
+    // };
 
     const columns = [
         // {

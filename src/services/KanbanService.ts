@@ -164,7 +164,6 @@ const exportAll = async () => {
 
 
 const exportBalance = async ({filter} : {filter: FilterExportBalance}) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const {
       machine_id,
       machine_area_id,
@@ -173,6 +172,7 @@ const exportBalance = async ({filter} : {filter: FilterExportBalance}) => {
       status,
       js_balance_status,
     } = filter;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any = {};
 
     if (machine_id) params.machine_id = machine_id;

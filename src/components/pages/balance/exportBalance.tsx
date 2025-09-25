@@ -2,17 +2,17 @@ import Button from '@/components/ui/button/Button'
 import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
-import StockOutService from '@/services/StockOutService'
 import KanbanService from '@/services/KanbanService'
 
-type FilterProps = {
-    machine_id: number | null;
-    machine_area_id: number | null;
-    rack_id: number | null;
-    keyword: string;
-    status: string | null;
-    js_balance_status: string;
-};
+// type FilterProps = {
+//     machine_id: number | null;
+//     machine_area_id: number | null;
+//     rack_id: number | null;
+//     keyword: string;
+//     status: string | null;
+//     js_balance_status: string;
+// };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ExportBalance = (filter: any) => {
     const exportMutation = useMutation({
         mutationFn: () => KanbanService.exportBalance(filter),
@@ -24,7 +24,7 @@ const ExportBalance = (filter: any) => {
             const link = document.createElement('a');
             link.href = url;
 
-            let fileName = 'export-balance.xlsx';
+            const fileName = 'export-balance.xlsx';
 
             link.setAttribute('download', fileName);
 

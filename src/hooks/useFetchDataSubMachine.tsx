@@ -51,7 +51,7 @@ export const useFetchDataSubMachine = <T,>(
         newParams.set("page", currentPage.toString());
         if (keyword) newParams.set("keyword", keyword);
         router.push(`?${newParams.toString()}`, { scroll: false });
-    }, [keyword, currentPage, limit, router, searchParams, usePagination]);
+    }, [keyword, currentPage, limit, router, searchParams, usePagination, machineId]);
 
     const fetchData = async (): Promise<T[]> => {
         if (usePagination) {

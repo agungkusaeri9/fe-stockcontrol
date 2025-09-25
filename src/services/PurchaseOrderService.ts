@@ -39,7 +39,6 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
 };
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getById = async (
   id:number
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -10,7 +10,6 @@ import DataTable from "@/components/common/DataTable";
 import Loading from "@/components/common/Loading";
 import { Group } from "@/types/group";
 import toast from "react-hot-toast";
-import { error } from "console";
 import RequesterService from "@/services/RequesterService";
 import { Requester } from "@/types/requester";
 

@@ -29,29 +29,24 @@ export default function SignInForm() {
   const { mutate: loginMutation, isPending: loading, isSuccess } = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const response = await AuthService.login(data);
+      const role = response.data.data.role;
+
+      if (role !== "admin") {
+        throw new Error("Selain admin tidak memiliki hak akses untuk login");
+      }
+
       return response;
     },
     onSuccess: (response) => {
-      // Set user data cookie
-      setCookie('user', response.data.data, {
-        path: '/',
-        secure: false,
-        sameSite: 'lax',
-      });
-
-      // Set auth token cookie
-      setCookie('token', response.data.data.token, {
-        path: '/',
-        secure: false,
-        sameSite: 'lax',
-      });
-
+      setCookie('user', response.data.data, { path: '/', secure: false, sameSite: 'lax' });
+      setCookie('token', response.data.data.token, { path: '/', secure: false, sameSite: 'lax' });
       toast.success(response.data.message);
       router.push(callbackUrl);
     },
-    onError: (error: AxiosError<{ message: string }>) => {
-      showToast(error.response?.data.message ?? 'Terjadi kesalahan');
+    onError: (error: any) => {
+      showToast(error.message ?? 'Terjadi kesalahan');
     }
+
   });
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({

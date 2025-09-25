@@ -12,6 +12,7 @@ interface FormSelect2Props {
     label?: string;
     name: string;
     options?: Option[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<any>;
     placeholder?: string;
     isMulti?: boolean;
@@ -24,8 +25,9 @@ interface FormSelect2Props {
         callback: (options: Option[]) => void
     ) => void;
     defaultOptions?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange?: (value: any) => void;
-    required: boolean;
+    required?: boolean;
 }
 
 const FormSelect2: React.FC<FormSelect2Props> = ({
@@ -47,6 +49,7 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
     const [isLoading, setIsLoading] = useState(false);
 
     const customStyles = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         control: (base: any, state: any) => ({
             ...base,
             minHeight: "42px",
@@ -62,25 +65,30 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
                 borderColor: error ? "#ef4444" : "#3b82f6",
             },
         }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         valueContainer: (base: any) => ({
             ...base,
             height: "42px",
             padding: "0 8px",
         }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         input: (base: any) => ({
             ...base,
             margin: "0px",
             padding: "0px",
         }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         indicatorsContainer: (base: any) => ({
             ...base,
             height: "42px",
         }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         menu: (base: any) => ({
             ...base,
             borderRadius: "0.375rem",
             marginTop: "4px",
         }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         option: (base: any, state: any) => ({
             ...base,
             backgroundColor: state.isSelected
@@ -125,6 +133,7 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
                             classNamePrefix="react-select"
                             styles={customStyles}
                             isLoading={isLoading}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             onInputChange={(newValue: any) => {
                                 setIsLoading(true);
                                 return newValue;

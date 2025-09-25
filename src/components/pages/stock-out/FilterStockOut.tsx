@@ -47,7 +47,6 @@ const FilterStockOut = ({
         keyword: string
     }) => void
 }) => {
-    const [isMachineId, setIsMachineId] = useState(0);
     const [localMachineId, setLocalMachineId] = useState<number | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
@@ -64,8 +63,8 @@ const FilterStockOut = ({
 
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
     const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
-    const { data: subMachines } = useQuery({
-        queryKey: ["sub-machines", filter.machine_id],
+    const { data: subMachines, refetch: refetchSubMachines } = useQuery({
+        queryKey: ["sub-machines", localMachineId],
         queryFn: async () => {
             if (!localMachineId) return [];
             const response = await SubMachineService.getWithoutPagination(localMachineId || 0);
@@ -87,6 +86,10 @@ const FilterStockOut = ({
         if (formValues.sub_machine_id) count++;
         setActiveFilters(count);
     }, [formValues]);
+
+    useEffect(() => {
+        refetchSubMachines()
+    }, [localMachineId])
 
     const onSubmit = (data: FilterFormData) => {
         const newFilter = {
@@ -113,6 +116,7 @@ const FilterStockOut = ({
             sub_machine_id: null,
             keyword: ""
         };
+        setLocalMachineId(null);
         setFilter(emptyFilter);
         setIsOpen(false);
     };
@@ -195,7 +199,7 @@ const FilterStockOut = ({
                     </div>
                 )}
 
-                {filter.sub_machine_id && subMachines && (
+                {filter.sub_machine_id && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">
                         <span>Sub Machine: {subMachines?.find(m => m.id === filter.sub_machine_id)?.code}</span>
                         <button
@@ -303,7 +307,7 @@ const FilterStockOut = ({
 
                         )}
 
-                        {subMachines && (
+                        {localMachineId && subMachines && (
                             <FormSelect2
                                 label="Sub Machine"
                                 name="sub_machine_id"

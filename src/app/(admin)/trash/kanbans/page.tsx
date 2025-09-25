@@ -5,16 +5,14 @@ import KanbanService from "@/services/KanbanService";
 import ButtonLink from "@/components/ui/button/ButtonLink";
 import { Kanban } from "@/types/kanban";
 import DataTable from "@/components/common/DataTable";
-import FilterKanban from "@/components/pages/kanban/Filter";
 import { useFetchDataKanban } from "@/hooks/useFetchDataKanban";
 import Loading from "@/components/common/Loading";
-import KanbanExportExcel from "@/components/pages/kanban/KanbanExportExcel";
 import { useDeleteData } from "@/hooks/useDeleteData";
 import { confirmDelete } from "@/utils/confirm";
 import Button from "@/components/ui/button/Button";
 
 function KanbanTrashList() {
-    const [filter, setFilter] = useState({
+    const [filter] = useState({
         machine_id: null as number | null,
         machine_area_id: null as number | null,
         rack_id: null as number | null,

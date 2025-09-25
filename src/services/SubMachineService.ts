@@ -1,6 +1,5 @@
 import { ApiResponse } from "@/types/api";
-import { FetchFunctionWithPagination, PaginatedResponse } from "@/types/fetch";
-import { Machine } from "@/types/machine";
+import { PaginatedResponse } from "@/types/fetch";
 import { SubMachine } from "@/types/subMachine";
 import api from "@/utils/api";
 

@@ -6,7 +6,6 @@ import Button from '@/components/ui/button/Button';
 import { useFetchById } from '@/hooks/useFetchDetailData';
 import { useUpdateData } from '@/hooks/useUpdateData';
 import SubMachineService from '@/services/SubMachineService';
-import { Machine } from '@/types/machine';
 import { SubMachine } from '@/types/subMachine';
 import { updateMachineValidator } from '@/validators/machineValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
