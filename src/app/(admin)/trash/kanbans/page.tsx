@@ -125,7 +125,7 @@ function KanbanTrashList() {
         <div>
             <Breadcrumb items={[
                 { label: 'Dashboard', href: '/dashboard' },
-                { label: 'Trash' },
+                { label: 'Trash', href: '#' },
                 { label: 'Kanbans', href: '/trash/kanbans' }
             ]} />
             <div className="space-y-6">

@@ -6,7 +6,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { useDeleteData } from "@/hooks/useDeleteData";
 import { confirmDelete } from "@/utils/confirm";
 import Button from "@/components/ui/button/Button";
-import {  Area } from "@/types/area";
+import { Area } from "@/types/area";
 import DataTable from "@/components/common/DataTable";
 import AreaService from "@/services/AreaService";
 import Loading from "@/components/common/Loading";
@@ -49,16 +49,16 @@ function AreaListPage() {
             accessorKey: "id",
             cell: (item: Area) => (
                 <div className="flex items-center gap-2">
-                    <ButtonLink 
-                        href={`/areas/${item.id}/edit`} 
-                        variant='info' 
+                    <ButtonLink
+                        href={`/areas/${item.id}/edit`}
+                        variant='info'
                         size='xs'
                     >
                         Edit
                     </ButtonLink>
-                    <Button 
-                        onClick={() => handleDelete(item.id!)} 
-                        variant='danger' 
+                    <Button
+                        onClick={() => handleDelete(item.id!)}
+                        variant='danger'
                         size='xs'
                     >
                         Delete

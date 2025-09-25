@@ -24,7 +24,8 @@ interface FormSelect2Props {
         callback: (options: Option[]) => void
     ) => void;
     defaultOptions?: boolean;
-    onChange?: (value: any) => void; // custom onChange dari luar
+    onChange?: (value: any) => void;
+    required: boolean;
 }
 
 const FormSelect2: React.FC<FormSelect2Props> = ({
@@ -41,6 +42,7 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
     loadOptions,
     defaultOptions = true,
     onChange,
+    required = true
 }) => {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -98,6 +100,11 @@ const FormSelect2: React.FC<FormSelect2Props> = ({
             {label && (
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                     {label}
+                    {required ? (
+                        <span className="text-error-500">*</span>
+                    ) : (
+                        <span className="text-gray-500">&nbsp;(Optional)</span>
+                    )}
                 </label>
             )}
             <Controller

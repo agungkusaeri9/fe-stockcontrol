@@ -18,7 +18,8 @@ function StockOutList() {
         code: '',
         machine_id: null as number | null,
         machine_area_id: null as number | null,
-        keyword: ''
+        keyword: '',
+        sub_machine_id: null as number | null
     });
     const {
         data: stockOut,

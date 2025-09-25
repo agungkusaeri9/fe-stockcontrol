@@ -15,7 +15,8 @@ const ExportStockOut = ({ filter }: {
             filter.start_date,
             filter.end_date,
             filter.machine_id,
-            filter.machine_area_id
+            filter.machine_area_id,
+            filter.sub_machine_id
         ),
         onSuccess: (blob) => {
             const url = window.URL.createObjectURL(new Blob([blob], {

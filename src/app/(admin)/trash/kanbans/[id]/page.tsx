@@ -14,6 +14,7 @@ export default function Page() {
     const params = useParams();
     const id = params.id;
     const { data: kanban } = useFetchById<Kanban>(KanbanService.getById, Number(id), "kanban");
+
     if (!kanban) return (
         <Loading />
     );
@@ -42,6 +43,7 @@ export default function Page() {
             <Breadcrumb
                 items={[
                     { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Trash', href: '#' },
                     { label: 'Kanban', href: '/kanbans' },
                     { label: 'Detail' }
                 ]}

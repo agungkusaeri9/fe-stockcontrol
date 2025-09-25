@@ -35,7 +35,7 @@ const FilterStockOut = ({
         machine_id: number | null,
         machine_area_id: number | null,
         sub_machine_id: number | null,
-        keyword: string
+        keyword: string,
     },
     setFilter: (filter: {
         start_date: string,

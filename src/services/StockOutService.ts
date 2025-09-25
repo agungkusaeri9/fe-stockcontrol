@@ -51,6 +51,7 @@ const exportExcel = async (
   end_date?: string,
   machine_id?: number,
   machine_area_id?: number,
+  sub_machine_id?: number
 ): Promise<Blob> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
@@ -61,6 +62,7 @@ const exportExcel = async (
   if (code) params.keyword = code;
   if (machine_id) params.machine_id = machine_id;
   if (machine_area_id) params.machine_area_id = machine_area_id;
+  if (sub_machine_id) params.sub_machine_id = sub_machine_id;
 
   const response = await api.get("stock-outs/export/excel", { 
     params,
