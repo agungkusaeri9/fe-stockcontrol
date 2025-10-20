@@ -20,6 +20,9 @@ networks:
 # docker build -t agungkusaeri/cmwi-fst:staging.2 --build-arg NEXT_PUBLIC_API_BASE_URL=http://192.168.205.170:3210/api --build-arg NEXT_PUBLIC_SOCKET_BASE_URL=ws://192.168.205.170:3001 .
 # docker push agungkusaeri/cmwi-fst:staging.2
 
+
+# =============================================================================================
+
 # docker build -t agungkusaeri/cmwi-fst:staging.nginx --build-arg NEXT_PUBLIC_API_BASE_URL=http://localhost/v1 --build-arg NEXT_PUBLIC_SOCKET_BASE_URL=ws://localhost .
 # docker push agungkusaeri/cmwi-fst:staging.nginx
 

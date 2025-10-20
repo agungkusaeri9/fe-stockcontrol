@@ -63,7 +63,7 @@ const FilterStockOut = ({
 
     const { data: machines } = useFetchData(MachineService.getWithoutPagination, "machines", false);
     const { data: machineAreas } = useFetchData(AreaService.getWithoutPagination, "machineAreas", false);
-    const { data: subMachines, refetch: refetchSubMachines } = useQuery({
+    const { data: subMachines } = useQuery({
         queryKey: ["sub-machines", localMachineId],
         queryFn: async () => {
             if (!localMachineId) return [];
@@ -87,9 +87,9 @@ const FilterStockOut = ({
         setActiveFilters(count);
     }, [formValues]);
 
-    useEffect(() => {
-        refetchSubMachines()
-    }, [localMachineId])
+    // useEffect(() => {
+    //     refetchSubMachines()
+    // }, [localMachineId])
 
     const onSubmit = (data: FilterFormData) => {
         const newFilter = {

@@ -43,7 +43,7 @@ export default function SignInForm() {
       toast.success(response.data.message);
       router.push(callbackUrl);
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError) => {
       showToast(error.message ?? 'Terjadi kesalahan');
     }
 

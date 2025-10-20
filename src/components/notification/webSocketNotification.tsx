@@ -5,12 +5,7 @@ import toast from 'react-hot-toast';
 
 export default function WebSocketNotification() {
     useEffect(() => {
-        // const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        // const host = window.location.host;
-        // const wsUrl = `${protocol}//${host}`;
         const wsUrl = process.env.NEXT_PUBLIC_SOCKET_BASE_URL || "";
-
-        // console.log('Connecting to WebSocket at:', wsUrl);
 
         const socket = new WebSocket(wsUrl);
 

@@ -88,9 +88,18 @@ const AppSidebar: React.FC = () => {
     {
       icon: <PurchaseOrderIcon />,
       name: "Purchase Order",
-      path: "/purchase-orders",
-      requiresAuth: false
+      subItems: [
+        { name: "All PO", path: "/purchase-orders", pro: false },
+        { name: "Manual PO", path: "/manual-purchase-orders", pro: false },
+      ],
+      requiresAuth: true
     },
+    // {
+    //   icon: <PurchaseOrderIcon />,
+    //   name: "Purchase Order",
+    //   path: "/purchase-orders",
+    //   requiresAuth: false
+    // },
     {
       icon: <PurchaseRequestIcon />,
       name: "Purchase Request",
